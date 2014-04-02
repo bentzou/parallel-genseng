@@ -1,0 +1,67 @@
+g++ tmp.cpp -fopenmp
+
+#pragma omp
+		omp parallel
+		omp parallel for
+
+		extern int parallelism_enabled;
+		omp parallel for if(parallelism_enabled)
+
+		omp for					USE EXISTING TEAM
+
+
+CREATE NEW THREAD TEAM
+#pragma omp parallel
+{
+	#pragma omp for
+	for(int n=0; n<10; ++n) printf(" %d", n);
+}
+
+	SPECIFIC NUM THREADS
+	#pragma omp parallel num_threads(3)
+
+
+DYNAMIC SCHEDULING
+#pragma omp for ordered schedule(dynamic)
+for(int n=0; n<100; ++n) {
+	files[n].compress();
+
+	ORDERED FINISHING
+	#pragma omp ordered
+	send(files[n]);
+}
+
+PARALLEL SECTIONS
+#pragma omp sections
+{
+	{ Work1(); }
+
+	#pragma omp section
+	{ Work2();
+	 Work3(); }
+
+	#pragma omp section
+	{ Work4(); }
+}
+
+CRITICAL ATOMIC FLUSH
+
+private, firstprivate and shared
+default
+
+NESTED FOR LOOPS
+#pragma omp parallel for collapse(2)
+for(int y=0; y<25; ++y)
+	for(int x=0; x<80; ++x)
+	{
+	 tick(x,y);
+	}
+
+
+############
+NOTES TO ADD
+############
+
+Requires OpenMP 3.0
+
+/usr/bin/time -o timestats ./GENSENG reviseddata4hmm_300bpSlides_chr1.txt 1 0.01 0.01 1 1 1 0 0 1 1
