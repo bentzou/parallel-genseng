@@ -1215,15 +1215,23 @@ void HMModel::inferAndEstimation(int rounds)
 void HMModel::doOneRoundInference()
 {
 	nITRATION++;
-	computAlpha();
-	computBeta();
-	computLikelihood();
+
+	#pragma omp parallel sections
+	{
+		#pragma omp section
+		{computAlpha();
+		computLikelihood();}
+
+		#pragma omp section
+		{computBeta();}
+	}
+
 	computGamma();
 }
 
 void HMModel::computAlpha(void)
 {
-
+	#pragma omp for
 	for(int i = 0; i < nSTATES; ++i)
 	{
 		pAlpha[0][i] = log(pPi[i]) + log(pEmissTbl[0][i]);
@@ -1233,12 +1241,13 @@ void HMModel::computAlpha(void)
 	for(int i = 1; i < nLength; ++i)
 	{
 		//if (i%100 == 0) cout << i << endl;
+
 		for(int j = 0; j < nSTATES; ++j)
 		{
+			#pragma omp for
 			for(int k = 0; k < nSTATES; ++k)
 			{
 				v[k] = pAlpha[i-1][k]+log(pTran[i][k][j]);
-
 			}
 			pAlpha[i][j] = MathTools::logsumexp(v, nSTATES)+log(pEmissTbl[i][j]);
 		}
