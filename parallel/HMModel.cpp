@@ -9,6 +9,7 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <omp.h>
 
 // math tools, NB regression
 #include "MathTools.h"
