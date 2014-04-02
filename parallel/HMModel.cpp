@@ -9,7 +9,10 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+
+// parallelization
 #include <omp.h>
+#include <time.h>
 
 // math tools, NB regression
 #include "MathTools.h"
@@ -1204,11 +1207,24 @@ void HMModel::inferAndEstimation(int rounds)
 	writeKeyValue(0);
 	for(int i = 0; i < rounds; ++i)
 	{
+		int start; 
+
+		start = time(NULL);
+		cout << endl << "ROUND " << i << "......" << endl;
 		doOneRoundInference();
+		cout << "DONE AFTER " << time(NULL) - start << " SECONDS" << endl << endl;
+
+		start = time(NULL);
+		cout << endl << "RESTIMATION " << i << "......" << endl;
 		reEstimation(REESTIMATETRANSITION, REESTIMATEINIT);
+		cout << "DONE AFTER " << time(NULL) - start << " SECONDS" << endl << endl;
+
 		writeKeyValue(i+1);
 	}
+
+	cout << endl << "VITERBI......" << endl;
 	findBestPath(false);
+	cout << "DONE" << endl << endl;
 	printVariable();
 }
 
@@ -1216,22 +1232,15 @@ void HMModel::doOneRoundInference()
 {
 	nITRATION++;
 
-	#pragma omp parallel sections
-	{
-		#pragma omp section
-		{computAlpha();
-		computLikelihood();}
-
-		#pragma omp section
-		{computBeta();}
-	}
-
+	computAlpha();
+	computLikelihood();
+	computBeta();
 	computGamma();
 }
 
 void HMModel::computAlpha(void)
 {
-	#pragma omp for
+	#pragma omp parallel for
 	for(int i = 0; i < nSTATES; ++i)
 	{
 		pAlpha[0][i] = log(pPi[i]) + log(pEmissTbl[0][i]);
@@ -1242,14 +1251,17 @@ void HMModel::computAlpha(void)
 	{
 		//if (i%100 == 0) cout << i << endl;
 
-		for(int j = 0; j < nSTATES; ++j)
+		#pragma omp parallel
 		{
-			#pragma omp for
-			for(int k = 0; k < nSTATES; ++k)
+			for(int j = 0; j < nSTATES; ++j)
 			{
-				v[k] = pAlpha[i-1][k]+log(pTran[i][k][j]);
+				#pragma omp for
+				for(int k = 0; k < nSTATES; ++k)
+				{
+					v[k] = pAlpha[i-1][k]+log(pTran[i][k][j]);
+				}
+				pAlpha[i][j] = MathTools::logsumexp(v, nSTATES)+log(pEmissTbl[i][j]);
 			}
-			pAlpha[i][j] = MathTools::logsumexp(v, nSTATES)+log(pEmissTbl[i][j]);
 		}
 	}
 	delete []v;
@@ -1267,6 +1279,7 @@ void HMModel::computBeta(void)
 		//if (i%100 == 0) cout << i << endl;
 		for(int j = 0; j < nSTATES; ++j)
 		{
+			#pragma omp parallel for
 			for(int k = 0; k < nSTATES; ++k)
 			{
 				v[k] = pBeta[i+1][k] + log(pTran[i+1][j][k]) + log(pEmissTbl[i+1][k]);
@@ -1280,6 +1293,7 @@ void HMModel::computBeta(void)
 void HMModel::computGamma(void)
 {
 	// make sure comput Gamma is called after the corresponding computAlpha and computBeta
+	#pragma omp parallel for collapse(2)
 	for(int step = 0; step < nLength; ++step)
 	{
 		for(int i = 0; i < nSTATES; ++i)
@@ -1293,6 +1307,7 @@ void HMModel::computLikelihood()
 {
 	double likelihood = 0;
 	double *v = new double[nSTATES];
+	#pragma omp parallel for
 	for(int k = 0; k < nSTATES; ++k)
 	{
 		v[k] = pAlpha[nLength-1][k];
