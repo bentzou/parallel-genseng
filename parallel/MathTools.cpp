@@ -2301,7 +2301,6 @@ double MathTools::logsumexp(double* v, const int RN)
 			printf("positive infinite value in v\n");
 		}
 		res = 0;
-    #pragma omp parallel for reduction(+:res)
 		for(i=0; i<N; i++)
 		{
 			if(i==idx || v[i]==ML_NEGINF)

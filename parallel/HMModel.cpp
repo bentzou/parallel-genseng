@@ -12,7 +12,7 @@
 
 // parallelization
 #include <omp.h>
-#include <time.h>
+#include <sys/time.h> 
 
 // math tools, NB regression
 #include "MathTools.h"
@@ -1207,17 +1207,21 @@ void HMModel::inferAndEstimation(int rounds)
 	writeKeyValue(0);
 	for(int i = 0; i < rounds; ++i)
 	{
-		int start; 
+    	struct timeval tim1, tim2;
+    	double t1, t2;
 
-		start = time(NULL);
-		cout << endl << "ROUND " << i << "......" << endl;
 		doOneRoundInference();
-		cout << "DONE AFTER " << time(NULL) - start << " SECONDS" << endl << endl;
 
-		start = time(NULL);
-		cout << endl << "RESTIMATION " << i << "......" << endl;
+		// TIMING
+   		gettimeofday(&tim1, NULL);
+
 		reEstimation(REESTIMATETRANSITION, REESTIMATEINIT);
-		cout << "DONE AFTER " << time(NULL) - start << " SECONDS" << endl << endl;
+
+		// TIMING
+	    gettimeofday(&tim2, NULL);
+	    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
+	    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
+	    printf("estimation: %.6lf seconds elapsed\n", t2-t1);  
 
 		writeKeyValue(i+1);
 	}
@@ -1232,15 +1236,57 @@ void HMModel::doOneRoundInference()
 {
 	nITRATION++;
 
+	
+    struct timeval tim1, tim2;
+    double t1, t2;
+
+    // TIMING
+    gettimeofday(&tim1, NULL);
 	computAlpha();
+	// TIMING
+    gettimeofday(&tim2, NULL);
+    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
+    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
+    printf("alpha: %.6lf seconds elapsed\n", t2-t1);  
+
+
+	// TIMING
+    gettimeofday(&tim1, NULL);
+    //
 	computLikelihood();
+	// TIMING
+    gettimeofday(&tim2, NULL);
+    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
+    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
+    printf("likelihood: %.6lf seconds elapsed\n", t2-t1);  
+    //
+
+	// TIMING
+    gettimeofday(&tim1, NULL);
+    //
 	computBeta();
+	// TIMING
+    gettimeofday(&tim2, NULL);
+    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
+    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
+    printf("beta: %.6lf seconds elapsed\n", t2-t1);  
+    //
+
+	// TIMING
+    gettimeofday(&tim1, NULL);
+    //
 	computGamma();
+	// TIMING
+    gettimeofday(&tim2, NULL);
+    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
+    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
+    printf("gamma: %.6lf seconds elapsed\n", t2-t1);  
+    //
 }
 
 void HMModel::computAlpha(void)
 {
-	#pragma omp parallel for
+
 	for(int i = 0; i < nSTATES; ++i)
 	{
 		pAlpha[0][i] = log(pPi[i]) + log(pEmissTbl[0][i]);
@@ -1250,18 +1296,14 @@ void HMModel::computAlpha(void)
 	for(int i = 1; i < nLength; ++i)
 	{
 		//if (i%100 == 0) cout << i << endl;
-
-		#pragma omp parallel
+		#pragma omp parallel for
+		for(int j = 0; j < nSTATES; ++j)
 		{
-			for(int j = 0; j < nSTATES; ++j)
+			for(int k = 0; k < nSTATES; ++k)
 			{
-				#pragma omp for
-				for(int k = 0; k < nSTATES; ++k)
-				{
-					v[k] = pAlpha[i-1][k]+log(pTran[i][k][j]);
-				}
-				pAlpha[i][j] = MathTools::logsumexp(v, nSTATES)+log(pEmissTbl[i][j]);
+				v[k] = pAlpha[i-1][k]+log(pTran[i][k][j]);
 			}
+			pAlpha[i][j] = MathTools::logsumexp(v, nSTATES)+log(pEmissTbl[i][j]);
 		}
 	}
 	delete []v;
@@ -1277,9 +1319,9 @@ void HMModel::computBeta(void)
 	for(int i = nLength-2; i >=0; --i)
 	{
 		//if (i%100 == 0) cout << i << endl;
+		// #pragma omp parallel for
 		for(int j = 0; j < nSTATES; ++j)
 		{
-			#pragma omp parallel for
 			for(int k = 0; k < nSTATES; ++k)
 			{
 				v[k] = pBeta[i+1][k] + log(pTran[i+1][j][k]) + log(pEmissTbl[i+1][k]);
@@ -1293,7 +1335,7 @@ void HMModel::computBeta(void)
 void HMModel::computGamma(void)
 {
 	// make sure comput Gamma is called after the corresponding computAlpha and computBeta
-	#pragma omp parallel for collapse(2)
+	// #pragma omp parallel for collapse(2)
 	for(int step = 0; step < nLength; ++step)
 	{
 		for(int i = 0; i < nSTATES; ++i)
@@ -1307,7 +1349,6 @@ void HMModel::computLikelihood()
 {
 	double likelihood = 0;
 	double *v = new double[nSTATES];
-	#pragma omp parallel for
 	for(int k = 0; k < nSTATES; ++k)
 	{
 		v[k] = pAlpha[nLength-1][k];
@@ -1753,6 +1794,7 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 				c[i][j] = 0;
 		}
 		double *v = new double[nLength-1];
+		// #pragma omp parallel for collapse(2)
 		for(int j = 0; j < nSTATES; ++j)
 		{
 			for(int k = 0; k < nSTATES; ++k)
