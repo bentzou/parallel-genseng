@@ -12,7 +12,8 @@
 
 // parallelization
 #include <omp.h>
-#include <sys/time.h> 
+#include <sys/time.h>
+#include <unistd.h>
 
 // math tools, NB regression
 #include "MathTools.h"
@@ -1286,27 +1287,25 @@ void HMModel::doOneRoundInference()
 
 void HMModel::computAlpha(void)
 {
-
 	for(int i = 0; i < nSTATES; ++i)
 	{
 		pAlpha[0][i] = log(pPi[i]) + log(pEmissTbl[0][i]);
 	}
 
-	double *v = new double[nSTATES];
 	for(int i = 1; i < nLength; ++i)
 	{
-		//if (i%100 == 0) cout << i << endl;
 		#pragma omp parallel for
 		for(int j = 0; j < nSTATES; ++j)
 		{
+			double *v = new double[nSTATES];
 			for(int k = 0; k < nSTATES; ++k)
 			{
 				v[k] = pAlpha[i-1][k]+log(pTran[i][k][j]);
 			}
 			pAlpha[i][j] = MathTools::logsumexp(v, nSTATES)+log(pEmissTbl[i][j]);
+			delete []v;
 		}
 	}
-	delete []v;
 }
 
 void HMModel::computBeta(void)
@@ -1315,27 +1314,27 @@ void HMModel::computBeta(void)
 	{
 		pBeta[nLength-1][i] = 0;
 	}
-	double *v = new double[nSTATES];
+
 	for(int i = nLength-2; i >=0; --i)
 	{
-		//if (i%100 == 0) cout << i << endl;
-		// #pragma omp parallel for
+		#pragma omp parallel for
 		for(int j = 0; j < nSTATES; ++j)
 		{
+			double *v = new double[nSTATES];
 			for(int k = 0; k < nSTATES; ++k)
 			{
 				v[k] = pBeta[i+1][k] + log(pTran[i+1][j][k]) + log(pEmissTbl[i+1][k]);
 			}
 			pBeta[i][j] = MathTools::logsumexp(v, nSTATES);
+			delete []v;
 		}
 	}
-	delete []v;
 }
 
 void HMModel::computGamma(void)
 {
 	// make sure comput Gamma is called after the corresponding computAlpha and computBeta
-	// #pragma omp parallel for collapse(2)
+	#pragma omp parallel for collapse(2)
 	for(int step = 0; step < nLength; ++step)
 	{
 		for(int i = 0; i < nSTATES; ++i)
@@ -1762,7 +1761,11 @@ void HMModel::getSegInfo(int l, int r, double &avemprop, double &avegprop, doubl
 
 
 void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
-{
+{	
+	struct timeval tim1, tim2;
+    double t1, t2;
+
+
     if (initReestimation)
     {
 		cout << "initial probability re-estimated" << endl;
@@ -1773,6 +1776,11 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 		}
     }
 
+
+
+    gettimeofday(&tim1, NULL);
+	usleep(1000000);
+    //
 	if (transitionReestimate)
 	{
 		cout << "transition re-estimated" << endl;
@@ -1846,6 +1854,14 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 		delete []c;
 		c = NULL;
 	}
+
+	// TIMING
+    gettimeofday(&tim2, NULL);
+    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
+    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
+    printf("transition reestimation: %.6lf seconds elapsed\n", t2-t1); 
+
+
 	//calculateMuAndPhi();
 	//calculateMuAndPhiWithAutoRegression(); // calculate with auto regression
 
