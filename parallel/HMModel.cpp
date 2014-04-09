@@ -1779,7 +1779,6 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 
 
     gettimeofday(&tim1, NULL);
-	usleep(1000000);
     //
 	if (transitionReestimate)
 	{
@@ -1801,21 +1800,23 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 			for(int j = 0; j < nSTATES; ++j)
 				c[i][j] = 0;
 		}
-		double *v = new double[nLength-1];
-		// #pragma omp parallel for collapse(2)
+
+		#pragma omp parallel for collapse(2)
 		for(int j = 0; j < nSTATES; ++j)
 		{
 			for(int k = 0; k < nSTATES; ++k)
 			{
+				double *v = new double[nLength-1];
 				for(int i = 1; i < nLength; ++i)
 				{
 					v[i-1] = pAlpha[i-1][j]+log(pEmissTbl[i][k])+pBeta[i][k];
 				}
 				c[j][k] = MathTools::logsumexp(v, nLength-1);
+				delete []v;
 			}
 		}
-		delete []v;
-		v = new double[nSTATES];
+
+		double *v = new double[nSTATES];
 		for(int j = 0; j < nSTATES; ++j)
 		{
 			for(int k = 0; k < nSTATES; ++k)
@@ -1854,7 +1855,6 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 		delete []c;
 		c = NULL;
 	}
-
 	// TIMING
     gettimeofday(&tim2, NULL);
     t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
