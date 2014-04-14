@@ -22,6 +22,22 @@ using namespace std;
 // ending of my header files
 
 
+// timing
+struct timeval tim1, tim2;
+
+void start() {
+    gettimeofday(&tim1, NULL);
+}
+
+void stop(string message) {
+    gettimeofday(&tim2, NULL);
+    cout << message;
+    printf(": %.6lf seconds elapsed\n",
+    	(tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0))); 
+}
+
+
+
 void ReadDepthData::loadData(char *f)
 {
 	int lastStartPos = 0;
@@ -246,20 +262,18 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 
 	// loaded x, y, z, fitted, weights
 	// y x are not dependant with initial value
+
+    start();
 	int index = 0;
+	#pragma omp parallel for
 	for(int i = 0; i < nLength; ++i)
 	{
-		for(int j = 0; j < nSTATES; ++j)
-			y[index++] = inferData.data[i].count;
-	}
-	index = 0;
-	for(int i = 0; i < nLength; ++i)
-	{
-		for(int j = 0; j < nSTATES; ++j)
-		{
-			x[index++] = inferData.data[i].hFuntionGC;
+		for(int j = i*nSTATES; j < (i+1)*nSTATES; ++j) {
+			y[j] = inferData.data[i].count;
+			x[j] = inferData.data[i].hFuntionGC;
 		}
 	}
+	stop("y initialization");
 	//for(int i = 0; i < nLength; ++i)
 	//{
 	//	for(int j = 0; j < nSTATES; ++j)
@@ -1238,52 +1252,21 @@ void HMModel::doOneRoundInference()
 {
 	nITRATION++;
 
-	
-    struct timeval tim1, tim2;
-    double t1, t2;
-
-    // TIMING
-    gettimeofday(&tim1, NULL);
+    start();
 	computAlpha();
-	// TIMING
-    gettimeofday(&tim2, NULL);
-    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
-    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
-    printf("alpha: %.6lf seconds elapsed\n", t2-t1);  
+	stop("alpha");
 
-
-	// TIMING
-    gettimeofday(&tim1, NULL);
-    //
+    start();
 	computLikelihood();
-	// TIMING
-    gettimeofday(&tim2, NULL);
-    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
-    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
-    printf("likelihood: %.6lf seconds elapsed\n", t2-t1);  
-    //
+	stop("likelihood");
 
-	// TIMING
-    gettimeofday(&tim1, NULL);
-    //
+	start();
 	computBeta();
-	// TIMING
-    gettimeofday(&tim2, NULL);
-    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
-    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
-    printf("beta: %.6lf seconds elapsed\n", t2-t1);  
-    //
+	stop("beta");
 
-	// TIMING
-    gettimeofday(&tim1, NULL);
-    //
+	start();
 	computGamma();
-	// TIMING
-    gettimeofday(&tim2, NULL);
-    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
-    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
-    printf("gamma: %.6lf seconds elapsed\n", t2-t1);  
-    //
+	stop("gamma");
 }
 
 void HMModel::computAlpha(void)
@@ -1763,16 +1746,7 @@ void HMModel::getSegInfo(int l, int r, double &avemprop, double &avegprop, doubl
 
 void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 {	
-	struct timeval tim1, tim2;
-    double t1, t2;
-
-
-
-    // TIMING
-    gettimeofday(&tim1, NULL);
-	// TIMING
-
-
+    start();
     if (initReestimation)
     {
 		cout << "initial probability re-estimated" << endl;
@@ -1782,17 +1756,8 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 			pPi[i] = exp(pAlpha[0][i] + pBeta[0][i] - cLikelihood[nITRATION-1]);
 		}
     }
+    stop("pi recalculation");
 
-    gettimeofday(&tim2, NULL);
-    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
-    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
-    printf("initial reestimation: %.6lf seconds elapsed\n", t2-t1); 
-
-
-
-
-    gettimeofday(&tim1, NULL);
-    //
 	if (transitionReestimate)
 	{
 		cout << "transition re-estimated" << endl;
@@ -1815,7 +1780,7 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 		}
 
 
-    	gettimeofday(&tim1, NULL);
+    	start();
 		#pragma omp parallel for collapse(2)
 		for(int j = 0; j < nSTATES; ++j)
 		{
@@ -1830,20 +1795,17 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 				delete []v;
 			}
 		}
+		stop("cjk");
 
-		// TIMING
-	    gettimeofday(&tim2, NULL);
-	    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
-	    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
-	    printf("cjk: %.6lf seconds elapsed\n", t2-t1); 
-
+    	
+		start();
+	    // #pragma omp parallel for collapse(2)
 		double *v = new double[nSTATES];
 		for(int j = 0; j < nSTATES; ++j)
 		{
 			for(int k = 0; k < nSTATES; ++k)
 			{
-				newTran[j][k] = log(pTranTbl[j][k]);
-				newTran[j][k] += c[j][k];
+				newTran[j][k] = log(pTranTbl[j][k]) + c[j][k];
 				for(int l = 0; l < nSTATES; ++l)
 				{
 					v[l] = log(pTranTbl[j][l])+c[j][l];
@@ -1854,13 +1816,24 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 			}
 		}
 		delete []v;
+		stop("transition probabilities");
+
+
+
 		// put the new value to Tran Table
 		for(int i = 0; i < nSTATES; ++i)
 		{
 			for(int j = 0; j < nSTATES; ++j)
 				pTranTbl[i][j] = newTran[i][j];
 		}
+
+
+
+		start();
 		fillTranDiscrete();
+		stop("fill trans");
+
+
 		for(int i = 0; i < nSTATES; ++i)
 		{
 			delete []newTran[i];
@@ -1876,22 +1849,20 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 		delete []c;
 		c = NULL;
 	}
-	// TIMING
-    gettimeofday(&tim2, NULL);
-    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
-    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
-    printf("transition reestimation: %.6lf seconds elapsed\n", t2-t1); 
 
 
 	//calculateMuAndPhi();
 	//calculateMuAndPhiWithAutoRegression(); // calculate with auto regression
 
+	start();
 	calculateMuAndPhiAllStatesCombined();
 	if (USINGAUTOREGRESSION)
 		calculateMuAndPhiWithAutoRegressionAllStatesCombined();
+	stop("calc mu and phi all states");
 
-
+	start();
 	fillEmissionTbl();
+	stop("fill emission table");
 	//for(int step = 0; step < nLength-1; ++step)
 	//{
 	//	double sum = 0;
@@ -1980,6 +1951,7 @@ void HMModel::fillEmissionTbl(void)
 	//		fillEmissTblItem(j, i, (*it).first);
 	//	}
 	//}
+	#pragma omp parallel for collapse(2)
 	for(int i = 0; i < nLength; ++i)
 	{
 		for(int j = 0; j < nSTATES; ++j)
@@ -2178,6 +2150,7 @@ void HMModel::fillTranContinous()
 
 void HMModel::fillTranDiscrete()
 {
+	#pragma omp parallel for collapse(3)
 	for(int step = 0; step < nLength; ++step)
 		for(int i = 0; i < nSTATES; ++i)
 			for(int j = 0; j < nSTATES; ++j)
