@@ -291,39 +291,73 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 	//}
 
 
+
+
 	// load offset
-	index = 0;
+	// index = 0;
+	// for(int i = 0; i < nLength; ++i)
+	// {
+	// 	offset[index++] = log(delta);
+	// 	for(int j = 1; j < nSTATES; ++j)
+	// 	{
+	// 		offset[index++] = log(j*1.0);
+	// 	}
+	// }
+	start();
+	#pragma omp parallel for
 	for(int i = 0; i < nLength; ++i)
 	{
-		offset[index++] = log(delta);
-		for(int j = 1; j < nSTATES; ++j)
+		int start = i*nSTATES;
+
+		offset[start++] = log(delta);
+		for(int j = 1; j < nSTATES; ++j,++start)
 		{
-			offset[index++] = log(j*1.0);
+			offset[start] = log(j*1.0);
 		}
 	}
+	stop("offset -- initialization");
+
+
 	if (USINGMAPPABILITY)
 	{
-		index = 0;
+		start();
+		// index = 0;
+		// for(int i = 0; i < nLength; ++i)
+		// {
+		// 	offset[index++] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
+		// 	for(int j = 1; j < nSTATES; ++j)
+		// 	{
+		// 		offset[index++] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
+		// 	}
+		// }
+
+		#pragma omp parallel for
 		for(int i = 0; i < nLength; ++i)
 		{
-			offset[index++] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
-			for(int j = 1; j < nSTATES; ++j)
+			int start = i*nSTATES;
+
+			offset[start++] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
+			for(int j = 1; j < nSTATES; ++j,++start)
 			{
-				offset[index++] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
+				offset[start] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
 			}
 		}
+		stop("offset -- mappability adjustment");
 	}
 
 
 	// load weights
-	index = 0;
+	start();
+	#pragma omp parallel for
 	for(int i = 0; i < nLength; ++i)
 	{
-		for(int j = 0; j < nSTATES; ++j)
+		int start = i*nSTATES;
+		for(int j = 0; j < nSTATES; ++j,++start)
 		{
-			prior[index++] = exp(pGamma[i][j]);
+			prior[start] = exp(pGamma[i][j]);
 		}
 	}
+	stop("prior -- load weights");
 
 	// update weights
 	// given mu, readcount, overdispersion, have likelihood
