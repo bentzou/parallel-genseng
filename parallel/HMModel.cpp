@@ -1208,6 +1208,7 @@ void HMModel::inferAndEstimation(int rounds)
 	writeKeyValue(0);
 	for(int i = 0; i < rounds; ++i)
 	{
+		printf("\ndoing round %d\n", i);
     	struct timeval tim1, tim2;
     	double t1, t2;
 
@@ -1766,6 +1767,12 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
     double t1, t2;
 
 
+
+    // TIMING
+    gettimeofday(&tim1, NULL);
+	// TIMING
+
+
     if (initReestimation)
     {
 		cout << "initial probability re-estimated" << endl;
@@ -1775,6 +1782,12 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 			pPi[i] = exp(pAlpha[0][i] + pBeta[0][i] - cLikelihood[nITRATION-1]);
 		}
     }
+
+    gettimeofday(&tim2, NULL);
+    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
+    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
+    printf("initial reestimation: %.6lf seconds elapsed\n", t2-t1); 
+
 
 
 
@@ -1801,6 +1814,8 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 				c[i][j] = 0;
 		}
 
+
+    	gettimeofday(&tim1, NULL);
 		#pragma omp parallel for collapse(2)
 		for(int j = 0; j < nSTATES; ++j)
 		{
@@ -1815,6 +1830,12 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 				delete []v;
 			}
 		}
+
+		// TIMING
+	    gettimeofday(&tim2, NULL);
+	    t1=tim1.tv_sec+(tim1.tv_usec/1000000.0);  
+	    t2=tim2.tv_sec+(tim2.tv_usec/1000000.0);  
+	    printf("cjk: %.6lf seconds elapsed\n", t2-t1); 
 
 		double *v = new double[nSTATES];
 		for(int j = 0; j < nSTATES; ++j)
