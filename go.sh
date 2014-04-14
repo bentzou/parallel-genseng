@@ -13,7 +13,7 @@
 # postprocessing: whether the postprocessing step will be executed (1) , or not (0).
 
 ROUND=1
-TRANS=1
+TRANS=0
 INIT=0
 
 cd test
@@ -30,6 +30,10 @@ make
 mv GENSENG ../test/
 cd ..
 echo
+
+# ./GENSENG readcountdata round mc1 mc2 map autor mixture tran init human postprocessing.
+# ./GENSENG reviseddata4hmm_300bpSlides_chr1.txt 10 0.01 0.01 1 1 1 0 0 1 1
+
 
 echo 'STARTING'
 cd test
