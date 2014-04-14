@@ -32,7 +32,7 @@ void start() {
 void stop(string message) {
     gettimeofday(&tim2, NULL);
     cout << message;
-    printf(": %.6lf seconds elapsed\n",
+    printf(": %.6lf sec\n",
     	(tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0))); 
 }
 
@@ -241,6 +241,9 @@ void HMModel::startFromCoefficient()
 
 void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 {
+	cout << endl << "calculateMuAndPhiAllStatesCombined" << endl;
+
+
 	// use glmNB to fill mu matrix and phi matrix 
 	// for state 0, we only need to fit phi,
 	// for other state, we need to get fitted mu and re-estimated phi
@@ -262,18 +265,32 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 
 	// loaded x, y, z, fitted, weights
 	// y x are not dependant with initial value
-
+	// int index = 0;
+	// for(int i = 0; i < nLength; ++i)
+	// {
+	// 	for(int j = 0; j < nSTATES; ++j)
+	// 		y[index++] = inferData.data[i].count;
+	// }
+	// index = 0;
+	// for(int i = 0; i < nLength; ++i)
+	// {
+	// 	for(int j = 0; j < nSTATES; ++j)
+	// 	{
+	// 		x[index++] = inferData.data[i].hFuntionGC;
+	// 	}
+	// }
     start();
 	int index = 0;
 	#pragma omp parallel for
 	for(int i = 0; i < nLength; ++i)
 	{
-		for(int j = i*nSTATES; j < (i+1)*nSTATES; ++j) {
-			y[j] = inferData.data[i].count;
-			x[j] = inferData.data[i].hFuntionGC;
+		int start = i*nSTATES;
+		for(int j = 0; j < nSTATES; ++j,++start) {
+			y[start] = inferData.data[i].count;
+			x[start] = inferData.data[i].hFuntionGC;
 		}
 	}
-	stop("y initialization");
+	stop("x,y -- initialization");
 	//for(int i = 0; i < nLength; ++i)
 	//{
 	//	for(int j = 0; j < nSTATES; ++j)
@@ -320,7 +337,6 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 
 	if (USINGMAPPABILITY)
 	{
-		start();
 		// index = 0;
 		// for(int i = 0; i < nLength; ++i)
 		// {
@@ -331,6 +347,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 		// 	}
 		// }
 
+		start();
 		#pragma omp parallel for
 		for(int i = 0; i < nLength; ++i)
 		{
@@ -347,6 +364,14 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 
 
 	// load weights
+	// index = 0;
+	// for(int i = 0; i < nLength; ++i)
+	// {
+	// 	for(int j = 0; j < nSTATES; ++j)
+	// 	{
+	// 		prior[index++] = exp(pGamma[i][j]);
+	// 	}
+	// }
 	start();
 	#pragma omp parallel for
 	for(int i = 0; i < nLength; ++i)
@@ -364,13 +389,44 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 	// calculate proportion
 	if (!init && USINGMIXTURECOMPONENT)
 	{
-		index = 0;
+
+		// index = 0;
+		// double w = 1;
+		// double l = 0;
+		// double proportion = 0;
+		// for(int i = 0; i < nLength; ++i)
+		// {
+		// 	for(int j = 0; j < nSTATES; ++j)
+		// 	{
+				
+		// 		l = exp(MathTools::loglik_NB(1, phi[j], &mu[i][j], &inferData.data[i].count, &w));
+		// 		if (j==normalStates)
+		// 		{
+		// 			proportion = 
+		// 			(l*(1-mixtureProportionNormal))
+		// 			/(mixtureProportionNormal/largestReadCount+(1-mixtureProportionNormal)*l);
+		// 		}
+		// 		else
+		// 		{
+		// 			proportion = 
+		// 			(l*(1-mixtureProportion))
+		// 			/(mixtureProportion/largestReadCount+(1-mixtureProportion)*l);
+		// 		}
+				
+		// 		prior[index++] *= proportion;
+		// 	}
+		// }
+
+		start();
 		double w = 1;
 		double l = 0;
 		double proportion = 0;
+
+		#pragma omp parallel for
 		for(int i = 0; i < nLength; ++i)
 		{
-			for(int j = 0; j < nSTATES; ++j)
+			int start = i*nSTATES;
+			for(int j = 0; j < nSTATES; ++j,++start)
 			{
 				
 				l = exp(MathTools::loglik_NB(1, phi[j], &mu[i][j], &inferData.data[i].count, &w));
@@ -387,9 +443,10 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 					/(mixtureProportion/largestReadCount+(1-mixtureProportion)*l);
 				}
 				
-				prior[index++] *= proportion;
+				prior[start] *= proportion;
 			}
 		}
+		stop("prior -- using mixture component");
 	}
 
 	int dim[5];
@@ -440,14 +497,25 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 
 
 	// save fitted
-	    index = 0;
+	    // index = 0;
+	    // for(int i = 0; i < nLength; ++i)
+	    // {
+		   //  for(int j = 0; j < nSTATES; ++j)
+		   //  {
+			  //   mu[i][j] = fitted[index++];
+		   //  }
+	    // }
+	    start();
+	    #pragma omp parallel for
 	    for(int i = 0; i < nLength; ++i)
 	    {
-		    for(int j = 0; j < nSTATES; ++j)
+	    	int start = i*nSTATES;
+		    for(int j = 0; j < nSTATES; ++j,++start)
 		    {
-			    mu[i][j] = fitted[index++];
+			    mu[i][j] = fitted[start];
 		    }
 	    }
+	    stop("mu -- save fitted");
     }
     else{
         cout << "beta becomes negative value, error will occur, just don't store the fitting value" << endl;
@@ -529,6 +597,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 
 void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
 {
+	cout << endl << "calculateMuAndPhiWithAutoRegressionAllStatesCombined" << endl;
 	// use glmNB to fill mu matrix and phi matrix 
 	// for state 0, we only need to fit phi,
 	// for other state, we need to get fitted mu and re-estimated phi
@@ -550,39 +619,76 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
 
 	// loaded x, y, z, fitted, weights
 	// y x are not dependant with initial value
-	int index = 0;
+	// int index = 0;
+	// for(int i = 0; i < nLength; ++i)
+	// {
+	// 	for(int j = 0; j < nSTATES; ++j)
+	// 		y[index++] = inferData.data[i].count;
+	// }
+	// index = 0;
+	// for(int i = 0; i < nLength; ++i)
+	// {
+	// 	for(int j = 0; j < nSTATES; ++j)
+	// 	{
+	// 		if (i==0)
+	// 			x[index++] = 0;
+	// 		else
+	// 		{
+	// 			if (inferData.data[i-1].count == 0)
+	// 			{
+	// 				x[index++] = log(inferData.data[i-1].count+0.1)-log(mu[i-1][j]);
+	// 			}
+	// 			else
+	// 			{
+	// 				x[index++] = log(inferData.data[i-1].count)-log(mu[i-1][j]);
+	// 			}
+	// 		}   
+	// 	}
+	// }
+	// for(int i = 0; i < nLength; ++i)
+	// {
+	// 	for(int j = 0; j < nSTATES; ++j)
+	// 	{
+	// 		x[index++] = inferData.data[i].hFuntionGC;
+	// 	}
+	// }
+	start();
+	#pragma omp parallel for
 	for(int i = 0; i < nLength; ++i)
 	{
-		for(int j = 0; j < nSTATES; ++j)
-			y[index++] = inferData.data[i].count;
-	}
-	index = 0;
-	for(int i = 0; i < nLength; ++i)
-	{
-		for(int j = 0; j < nSTATES; ++j)
-		{
+		int start = i*nSTATES;
+		for(int j = 0; j < nSTATES; ++j, ++start) {
+			y[start] = inferData.data[i].count;
 			if (i==0)
-				x[index++] = 0;
+				x[start] = 0;
 			else
 			{
 				if (inferData.data[i-1].count == 0)
 				{
-					x[index++] = log(inferData.data[i-1].count+0.1)-log(mu[i-1][j]);
+					x[start] = log(inferData.data[i-1].count+0.1)-log(mu[i-1][j]);
 				}
 				else
 				{
-					x[index++] = log(inferData.data[i-1].count)-log(mu[i-1][j]);
+					x[start] = log(inferData.data[i-1].count)-log(mu[i-1][j]);
 				}
-			}   
+			}
 		}
 	}
+	#pragma omp parallel for
 	for(int i = 0; i < nLength; ++i)
 	{
-		for(int j = 0; j < nSTATES; ++j)
+		int start = (nLength+i)*nSTATES;
+		for(int j = 0; j < nSTATES; ++j,++start)
 		{
-			x[index++] = inferData.data[i].hFuntionGC;
+			x[start] = inferData.data[i].hFuntionGC;
 		}
 	}
+	stop("x,y -- initialization (AR)");
+
+
+
+
+
 	//for(int i = 0; i < nLength; ++i)
 	//{
 	//	for(int j = 0; j < nSTATES; ++j)
@@ -601,52 +707,121 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
 
 
 	// load offset
-	index = 0;
+	// index = 0;
+	// for(int i = 0; i < nLength; ++i)
+	// {
+	// 	offset[index++] = log(delta);
+	// 	for(int j = 1; j < nSTATES; ++j)
+	// 	{
+	// 		offset[index++] = log(j*1.0);
+	// 	}
+	// }
+	start();
+	#pragma omp parallel for
 	for(int i = 0; i < nLength; ++i)
 	{
-		offset[index++] = log(delta);
-		for(int j = 1; j < nSTATES; ++j)
+		int start = i*nSTATES;
+
+		offset[start++] = log(delta);
+		for(int j = 1; j < nSTATES; ++j,++start)
 		{
-			offset[index++] = log(j*1.0);
+			offset[start] = log(j*1.0);
 		}
 	}
+	stop("offset -- initialization (AR)");
+
+
+
 	if (USINGMAPPABILITY)
 	{
-		index = 0;
+		// index = 0;
+		// for(int i = 0; i < nLength; ++i)
+		// {
+		// 	offset[index++] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
+		// 	for(int j = 1; j < nSTATES; ++j)
+		// 	{
+		// 		offset[index++] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
+		// 	}
+		// }
+		start();
+		#pragma omp parallel for
 		for(int i = 0; i < nLength; ++i)
 		{
-			offset[index++] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
-			for(int j = 1; j < nSTATES; ++j)
+			int start = i*nSTATES;
+
+			offset[start++] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
+			for(int j = 1; j < nSTATES; ++j,++start)
 			{
-				offset[index++] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
+				offset[start] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
 			}
 		}
+		stop("offset -- mappability adjustment (AR)");
 	}
 
 
 
 	// load weights
-	index = 0;
+	// index = 0;
+	// for(int i = 0; i < nLength; ++i)
+	// {
+	// 	for(int j = 0; j < nSTATES; ++j)
+	// 	{
+	// 		prior[index++] = exp(pGamma[i][j]);
+	// 	}
+	// }
+	start();
+	#pragma omp parallel for
 	for(int i = 0; i < nLength; ++i)
 	{
-		for(int j = 0; j < nSTATES; ++j)
+		int start = i*nSTATES;
+		for(int j = 0; j < nSTATES; ++j,++start)
 		{
-			prior[index++] = exp(pGamma[i][j]);
+			prior[start] = exp(pGamma[i][j]);
 		}
 	}
+	stop("prior -- load weights (AR)");
 
 	// update weights
 	// given mu, readcount, overdispersion, have likelihood
 	// calculate proportion
 	if (USINGMIXTURECOMPONENT)
 	{
-		index = 0;
+		// index = 0;
+		// double w = 1;
+		// double l = 0;
+		// double proportion = 0;
+		// for(int i = 0; i < nLength; ++i)
+		// {
+		// 	for(int j = 0; j < nSTATES; ++j)
+		// 	{
+				
+		// 		l = exp(MathTools::loglik_NB(1, phi[j], &mu[i][j], &inferData.data[i].count, &w));
+		// 		if (j==normalStates)
+		// 		{
+		// 			proportion = 
+		// 			(l*(1-mixtureProportionNormal))
+		// 			/(mixtureProportionNormal/largestReadCount+(1-mixtureProportionNormal)*l);
+		// 		}
+		// 		else
+		// 		{
+		// 			proportion = 
+		// 			(l*(1-mixtureProportion))
+		// 			/(mixtureProportion/largestReadCount+(1-mixtureProportion)*l);
+		// 		}
+		// 		prior[index++] *= proportion;
+		// 	}
+		// }
+
+		start();
 		double w = 1;
 		double l = 0;
 		double proportion = 0;
+
+		#pragma omp parallel for
 		for(int i = 0; i < nLength; ++i)
 		{
-			for(int j = 0; j < nSTATES; ++j)
+			int start = i*nSTATES;
+			for(int j = 0; j < nSTATES; ++j,++start)
 			{
 				
 				l = exp(MathTools::loglik_NB(1, phi[j], &mu[i][j], &inferData.data[i].count, &w));
@@ -662,9 +837,11 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
 					(l*(1-mixtureProportion))
 					/(mixtureProportion/largestReadCount+(1-mixtureProportion)*l);
 				}
-				prior[index++] *= proportion;
+				
+				prior[start] *= proportion;
 			}
 		}
+		stop("prior -- using mixture component (AR)");		
 	}
 
 	int dim[5];
@@ -700,20 +877,38 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
 		// save fitted
 		// edited by Weibo, 04/27/2012
 		// if fit is not good, basedline(state0) is much larger than the observation (>10), set state 0 fitted value as the observation
-		index = 0;
+		// index = 0;
+		// cout << "mu adjusted for state 0" << endl;
+		// int fitbadcondition = 10;
+		// for(int i = 0; i < nLength; ++i)
+		// {
+		// 	for(int j = 0; j < nSTATES; ++j)
+		// 	{
+		// 		mu[i][j] = fitted[index++];
+		// 	}
+		// 	if (mu[i][0]-inferData.data[i].count>= fitbadcondition)
+		// 	{
+		// 		mu[i][0] = inferData.data[i].count;
+		// 	}
+		// }
+
 		cout << "mu adjusted for state 0" << endl;
+		start();
 		int fitbadcondition = 10;
+		#pragma omp parallel for
 		for(int i = 0; i < nLength; ++i)
 		{
-			for(int j = 0; j < nSTATES; ++j)
+			int start = i*nSTATES;
+			for(int j = 0; j < nSTATES; ++j,++start)
 			{
-				mu[i][j] = fitted[index++];
+				mu[i][j] = fitted[start];
 			}
 			if (mu[i][0]-inferData.data[i].count>= fitbadcondition)
 			{
 				mu[i][0] = inferData.data[i].count;
 			}
 		}
+		stop("mu -- adjustment (AR)");
     }
     else{
         cout << "beta becomes negative value, error will occur, just don't store the fitting value" << endl;
@@ -1256,7 +1451,7 @@ void HMModel::inferAndEstimation(int rounds)
 	writeKeyValue(0);
 	for(int i = 0; i < rounds; ++i)
 	{
-		printf("\ndoing round %d\n", i);
+		printf("\n\nROUND %d\n\n", i);
     	struct timeval tim1, tim2;
     	double t1, t2;
 
@@ -1783,18 +1978,16 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
     start();
     if (initReestimation)
     {
-		cout << "initial probability re-estimated" << endl;
 		// update initial probability
 		for(int i = 0; i < nSTATES; ++i)
 		{
 			pPi[i] = exp(pAlpha[0][i] + pBeta[0][i] - cLikelihood[nITRATION-1]);
 		}
     }
-    stop("pi recalculation");
+    stop("pi");
 
 	if (transitionReestimate)
 	{
-		cout << "transition re-estimated" << endl;
 		// update transition probability
 		// first we need to create a temp transition matrix to store new values
 		double **newTran = new double*[nSTATES];
@@ -1850,7 +2043,7 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 			}
 		}
 		delete []v;
-		stop("transition probabilities");
+		stop("transition prob");
 
 
 
