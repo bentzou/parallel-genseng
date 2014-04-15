@@ -12,7 +12,7 @@
 # human: the input data is human (1), or mouse (0). If the value for this field is larger than 2, it will be the given largest state (by default, the largest state will be 6).
 # postprocessing: whether the postprocessing step will be executed (1) , or not (0).
 
-ROUND=2
+ROUND=10
 TRANS=1
 INIT=1
 
