@@ -1050,7 +1050,6 @@ void MathTools::score_info(int N, double theta, const double* mu, const double* 
 {
   int i;
   double score1=0.0, info1=0.0;
-  double wi, mui, yi, scorei, infoi, thMui;
   
   // for (i=0; i<N; i++) {
   //   wi  = w[i];
@@ -1066,8 +1065,9 @@ void MathTools::score_info(int N, double theta, const double* mu, const double* 
   // }
   #pragma omp parallel for reduction(+:score1,info1)
   for (i=0; i<N; i++) {
-    score1 += w[i]*(digamma(y[i] + theta) - digamma(theta) - (theta + y[i])/(theta + mu[i]) - log(theta + mu[i]) + 1 + log(theta));
-    info1  += w[i]*(trigamma(theta) - trigamma(y[i] + theta) + (mu[i] - y[i])/((theta + mu[i])*(theta + mu[i])) + 1/(theta + mu[i]) - 1/theta);
+    double thMui   = theta + mu[i];
+    score1 += w[i]*(digamma(y[i] + theta) - digamma(theta) - (theta + y[i])/thMui - log(thMui) + 1 + log(theta));
+    info1  += w[i]*(trigamma(theta) - trigamma(y[i] + theta) + (mu[i] - y[i])/(thMui*thMui) + 1/thMui - 1/theta);
   }
   
   *score = score1;
