@@ -474,10 +474,11 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
     double beta = 0;
 
 
-
+    start();
     int conv = MathTools::glmNB(dim, &nIter,y,prior, &linkR, offset, x, &convR, &rank,
         Xb, fitted, resid, weights, &PHI, &scale, &de_resid, &family,
         &twologlik, &scoreTestP, &trace, &beta);
+    stop("fitting glm NB");
 
     if (beta>=0){
         cout << "beta for gc content is " << beta << endl;
@@ -583,14 +584,16 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
     //  int cvPhi = MathTools::phi_ml(y, fitted, nLength, prior, maxIt,
     //      convR, &phi[j], 0, 0);
     //}
-        int cvPhi = MathTools::phi_ml(y, fitted, nLength*nSTATES, prior, maxIt,
-            convR, &phi[0], 0, 0);
-        if (phi[0]>20)
-            phi[0]=20;
-        for(int j = 1; j < nSTATES; ++j)
-        {
-            phi[j] = phi[0];
-        }
+    start();
+    int cvPhi = MathTools::phi_ml(y, fitted, nLength*nSTATES, prior, maxIt,
+        convR, &phi[0], 0, 0);
+    if (phi[0]>20)
+        phi[0]=20;
+    for(int j = 1; j < nSTATES; ++j)
+    {
+        phi[j] = phi[0];
+    }
+    stop("phi");
 
 
     delete []y; y=NULL;
@@ -868,10 +871,11 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
     int trace = 0;
     double beta = 0;
 
+    start();
     int conv = MathTools::glmNB(dim, &nIter,y,prior, &linkR, offset, x, &convR, &rank,
         Xb, fitted, resid, weights, &PHI, &scale, &de_resid, &family,
         &twologlik, &scoreTestP, &trace, &beta);
-
+    stop("fitting glm NB");
 
     if (beta >=0){
         cout << "beta for gc content is " << beta << " " << endl;
@@ -973,14 +977,16 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
     //  int cvPhi = MathTools::phi_ml(y, fitted, nLength, prior, maxIt,
     //      convR, &phi[j], 0, 0);
     //}
-        int cvPhi = MathTools::phi_ml(y, fitted, nLength*nSTATES, prior, maxIt,
-            convR, &phi[0], 0, 0);
-        if (phi[0]>20)
-            phi[0]=20;
-        for(int j = 1; j < nSTATES; ++j)
-        {
-            phi[j] = phi[0];
-        }
+    start();
+    int cvPhi = MathTools::phi_ml(y, fitted, nLength*nSTATES, prior, maxIt,
+        convR, &phi[0], 0, 0);
+    if (phi[0]>20)
+        phi[0]=20;
+    for(int j = 1; j < nSTATES; ++j)
+    {
+        phi[j] = phi[0];
+    }
+    stop("phi");
 
     delete []y; y=NULL;
     delete []fitted; fitted=NULL;
@@ -2084,11 +2090,16 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
     //calculateMuAndPhi();
     //calculateMuAndPhiWithAutoRegression(); // calculate with auto regression
 
-    start();
+    struct timeval tim1, tim2;
+    double t1, t2;
+
+    gettimeofday(&tim1, NULL);
     calculateMuAndPhiAllStatesCombined();
     if (USINGAUTOREGRESSION)
         calculateMuAndPhiWithAutoRegressionAllStatesCombined();
-    stop("calc mu and phi all states");
+    gettimeofday(&tim2, NULL);
+    printf("calc mu and phi all states total: %.6lf sec\n",
+        (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
 
     start();
     fillEmissionTbl();

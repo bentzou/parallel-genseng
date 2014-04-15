@@ -23,6 +23,7 @@
 #include <time.h>
 #include <string.h>
 
+#include <omp.h>
 
 
 /**********************************************************************
@@ -1044,24 +1045,29 @@ double MathTools::loglik_NB(int N, double phi, double* mu, double* y, double* w)
  *
  **********************************************************************/
 
-void MathTools::score_info(int N, double theta, double* mu, double* y, double* w, 
+void MathTools::score_info(int N, double theta, const double* mu, const double* y, const double* w, 
                 double* score, double* info)
 {
   int i;
   double score1=0.0, info1=0.0;
   double wi, mui, yi, scorei, infoi, thMui;
   
+  // for (i=0; i<N; i++) {
+  //   wi  = w[i];
+  //   yi  = y[i];
+  //   mui = mu[i];
+    
+  //   thMui   = theta + mui;
+  //   scorei  = digamma(yi + theta) - digamma(theta) - (theta + yi)/thMui;
+  //   score1 += wi*(scorei - log(thMui) + 1 + log(theta));
+    
+  //   infoi   = trigamma(theta) - trigamma(yi + theta) + (mui - yi)/(thMui*thMui);
+  //   info1  += wi*(infoi + 1/thMui - 1/theta);
+  // }
+  #pragma omp parallel for reduction(+:score1,info1)
   for (i=0; i<N; i++) {
-    wi  = w[i];
-    yi  = y[i];
-    mui = mu[i];
-    
-    thMui   = theta + mui;
-    scorei  = digamma(yi + theta) - digamma(theta) - (theta + yi)/thMui;
-    score1 += wi*(scorei - log(thMui) + 1 + log(theta));
-    
-    infoi   = trigamma(theta) - trigamma(yi + theta) + (mui - yi)/(thMui*thMui);
-    info1  += wi*(infoi + 1/thMui - 1/theta);
+    score1 += w[i]*(digamma(y[i] + theta) - digamma(theta) - (theta + y[i])/(theta + mu[i]) - log(theta + mu[i]) + 1 + log(theta));
+    info1  += w[i]*(trigamma(theta) - trigamma(y[i] + theta) + (mu[i] - y[i])/((theta + mu[i])*(theta + mu[i])) + 1/(theta + mu[i]) - 1/theta);
   }
   
   *score = score1;
@@ -2717,7 +2723,7 @@ double MathTools::loglik_NB(int N, double phi, double* mu, double* y){
   return(logL);
 }
 
-void MathTools::score_info(int N, double theta, double* mu, double* y, 
+void MathTools::score_info(int N, double theta, const double* mu, const double* y, 
                 double* score, double* info)
 {
   int i;

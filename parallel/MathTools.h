@@ -68,7 +68,7 @@ public:
 
 	/* score and infor for solving MLE of phi */
 
-	static void score_info(int N, double theta, double* mu, double* y, double* w, 
+	static void score_info(int N, double theta, const double* mu, const double* y, const double* w, 
                 double* score, double* info);
 
 	/* MLE of phi */
@@ -111,7 +111,7 @@ public:
 	static double loglik_NB(int N, double phi, double* mu, double* y);
 
 
-	static void score_info(int N, double theta, double* mu, double *y, 
+	static void score_info(int N, double theta, const double* mu, const double *y, 
 					double* score, double* info);
 
 	/* MLE of phi */
