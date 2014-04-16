@@ -12,7 +12,6 @@
 
 // parallelization
 #include <omp.h>
-#include <sys/time.h>
 #include <unistd.h>
 
 // math tools, NB regression
@@ -23,6 +22,7 @@ using namespace std;
 
 
 // timing
+#include <sys/time.h>
 #define TIMING 1
 struct timeval tim1, tim2;
 void start() {
@@ -227,6 +227,7 @@ void HMModel::startFromCoefficient()
         phi[i] = 1.0;
     }
 
+    #pragma omp parallel for
     for(int i = 0; i < nLength; ++i)
     {
         for(int j = 0; j < nSTATES; ++j)
@@ -1152,7 +1153,8 @@ void HMModel::setReadDepthVariable()
     {
         mu[i] = new double[nSTATES];
     }
-    // at the beginning, mu[:][i] = readcout 
+    // at the beginning, mu[:][i] = readcout
+    #pragma omp parallel for
     for(int i = 0; i < nLength; ++i)
     {
         for(int j = 0; j < nSTATES; ++j)
@@ -1172,6 +1174,7 @@ void HMModel::setReadDepthVariable()
     }
 
     pTran = new double **[nLength];
+    #pragma omp parallel for
     for(int i = 0; i < nLength; ++i)
     {
         pTran[i] = new double *[nSTATES];
@@ -1240,6 +1243,7 @@ void HMModel::setReadDepthVariable()
     pPi[normalStates] = normalSelfTran;
 
     pAlpha = new double*[nLength];
+    #pragma omp parallel for
     for(int i = 0; i < nLength; ++i)
     {
         pAlpha[i] = new double[nSTATES];
@@ -1250,6 +1254,7 @@ void HMModel::setReadDepthVariable()
     }
 
     pBeta = new double*[nLength];
+    #pragma omp parallel for
     for(int i = 0; i < nLength; ++i)
     {
         pBeta[i] = new double[nSTATES];
@@ -1262,6 +1267,7 @@ void HMModel::setReadDepthVariable()
     pGamma = new double*[nLength];   // store the posterior probability
     for(int i = 0; i < nLength; ++i)
         pGamma[i] = new double[nSTATES];
+    #pragma omp parallel for
     for(int i=0; i < nLength; ++i)
     {
         for(int j=0; j < nSTATES; ++j)
@@ -1465,12 +1471,15 @@ void HMModel::inferAndEstimation(int rounds)
         struct timeval tim1, tim2;
         double t1, t2;
 
+        printf("ONE ROUND INFERENCE\n\n");
         gettimeofday(&tim1, NULL);
         doOneRoundInference();
         gettimeofday(&tim2, NULL);
         printf("doOneRoundInference total: %.6lf sec\n",
-            (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));  
+            (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
+        printf("\n");
 
+        printf("REESTIMATION\n\n");
         gettimeofday(&tim1, NULL);
         reEstimation(REESTIMATETRANSITION, REESTIMATEINIT);
         gettimeofday(&tim2, NULL);
@@ -1516,7 +1525,6 @@ void HMModel::computAlpha(void)
 
     for(int i = 1; i < nLength; ++i)
     {
-        #pragma omp parallel for
         for(int j = 0; j < nSTATES; ++j)
         {
             double *v = new double[nSTATES];
@@ -1589,6 +1597,7 @@ void HMModel::post_processing()
 
 void HMModel::remove_smallCNV()
 {
+    // #pragma omp parallel for
     for(int i = 0; i < nLength; ++i)
     {
         if (inferenceResults[i] != normalStates)
@@ -2052,7 +2061,7 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
             }
         }
         delete []v;
-        stop("transition prob");
+        stop("transition prob NO PARALLEL");
 
 
 
@@ -2095,11 +2104,17 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 
     gettimeofday(&tim1, NULL);
     calculateMuAndPhiAllStatesCombined();
-    if (USINGAUTOREGRESSION)
-        calculateMuAndPhiWithAutoRegressionAllStatesCombined();
     gettimeofday(&tim2, NULL);
-    printf("calc mu and phi all states total: %.6lf sec\n",
+    printf("calc mu and phi total: %.6lf sec\n",
         (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
+
+    if (USINGAUTOREGRESSION) {
+        gettimeofday(&tim1, NULL);
+        calculateMuAndPhiWithAutoRegressionAllStatesCombined();
+        gettimeofday(&tim2, NULL);
+        printf("calc mu and phi AR total: %.6lf sec\n",
+            (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
+    }
 
     start();
     fillEmissionTbl();
@@ -2601,7 +2616,6 @@ void HMModel::writeKeyValueTable(char *filename, double ** data)
     for(int i = 0; i < nSTATES; ++i)
         fout << "column  ";
     fout << endl;
-
 
     for(int i = 0; i < nLength; ++i)
     {

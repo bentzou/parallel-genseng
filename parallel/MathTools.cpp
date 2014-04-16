@@ -25,6 +25,30 @@
 
 #include <omp.h>
 
+// timing
+#include <iostream>
+#include <string>
+#include <sys/time.h>
+#define TIMING_FOR_TOOLS 1
+
+using namespace std;
+struct timeval tim3, tim4;
+
+void start2() {
+    if (TIMING_FOR_TOOLS) {
+        gettimeofday(&tim3, NULL);
+    }
+}
+
+void stop2(string message) {
+    if (TIMING_FOR_TOOLS) {
+        gettimeofday(&tim4, NULL);
+        cout << message;
+        printf(": %.6lf sec\n",
+            (tim4.tv_sec+(tim4.tv_usec/1000000.0))-(tim3.tv_sec+(tim3.tv_usec/1000000.0)));
+    }
+}
+
 
 /**********************************************************************
  *
@@ -89,13 +113,39 @@ int MathTools::wcenter(double *y, int n, double *weight, int resid, double *ynew
   int i = 0, s=0, empty = 0;
   double swt=0.0, swy=0.0, wi, epsilon=1e-8;
   
+  // if (weight) {
+  //   for (i=0; i<n; i++) {
+  //     wi   = weight[i];
+  //     swt += wi;
+  //     swy += wi*y[i];
+  //   }
+  // }else {
+  //   for (i=0; i<n; i++) {
+  //     swy += y[i];
+  //   }
+  //   swt = (double) n;
+  // }
+  // swy /= swt;
+  
+  // if (swt>epsilon) {
+  //   if(resid){
+  //     for (i=0; i<n; i++){ ynew[i] = y[i] - swy; }
+  //   }else {
+  //     for (i=0; i<n; i++){ ynew[i] = swy; }
+  //   }
+  // }else {
+  //   empty = 1;
+  // }
+
   if (weight) {
+    #pragma omp parallel for private(wi) reduction(+:swt,swy)
     for (i=0; i<n; i++) {
       wi   = weight[i];
       swt += wi;
       swy += wi*y[i];
     }
   }else {
+    #pragma omp parallel for reduction(+:swy)
     for (i=0; i<n; i++) {
       swy += y[i];
     }
@@ -105,9 +155,15 @@ int MathTools::wcenter(double *y, int n, double *weight, int resid, double *ynew
   
   if (swt>epsilon) {
     if(resid){
-      for (i=0; i<n; i++){ ynew[i] = y[i] - swy; }
+      #pragma omp parallel for
+      for (i=0; i<n; i++) {
+        ynew[i] = y[i] - swy;
+      }
     }else {
-      for (i=0; i<n; i++){ ynew[i] = swy; }
+      #pragma omp parallel for
+      for (i=0; i<n; i++) {
+        ynew[i] = swy;
+      }
     }
   }else {
     empty = 1;
@@ -128,16 +184,49 @@ int MathTools::wresid(double *y, int n, double *weight, double *x,
   double swxy, swxx, wi, xi, wx;
   int i;
   
+  // swxy = swxx = 0.0;
+  // if (weight) {
+  //   for (i=0; i<n; i++) {
+  //     wi = weight[i];
+  //     xi = x[i];
+  //     wx = wi*xi;
+  //     swxy += wx*y[i];
+  //     swxx += wx*xi;
+  //   }
+  // } else {
+  //   for (i=0; i<n; i++) {
+  //     xi = x[i];
+  //     swxy += xi*y[i];
+  //     swxx += xi*xi;
+  //   }
+  // }
+  
+  // if (swxx>0) {
+  //   swxy /= swxx;
+  //   *beta = swxy;
+  //   for (i=0; i<n; i++) {
+  //     if (weight[i] > 0.0) {
+  //       ynew[i] = y[i] - swxy*x[i];
+  //     } else {
+  //       ynew[i] = y[i];
+  //     }
+  //   }
+  //   return(n);
+  // }else{ 
+  //   return(0);
+  // }
+
+
   swxy = swxx = 0.0;
   if (weight) {
+    #pragma omp parallel for private(wx) reduction(+:swxy,swxx)
     for (i=0; i<n; i++) {
-      wi = weight[i];
-      xi = x[i];
-      wx = wi*xi;
+      wx = weight[i]*x[i];
       swxy += wx*y[i];
-      swxx += wx*xi;
+      swxx += wx*x[i];
     }
   } else {
+    #pragma omp parallel for private(xi) reduction(+:swxy,swxx)
     for (i=0; i<n; i++) {
       xi = x[i];
       swxy += xi*y[i];
@@ -148,6 +237,7 @@ int MathTools::wresid(double *y, int n, double *weight, double *x,
   if (swxx>0) {
     swxy /= swxx;
     *beta = swxy;
+    #pragma omp parallel for
     for (i=0; i<n; i++) {
       if (weight[i] > 0.0) {
         ynew[i] = y[i] - swxy*x[i];
@@ -172,18 +262,32 @@ double MathTools::wssq(double *y, int n, double *weights)
   double res = 0.0, yi;
   int i;
   
+  // if (weights) {
+  //   for (i=0; i<n; i++) {
+  //     yi = y[i];
+  //     res += weights[i]*yi*yi;
+  //   }
+  // }else {
+  //   for (i=0; i<n; i++) {
+  //     yi = y[i];
+  //     res += yi*yi;
+  //   }
+  // }
+  
   if (weights) {
+    #pragma omp parallel for private(yi) reduction(+:res)
     for (i=0; i<n; i++) {
       yi = y[i];
       res += weights[i]*yi*yi;
     }
   }else {
+    #pragma omp parallel for private(yi) reduction(+:res)
     for (i=0; i<n; i++) {
       yi = y[i];
       res += yi*yi;
     }
   }
-  
+
   return(res);
 }
 
@@ -307,6 +411,7 @@ void MathTools::initialize(int family, double* y, double* mu, int N, double* nTo
   int i;
   
   if (family==BINOMIAL) {         /* Binomial */
+    #pragma omp parallel for
     for (i=0; i<N; i++) {
       if (y[i] <0 || nTotal_binom[i] < 0) {
         printf("negative values not allowed for the Binomial family");
@@ -317,6 +422,7 @@ void MathTools::initialize(int family, double* y, double* mu, int N, double* nTo
       mu[i] = (y[i] + 0.5)/(nTotal_binom[i]+1.0);
     }
   }else if (family==POISSON) {    /* Poisson */
+    #pragma omp parallel for
     for (i=0; i<N; i++) {
       if (y[i] < 0) {
         printf("negative values not allowed for the Poisson family");
@@ -324,10 +430,12 @@ void MathTools::initialize(int family, double* y, double* mu, int N, double* nTo
       mu[i] = y[i] + 0.1;
     }
   }else if (family==GAUSSIAN) {   /* Gaussian*/
+    #pragma omp parallel for
     for (i=0; i<N; i++) {
       mu[i] = y[i];
     }
   }else if (family==GAMMA){       /* Gamma */
+    #pragma omp parallel for
     for (i=0; i<N; i++) {
       if (y[i] <= 0) {
         printf("non-poistive values not allowed for the Gamma family");
@@ -335,6 +443,7 @@ void MathTools::initialize(int family, double* y, double* mu, int N, double* nTo
       mu[i] = y[i] + 0.1;
     }
   }else if (family==NB){          /* Negagtive Binomial */
+    #pragma omp parallel for
     for (i=0; i<N; i++) {
       if (y[i] < 0) {
         printf("negative values not allowed for the Negative Binomial family");
@@ -428,6 +537,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
            double *weights, double *phi, int* trace, 
            double *scale, int *df_resid, double* beta) 
 {
+  printf("  GLMFIT START\n");
   double epsilon = 1e-8;       /* Singularity threshold */
   int N, M, maxit, init, useOffset;
   int i = 0, j=0, Nu, dfr, irls;
@@ -479,6 +589,8 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
   invalid = 0;
   wsum    = 0.0;
   
+  start2();
+  #pragma omp parallel for private(mu,pi,wi,ri,Vmu,D) reduction(+:wsum, Nu)
   for (i=0; i<N; i++) {
     mu = fitted[i];
     pi = prior[i];
@@ -491,7 +603,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
     if (!(pi)) { 
       wi = ri = 0.0; 
     }else {
-      Nu ++;
+      Nu += 1;
       Vmu = varfun(family, mu, *phi);
       
       if (link == family) {
@@ -511,6 +623,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
     
     wsum += weights[i];
   }
+  stop2("    initialize weights and residual");
   
   /* ----------------------------------------------------------------*
    * If summation of all weights is too small, stop 
@@ -537,7 +650,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
 		  printf("    glmFit: iteration %d: ", iter);
 		}
 
-	    
+	  #pragma omp parallel for
 		for (i=0; i<N; i++) {
 		  /**
 		   * current estimate of eta + (y-mu)/gradient
@@ -549,7 +662,10 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
 		}
 	    
 		if (useOffset) {
-		  for (i=0; i<N; i++) z[i] -= offset[i];
+      #pragma omp parallel for
+		  for (i=0; i<N; i++) {
+        z[i] -= offset[i];
+      }
 		}
 	            
 		empty = wcenter(z, N, weights, 1, resid);  //removes the mean from z
@@ -567,26 +683,28 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
 		xi  = X;
 		xbi = Xb;
 		x_rank = 0;
-	    
+
 		for (i=0; i<M; i++, xi+=N) {
 		  wcenter(xi, N, weights, 1, xbi);
 		  ssx = wssq(xbi, N, weights);
 		  xbj = Xb;
 	      
-		  for (j=0; j<x_rank; j++, xbj+=N) wresid(xbi, N, weights, xbj, xbi, beta);
+		  for (j=0; j<x_rank; j++, xbj+=N) {
+        wresid(xbi, N, weights, xbj, xbi, beta);
+      }
 	      
 		  ssr = wssq(xbi, N, weights);
 	      
 		  // printf("i=%d, ssx=%.2e, ssr=%.2e, x_rank=%d\n", i, ssx, ssr, x_rank);
 	      
 		  if (ssr/ssx > epsilon) {
-			/**
-			 * takes the residuals after fitting the regression line (no intercept) 
-			 * to the mean value 
-			 */
-			wresid(resid, N, weights, xbi, resid, beta); 
-			x_rank++;
-			xbi+=N;
+  			/**
+  			 * takes the residuals after fitting the regression line (no intercept) 
+  			 * to the mean value 
+  			 */
+  			wresid(resid, N, weights, xbi, resid, beta); 
+  			x_rank++;
+  			xbi+=N;
 		  }
 	      
 		}
@@ -709,14 +827,14 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
       wss_last = wssq(resid, N, weights);
       
     }else{
-      
+      start2();
       /* IRLS algorithm */
       while(iter<maxit && !convg) {
         if (*trace > 5) {
           printf("    glmFit: iteration %d: ", iter);
         }
 
-        
+        #pragma omp parallel for
         for (i=0; i<N; i++) {
           /**
            * current estimate of eta + (y-mu)/gradient
@@ -728,7 +846,10 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
         }
         
         if (useOffset) {
-          for (i=0; i<N; i++) z[i] -= offset[i];
+          #pragma omp parallel for
+          for (i=0; i<N; i++) {
+            z[i] -= offset[i];
+          }
         }
                 
         empty = wcenter(z, N, weights, 1, resid);  //removes the mean from z
@@ -791,6 +912,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
         wss = 0.0;
         Nu  = 0;
         
+        #pragma omp parallel for private(mu,pi,wi,ri,Vmu,D) reduction(+:wss,Nu)
         for (i=0; i<N; i++) {
           
           if (useOffset) {
@@ -807,7 +929,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
           } else {
             
             Vmu = varfun(family, mu, *phi);
-            Nu ++;
+            Nu += 1;
             
             if (link == family) {
               ri = (y[i] - mu)/Vmu;
@@ -839,6 +961,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
         wss_last = wss;
         iter ++;
       }
+      stop2("    IRLS");
     }
     
     /* assume there is an intercept */
@@ -857,7 +980,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
   
   //free(z);
   delete []z;
-  
+  printf("  GLMFIT END\n");
   return(irls && convg);
 }
 
@@ -990,6 +1113,7 @@ double MathTools::loglik_Poisson(int N, double* mu, double* y, double* w){
   int i;
   double yi, mui, logL = 0.0;
   
+  #pragma omp parallel for private(yi,mui) reduction(+:logL)
   for (i=0; i<N; i++) {
     yi  = y[i];
     mui = mu[i];
@@ -1014,6 +1138,7 @@ double MathTools::loglik_NB(int N, double phi, double* mu, double* y, double* w)
   
   logL = 0.0;
   
+  #pragma omp parallel for private(yi,mui,logL1) reduction(+:logL)
   for (i=0; i<N; i++) {
     yi  = y[i];
     mui = mu[i];
@@ -1104,10 +1229,11 @@ int MathTools::phi_ml(double* y, double* mu, int N, double* weights,
     theta0 = 1.0/(*phi);
   }else{
     theta0 = 0.0;
+    #pragma omp parallel for private(tmp) reduction(+:theta0,sumWeights)
     for (i=0; i<N; i++) {
       tmp = y[i]/mu[i] - 1.0;
       theta0 += weights[i]*tmp*tmp;
-	  sumWeights += weights[i];
+	    sumWeights += weights[i];
     }
     theta0 = sumWeights/theta0;
   }
@@ -1168,6 +1294,7 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
           int *df_resid, int* family, double *twologlik, 
           double *scoreTestP, int *trace, double *beta)
 {
+  printf("GLMNB START\n");
   int N, M, maxit, init, useOffset;
   int i, succeed = 0, iter = 0;
   double conv = *convR, initPhi;
@@ -1216,16 +1343,30 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
     }
 
     /* test for overdispersion by Dean's Score test */
+    // scoreNum = 0.0;
+    // scoreDen = 0.0;
+    
+    // start2();
+    // for (i=0; i<N; i++) {
+    //   yi  = y[i];
+    //   mui = fitted[i];
+    //   scoreNum += (yi - mui)*(yi - mui) - yi;
+    //   scoreDen += mui*mui;
+    // }
+    // stop2("test for overdispersion (SEQ HERE)");
+
+    start2();
     scoreNum = 0.0;
     scoreDen = 0.0;
-    
+    #pragma omp parallel for private(yi, mui) reduction(+:scoreNum,scoreDen)
     for (i=0; i<N; i++) {
       yi  = y[i];
       mui = fitted[i];
       scoreNum += (yi - mui)*(yi - mui) - yi;
       scoreDen += mui*mui;
     }
-    
+    stop2("test for overdispersion");
+
     score = scoreNum/sqrt(2.0*scoreDen);
     
     /**
@@ -1236,6 +1377,7 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
     if(*trace > 3) 
       printf("\n  overdispersion score = %.2e, p-value = %.2e\n\n", score, scorePval);
 
+    start2();
     if(scorePval > *scoreTestP){
       *family    = POISSON;
       Lm         = loglik_Poisson(N, fitted, y, prior);
@@ -1246,7 +1388,8 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
       fam0    = NB;
       *family = NB;
     }
-    
+    stop2("log likelihood");
+
     /**
      * calculate phi by MLE, without initial values of phi
      */
@@ -1378,6 +1521,7 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
   }
 
   *twologlik = 2.0*Lm;
+  printf("GLMNB END\n");
   return(succeed);
 }
 
