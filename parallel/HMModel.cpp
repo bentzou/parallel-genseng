@@ -471,12 +471,12 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
     int trace = 0;
     double beta = 0;
 
-
+    cout << "      fitting glm NB" << endl;
     start();
     int conv = MathTools::glmNB(dim, &nIter,y,prior, &linkR, offset, x, &convR, &rank,
         Xb, fitted, resid, weights, &PHI, &scale, &de_resid, &family,
         &twologlik, &scoreTestP, &trace, &beta);
-    stop("      fitting glm NB");
+    stop("        SUBTOTAL");
 
     if (beta>=0){
         cout << "\t\t\tbeta for gc content is " << beta << endl;

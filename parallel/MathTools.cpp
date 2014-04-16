@@ -29,7 +29,7 @@
 #include <iostream>
 #include <string>
 #include <sys/time.h>
-#define TIMING_FOR_TOOLS 0
+#define TIMING_FOR_TOOLS 1
 
 using namespace std;
 struct timeval tim3, tim4;
@@ -1362,7 +1362,7 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
       scoreNum += (yi - mui)*(yi - mui) - yi;
       scoreDen += mui*mui;
     }
-    stop2("test for overdispersion");
+    stop2("      test for overdispersion");
 
     score = scoreNum/sqrt(2.0*scoreDen);
     
@@ -1385,12 +1385,14 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
       fam0    = NB;
       *family = NB;
     }
-    stop2("log likelihood");
+    stop2("      log likelihood");
 
     /**
      * calculate phi by MLE, without initial values of phi
      */
+    start2();
     cvPhi = phi_ml(y, fitted, N, prior, maxit, conv, phi, 0, *trace);
+    stop2("      phi_ml");
     
     if(cvPhi==0){
       if(*trace > 3) 
@@ -1425,10 +1427,12 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
      */
     fam0 = *family;
     
+    start2();
     cv = glmFit(&fam0, linkR, dims, nIter, y, prior, offset, 
                 X, &nTotal_binom, convR, rank, Xb, fitted, resid, 
                 weights, phi, trace, scale, df_resid, beta);
-    
+    stop2("      glmFit");
+
     if (cv==0) {
       if(*trace > 1){
         printf("\n  glmNB: fail to converge using initial values, fam0=%d\n", fam0);
@@ -1441,13 +1445,17 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
      */
     
     if(fam0 == POISSON){
+      start2();
       Lm         = loglik_Poisson(N, fitted, y, prior);
       *twologlik = 2.0*Lm;
       *phi       = 0.0;
+      stop2("      log likelihood Poisson");
       return(1);
     }
     
+    start2();
     cvPhi = phi_ml(y, fitted, N, prior, maxit, conv, phi, 0, *trace);
+    stop2("      phi_ml");
     if(cvPhi==0){
       if(*trace > 3) 
         printf("\n  glmNB: given inital mu, initial value for phi: %e\n", *phi);
@@ -1460,16 +1468,20 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
   }
   
   del  = 1.0;
+  start();
   Lm   = loglik_NB(N, *phi, fitted, y, prior);
+  stop2("      log likelihood NB");
   Lm0  = Lm + 1.0;
 
   while (iter < maxit && fabs(Lm0 - Lm) + fabs(del) > conv) {
     
     dims[3] = 1; /* use initial values */
     
+    start();
     cv = glmFit(&fam0, linkR, dims, nIter, y, prior, offset, 
                 X, &nTotal_binom, convR, rank, Xb, fitted, resid, 
                 weights, phi, trace, scale, df_resid, beta);
+    stop2("      glmFit");
     
     if (cv==0) { 
       if(*trace > 1) 
