@@ -15,6 +15,7 @@
 ROUND=2
 TRANS=1
 INIT=1
+FILE='s_reviseddata4hmm_300bpSlides_chr1.txt'
 
 cd test
 echo 'REMOVING OLD FILES...'
@@ -37,6 +38,6 @@ echo
 
 echo 'STARTING'
 cd test
-/usr/bin/time -o timestats.log ./GENSENG reviseddata4hmm_300bpSlides_chr1.txt $ROUND 0.01 0.01 1 1 1 $TRANS $INIT 1 1
+/usr/bin/time -o timestats.log ./GENSENG $FILE $ROUND 0.01 0.01 1 1 1 $TRANS $INIT 1 1
 cd ..
 echo

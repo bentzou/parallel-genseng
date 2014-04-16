@@ -4,6 +4,8 @@
 #include "HMModel.h"
 #include "stdlib.h"
 #include "iostream"
+#include <stdio.h>
+#include <sys/time.h>
 using namespace std;
 
 
@@ -65,7 +67,15 @@ int main(int argc, char* argv[])
 	cout << endl;
 
 	model.loadReadDepthData(argv[1]);
+
+
+    struct timeval tim1, tim2;
+    gettimeofday(&tim1, NULL);
 	model.inferAndEstimation(atoi(argv[2]));
+    gettimeofday(&tim2, NULL);
+    printf("\nINFER AND ESTIMATION TOTAL TIME: %.6lf sec\n\n",
+        (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
+
 
 	// for debug
 	//model.loadReadDepthData("sim2_0_5.txt");

@@ -29,7 +29,7 @@
 #include <iostream>
 #include <string>
 #include <sys/time.h>
-#define TIMING_FOR_TOOLS 1
+#define TIMING_FOR_TOOLS 0
 
 using namespace std;
 struct timeval tim3, tim4;
@@ -537,7 +537,6 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
            double *weights, double *phi, int* trace, 
            double *scale, int *df_resid, double* beta) 
 {
-  printf("  GLMFIT START\n");
   double epsilon = 1e-8;       /* Singularity threshold */
   int N, M, maxit, init, useOffset;
   int i = 0, j=0, Nu, dfr, irls;
@@ -980,7 +979,6 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
   
   //free(z);
   delete []z;
-  printf("  GLMFIT END\n");
   return(irls && convg);
 }
 
@@ -1294,7 +1292,6 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
           int *df_resid, int* family, double *twologlik, 
           double *scoreTestP, int *trace, double *beta)
 {
-  printf("GLMNB START\n");
   int N, M, maxit, init, useOffset;
   int i, succeed = 0, iter = 0;
   double conv = *convR, initPhi;
@@ -1521,7 +1518,6 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
   }
 
   *twologlik = 2.0*Lm;
-  printf("GLMNB END\n");
   return(succeed);
 }
 

@@ -246,9 +246,6 @@ void HMModel::startFromCoefficient()
 
 void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 {
-    cout << endl << "calculateMuAndPhiAllStatesCombined" << endl;
-
-
     // use glmNB to fill mu matrix and phi matrix 
     // for state 0, we only need to fit phi,
     // for other state, we need to get fitted mu and re-estimated phi
@@ -295,7 +292,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
             x[start] = inferData.data[i].hFuntionGC;
         }
     }
-    stop("x,y -- initialization");
+    stop("      x,y-init");
     //for(int i = 0; i < nLength; ++i)
     //{
     //  for(int j = 0; j < nSTATES; ++j)
@@ -337,7 +334,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
             offset[start] = log(j*1.0);
         }
     }
-    stop("offset -- initialization");
+    stop("      offset-init");
 
 
     if (USINGMAPPABILITY)
@@ -364,7 +361,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
                 offset[start] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
             }
         }
-        stop("offset -- mappability adjustment");
+        stop("      offset-adjust mapp");
     }
 
 
@@ -387,7 +384,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
             prior[start] = exp(pGamma[i][j]);
         }
     }
-    stop("prior -- load weights");
+    stop("      prior-load");
 
     // update weights
     // given mu, readcount, overdispersion, have likelihood
@@ -451,7 +448,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
                 prior[start] *= proportion;
             }
         }
-        stop("prior -- using mixture component");
+        stop("      prior-update");
     }
 
     int dim[5];
@@ -479,10 +476,10 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
     int conv = MathTools::glmNB(dim, &nIter,y,prior, &linkR, offset, x, &convR, &rank,
         Xb, fitted, resid, weights, &PHI, &scale, &de_resid, &family,
         &twologlik, &scoreTestP, &trace, &beta);
-    stop("fitting glm NB");
+    stop("      fitting glm NB");
 
     if (beta>=0){
-        cout << "beta for gc content is " << beta << endl;
+        cout << "\t\t\tbeta for gc content is " << beta << endl;
     //cout << "beta for log map is " << beta << " ";
     //double sumIntercept = 0;
     //for (int i = 0; i < index; ++i)
@@ -521,7 +518,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
                 mu[i][j] = fitted[start];
             }
         }
-        stop("mu -- save fitted");
+        stop("      mu -- save fitted");
     }
     else{
         cout << "beta becomes negative value, error will occur, just don't store the fitting value" << endl;
@@ -594,7 +591,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
     {
         phi[j] = phi[0];
     }
-    stop("phi");
+    stop("      phi");
 
 
     delete []y; y=NULL;
@@ -605,7 +602,6 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
 
 void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
 {
-    cout << endl << "calculateMuAndPhiWithAutoRegressionAllStatesCombined" << endl;
     // use glmNB to fill mu matrix and phi matrix 
     // for state 0, we only need to fit phi,
     // for other state, we need to get fitted mu and re-estimated phi
@@ -691,7 +687,7 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
             x[start] = inferData.data[i].hFuntionGC;
         }
     }
-    stop("x,y -- initialization (AR)");
+    stop("      x,y-init");
 
 
 
@@ -736,7 +732,7 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
             offset[start] = log(j*1.0);
         }
     }
-    stop("offset -- initialization (AR)");
+    stop("      offset-init");
 
 
 
@@ -763,7 +759,7 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
                 offset[start] += inferData.data[i].logMap/*+log(median[i]+0.01)*/;
             }
         }
-        stop("offset -- mappability adjustment (AR)");
+        stop("      offset-adjust mapp");
     }
 
 
@@ -787,7 +783,7 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
             prior[start] = exp(pGamma[i][j]);
         }
     }
-    stop("prior -- load weights (AR)");
+    stop("      prior-load");
 
     // update weights
     // given mu, readcount, overdispersion, have likelihood
@@ -849,7 +845,7 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
                 prior[start] *= proportion;
             }
         }
-        stop("prior -- using mixture component (AR)");      
+        stop("      prior-update");      
     }
 
     int dim[5];
@@ -876,10 +872,10 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
     int conv = MathTools::glmNB(dim, &nIter,y,prior, &linkR, offset, x, &convR, &rank,
         Xb, fitted, resid, weights, &PHI, &scale, &de_resid, &family,
         &twologlik, &scoreTestP, &trace, &beta);
-    stop("fitting glm NB");
+    stop("      fitting glm NB");
 
     if (beta >=0){
-        cout << "beta for gc content is " << beta << " " << endl;
+        cout << "\t\tbeta for gc content is " << beta << " " << endl;
         //cout << "beta for mappability is " << beta << " " << endl;
 
 
@@ -901,7 +897,7 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
         //  }
         // }
 
-        cout << "mu adjusted for state 0" << endl;
+        cout << "\t\tmu adjusted for state 0" << endl;
         start();
         int fitbadcondition = 10;
         #pragma omp parallel for
@@ -917,7 +913,7 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
                 mu[i][0] = inferData.data[i].count;
             }
         }
-        stop("mu -- adjustment (AR)");
+        stop("      mu-adjust");
     }
     else{
         cout << "beta becomes negative value, error will occur, just don't store the fitting value" << endl;
@@ -987,7 +983,7 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
     {
         phi[j] = phi[0];
     }
-    stop("phi");
+    stop("      phi");
 
     delete []y; y=NULL;
     delete []fitted; fitted=NULL;
@@ -1467,24 +1463,28 @@ void HMModel::inferAndEstimation(int rounds)
     writeKeyValue(0);
     for(int i = 0; i < rounds; ++i)
     {
-        printf("\n\nROUND %d\n\n", i+1);
-        struct timeval tim1, tim2;
-        double t1, t2;
+        printf("\n###################################");
+        printf("\nROUND %d\n", i+1);
+        printf("###################################");
+        printf("\n\n");
+        struct timeval tim1, tim2, tim3;
 
-        printf("ONE ROUND INFERENCE\n\n");
+        printf("INFERENCE\n");
         gettimeofday(&tim1, NULL);
         doOneRoundInference();
         gettimeofday(&tim2, NULL);
-        printf("doOneRoundInference total: %.6lf sec\n",
+        printf("\n  TOTAL: %.6lf sec\n",
             (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
         printf("\n");
 
-        printf("REESTIMATION\n\n");
-        gettimeofday(&tim1, NULL);
+        printf("REESTIMATION\n");
         reEstimation(REESTIMATETRANSITION, REESTIMATEINIT);
-        gettimeofday(&tim2, NULL);
-        printf("reEstimation total: %.6lf sec\n",
-            (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));  
+        gettimeofday(&tim3, NULL);
+        printf("\n  TOTAL: %.6lf sec\n",
+            (tim3.tv_sec+(tim3.tv_usec/1000000.0))-(tim2.tv_sec+(tim2.tv_usec/1000000.0)));  
+
+        printf("\nROUND TOTAL: %.6lf sec\n\n",
+            (tim3.tv_sec+(tim3.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));  
 
         writeKeyValue(i+1);
     }
@@ -1501,19 +1501,19 @@ void HMModel::doOneRoundInference()
 
     start();
     computAlpha();
-    stop("alpha");
+    stop("  alpha");
 
     start();
     computLikelihood();
-    stop("likelihood");
+    stop("  likelihood");
 
     start();
     computBeta();
-    stop("beta");
+    stop("  beta");
 
     start();
     computGamma();
-    stop("gamma");
+    stop("  gamma");
 }
 
 void HMModel::computAlpha(void)
@@ -1525,6 +1525,7 @@ void HMModel::computAlpha(void)
 
     for(int i = 1; i < nLength; ++i)
     {
+        #pragma omp parallel for
         for(int j = 0; j < nSTATES; ++j)
         {
             double *v = new double[nSTATES];
@@ -1993,6 +1994,9 @@ void HMModel::getSegInfo(int l, int r, double &avemprop, double &avegprop, doubl
 
 void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 {   
+    struct timeval tim1, tim2;
+    double t1, t2;
+
     start();
     if (initReestimation)
     {
@@ -2002,8 +2006,10 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
             pPi[i] = exp(pAlpha[0][i] + pBeta[0][i] - cLikelihood[nITRATION-1]);
         }
     }
-    stop("pi");
+    stop("  pi");
 
+    cout << "\n  transition probabilities" << endl;
+    gettimeofday(&tim1, NULL);
     if (transitionReestimate)
     {
         // update transition probability
@@ -2040,7 +2046,7 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
                 delete []v;
             }
         }
-        stop("cjk");
+        stop("    cjk");
 
         
         start();
@@ -2061,7 +2067,7 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
             }
         }
         delete []v;
-        stop("transition prob NO PARALLEL");
+        stop("    transition prob NO PARALLEL");
 
 
 
@@ -2076,7 +2082,7 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
 
         start();
         fillTranDiscrete();
-        stop("fill trans");
+        stop("    fill trans");
 
 
         for(int i = 0; i < nSTATES; ++i)
@@ -2094,31 +2100,35 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
         delete []c;
         c = NULL;
     }
+    gettimeofday(&tim2, NULL);
+    printf("\n    SUBTOTAL: %.6lf sec\n",
+        (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
 
 
     //calculateMuAndPhi();
     //calculateMuAndPhiWithAutoRegression(); // calculate with auto regression
 
-    struct timeval tim1, tim2;
-    double t1, t2;
+    cout << "\n  mu,phi" << endl;
 
+    cout << "    calculate mu,phi" << endl;
     gettimeofday(&tim1, NULL);
     calculateMuAndPhiAllStatesCombined();
     gettimeofday(&tim2, NULL);
-    printf("calc mu and phi total: %.6lf sec\n",
+    printf("\n      SUBTOTAL: %.6lf sec\n",
         (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
 
     if (USINGAUTOREGRESSION) {
+        cout << "\n    calculate mu,phi (AR)" << endl;
         gettimeofday(&tim1, NULL);
         calculateMuAndPhiWithAutoRegressionAllStatesCombined();
         gettimeofday(&tim2, NULL);
-        printf("calc mu and phi AR total: %.6lf sec\n",
+        printf("\n      SUBTOTAL: %.6lf sec\n",
             (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
     }
 
     start();
     fillEmissionTbl();
-    stop("fill emission table");
+    stop("\n  fill emission table");
     //for(int step = 0; step < nLength-1; ++step)
     //{
     //  double sum = 0;
