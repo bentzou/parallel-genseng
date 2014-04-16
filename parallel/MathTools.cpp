@@ -622,7 +622,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
     
     wsum += weights[i];
   }
-  stop2("    initialize weights and residual");
+  stop2("        initialize weights and residual");
   
   /* ----------------------------------------------------------------*
    * If summation of all weights is too small, stop 
@@ -829,6 +829,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
       start2();
       /* IRLS algorithm */
       while(iter<maxit && !convg) {
+        printf("        iteration %d\n", iter); 
         if (*trace > 5) {
           printf("    glmFit: iteration %d: ", iter);
         }
@@ -960,7 +961,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
         wss_last = wss;
         iter ++;
       }
-      stop2("    IRLS");
+      stop2("        IRLS");
     }
     
     /* assume there is an intercept */
@@ -1468,7 +1469,7 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
   }
   
   del  = 1.0;
-  start();
+  start2();
   Lm   = loglik_NB(N, *phi, fitted, y, prior);
   stop2("      log likelihood NB");
   Lm0  = Lm + 1.0;
@@ -1477,7 +1478,7 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
     
     dims[3] = 1; /* use initial values */
     
-    start();
+    start2();
     cv = glmFit(&fam0, linkR, dims, nIter, y, prior, offset, 
                 X, &nTotal_binom, convR, rank, Xb, fitted, resid, 
                 weights, phi, trace, scale, df_resid, beta);
