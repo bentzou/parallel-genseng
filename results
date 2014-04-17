@@ -30,5 +30,7 @@
       fill_emission_table       1.14       0.58      1.975
     reestimation_subtotal     359.73      78.33      4.592
               round_total     364.82      81.76      4.462
-                    total    3883.68    1048.11      3.705
-[Finished in 0.0s]
+               total time    3883.68    1048.11      3.705
+
+Times in seconds
+8 cores

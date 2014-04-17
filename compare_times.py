@@ -162,7 +162,7 @@ class Times:
 
       print variable + ':', avg
 
-    print 'total:',total_time
+    print 'total time:',total_time
 
 
 
@@ -202,7 +202,7 @@ mu_phi_ar_subtotal: 41.109652
 fill_emission_table: 0.579097125
 reestimation_subtotal: 78.327125625
 round_total: 81.761272125
-total: 1048.111273
+total time: 1048.111273
 '''
 
 no_omp = '''
@@ -235,10 +235,10 @@ mu_phi_ar_subtotal: 197.610105125
 fill_emission_table: 1.14406825
 reestimation_subtotal: 359.7290445
 round_total: 364.8194615
-total: 3883.677177'''
+total time: 3883.677177'''
 
 print '#'*58
-print '%25s %10s %10s %10s' % ('Code Section', 'no OMP', 'OMP', 'Speedup')
+print '%25s %10s %10s %10s' % ('Parallelized Section', 'no OMP', 'OMP', 'Speedup')
 print '#'*58
 for line1,line2 in izip(omp.split('\n'), no_omp.split('\n')):
   if not line1:
