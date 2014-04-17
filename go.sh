@@ -38,6 +38,6 @@ echo
 
 echo 'STARTING'
 cd test
-/usr/bin/time -o output-omp.stats ./GENSENG $FILE $ROUND 0.01 0.01 1 1 1 $TRANS $INIT 1 1
+/usr/bin/time -o output-test.stats ./GENSENG $FILE $ROUND 0.01 0.01 1 1 1 $TRANS $INIT 1 1
 cd ..
 echo

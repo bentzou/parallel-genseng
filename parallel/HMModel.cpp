@@ -1488,7 +1488,9 @@ void HMModel::inferAndEstimation(int rounds)
         printf("\nROUND TOTAL: %.6lf sec\n\n",
             (tim3.tv_sec+(tim3.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));  
 
+        start();
         writeKeyValue(i+1);
+        stop("writing file");
     }
 
     cout << endl << "VITERBI......" << endl;

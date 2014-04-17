@@ -1491,11 +1491,21 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
     
     dims[3] = 1; /* use initial values */
     
-    start2();
+
+    struct timeval timer1, timer2;
+    gettimeofday(&timer1, NULL);
     cv = glmFit(&fam0, linkR, dims, nIter, y, prior, offset, 
                 X, &nTotal_binom, convR, rank, Xb, fitted, resid, 
                 weights, phi, trace, scale, df_resid, beta);
-    stop2("          FIT SUBTOTAL");
+    gettimeofday(&timer2, NULL);
+    cout << message;
+    printf("          FIT SUBTOTAL: %.6lf sec\n",
+        (timer2.tv_sec+(timer2.tv_usec/1000000.0))-(timer1.tv_sec+(timer1.tv_usec/1000000.0)));
+
+
+
+
+
     cout << endl;
     
     if (cv==0) { 
