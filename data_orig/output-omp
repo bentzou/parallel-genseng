@@ -1,0 +1,3349 @@
+REMOVING OLD FILES...
+
+CREATING NEW FILES...
+g++ -fopenmp -O3 -o GENSENG CNVinference.cpp HMModel.h HMModel.cpp MathTools.h MathTools.cpp
+
+STARTING
+inference rounds: 10 mixture componenet for other states: 0.01mixture componenet for state 2: 0.01  |using mapability: true |using autoregression: true |using mixture component: true |re-estimate transition probability: true |re-estimate initial probability:  true |HUMAN(true) or MOUSE(false): true |Do POSTPROCESSING:true
+Finish Reading Files
+0.995 0.95
+start with coefficient
+7 2
+0.5 0.5 
+4.78332
+
+###################################
+ROUND 1
+###################################
+
+INFERENCE
+  alpha: 1.409982 sec
+  likelihood: 0.000001 sec
+  beta: 1.991809 sec
+  gamma: 0.010420 sec
+
+  INFERENCE SUBTOTAL: 3.412239 sec
+
+REESTIMATION
+  pi: 0.000002 sec
+
+  transition probabilities
+    cjk: 0.455195 sec
+    transition prob NO PARALLEL: 0.000031 sec
+    fill trans: 0.037122 sec
+
+    TRANS PROB SUBTOTAL: 0.492370 sec
+
+  mu,phi
+    calculate mu,phi
+      x,y-init: 0.008411 sec
+      offset-init: 0.025662 sec
+      offset-adjust mapp: 0.007004 sec
+      prior-load: 0.018925 sec
+      prior-update: 0.539657 sec
+
+      GLM NB
+        initial fit
+          initialize weights and residual: 0.012203 sec
+
+          IRLS
+            iteration 0: 0.121052 sec
+            iteration 1: 0.149152 sec
+            iteration 2: 0.106649 sec
+            iteration 3: 0.105523 sec
+            iteration 4: 0.111346 sec
+
+            IRLS SUBTOTAL: 0.593770 sec
+
+        test for overdispersion: 0.004919 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 10.452874 sec
+        log likelihood NB: 0.134649 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.014907 sec
+
+          IRLS
+            iteration 0: 0.107695 sec
+            iteration 1: 0.107618 sec
+            iteration 2: 0.107079 sec
+            iteration 3: 0.147934 sec
+            iteration 4: 0.121888 sec
+            iteration 5: 0.122348 sec
+            iteration 6: 0.126113 sec
+            iteration 7: 0.132778 sec
+
+            IRLS SUBTOTAL: 0.973531 sec
+
+          FIT SUBTOTAL: 0.134846 sec
+
+        ITER 1
+          initialize weights and residual: 0.021746 sec
+
+          IRLS
+            iteration 0: 0.120036 sec
+            iteration 1: 0.105960 sec
+            iteration 2: 0.106445 sec
+            iteration 3: 0.128391 sec
+
+            IRLS SUBTOTAL: 0.460872 sec
+
+          FIT SUBTOTAL: 0.130469 sec
+
+        ITER 2
+          initialize weights and residual: 0.015029 sec
+
+          IRLS
+            iteration 0: 0.107550 sec
+            iteration 1: 0.107047 sec
+
+            IRLS SUBTOTAL: 0.214616 sec
+
+          FIT SUBTOTAL: 0.109124 sec
+
+        ITER 3
+          initialize weights and residual: 0.015219 sec
+
+          IRLS
+            iteration 0: 0.108661 sec
+            iteration 1: 0.107307 sec
+
+            IRLS SUBTOTAL: 0.215987 sec
+
+          FIT SUBTOTAL: 0.109398 sec
+
+        ITER 4
+          initialize weights and residual: 0.014960 sec
+
+          IRLS
+            iteration 0: 0.109302 sec
+            iteration 1: 0.108360 sec
+
+            IRLS SUBTOTAL: 0.217682 sec
+
+          FIT SUBTOTAL: 0.110456 sec
+
+        ITER 5
+          initialize weights and residual: 0.014984 sec
+
+          IRLS
+            iteration 0: 0.126470 sec
+            iteration 1: 0.120414 sec
+
+            IRLS SUBTOTAL: 0.246905 sec
+
+          FIT SUBTOTAL: 0.122532 sec
+
+        ITER 6
+          initialize weights and residual: 0.015029 sec
+
+          IRLS
+            iteration 0: 0.122574 sec
+            iteration 1: 0.127095 sec
+
+            IRLS SUBTOTAL: 0.249688 sec
+
+          FIT SUBTOTAL: 0.129239 sec
+
+        ITER 7
+          initialize weights and residual: 0.015578 sec
+
+          IRLS
+            iteration 0: 0.138562 sec
+            iteration 1: 0.106961 sec
+
+            IRLS SUBTOTAL: 0.245543 sec
+
+          FIT SUBTOTAL: 0.109132 sec
+
+        ITER 8
+          initialize weights and residual: 0.016535 sec
+
+          IRLS
+            iteration 0: 0.114660 sec
+            iteration 1: 0.111296 sec
+
+            IRLS SUBTOTAL: 0.225976 sec
+
+          FIT SUBTOTAL: 0.113631 sec
+
+        ITER 9
+          initialize weights and residual: 0.015125 sec
+
+          IRLS
+            iteration 0: 0.109379 sec
+            iteration 1: 0.107069 sec
+
+            IRLS SUBTOTAL: 0.216468 sec
+
+          FIT SUBTOTAL: 0.109243 sec
+
+        ITER 10
+          initialize weights and residual: 0.015693 sec
+
+          IRLS
+            iteration 0: 0.107831 sec
+            iteration 1: 0.106180 sec
+
+            IRLS SUBTOTAL: 0.214029 sec
+
+          FIT SUBTOTAL: 0.108323 sec
+
+        GLM NB SUBTOTAL: 22.966162 sec
+
+			beta for gc content is 0.695429
+      mu-save fitted: 0.006940 sec
+      phi_ml: 10.576307 sec
+
+      MU,PHI SUBTOTAL: 34.165156 sec
+
+    calculate mu,phi (AR)
+      x,y-init: 0.062892 sec
+      offset-init: 0.025700 sec
+      offset-adjust mapp: 0.007044 sec
+      prior-load: 0.018821 sec
+      prior-update: 0.567144 sec
+
+      fitting glm NB
+        initial fit
+          initialize weights and residual: 0.012110 sec
+
+          IRLS
+            iteration 0: 0.182962 sec
+            iteration 1: 0.156477 sec
+            iteration 2: 0.152235 sec
+            iteration 3: 0.151740 sec
+            iteration 4: 0.166237 sec
+
+            IRLS SUBTOTAL: 0.809701 sec
+
+        test for overdispersion: 0.004169 sec
+        log likelihood: 0.000000 sec
+        phi_ml: 10.914647 sec
+        log likelihood NB: 0.148646 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015197 sec
+
+          IRLS
+            iteration 0: 0.154552 sec
+            iteration 1: 0.154753 sec
+            iteration 2: 0.179142 sec
+            iteration 3: 0.171320 sec
+            iteration 4: 0.152623 sec
+            iteration 5: 0.163321 sec
+            iteration 6: 0.158286 sec
+
+            IRLS SUBTOTAL: 1.134063 sec
+
+          FIT SUBTOTAL: 0.160421 sec
+
+        ITER 1
+          initialize weights and residual: 0.015189 sec
+
+          IRLS
+            iteration 0: 0.155154 sec
+            iteration 1: 0.158756 sec
+            iteration 2: 0.157806 sec
+            iteration 3: 0.152709 sec
+            iteration 4: 0.152820 sec
+
+            IRLS SUBTOTAL: 0.777293 sec
+
+          FIT SUBTOTAL: 0.154956 sec
+
+        ITER 2
+          initialize weights and residual: 0.015073 sec
+
+          IRLS
+            iteration 0: 0.160189 sec
+            iteration 1: 0.189495 sec
+
+            IRLS SUBTOTAL: 0.349703 sec
+
+          FIT SUBTOTAL: 0.191799 sec
+
+        ITER 3
+          initialize weights and residual: 0.015062 sec
+
+          IRLS
+            iteration 0: 0.175754 sec
+            iteration 1: 0.153706 sec
+
+            IRLS SUBTOTAL: 0.329478 sec
+
+          FIT SUBTOTAL: 0.155837 sec
+
+        ITER 4
+          initialize weights and residual: 0.014881 sec
+
+          IRLS
+            iteration 0: 0.154246 sec
+            iteration 1: 0.152937 sec
+
+            IRLS SUBTOTAL: 0.307200 sec
+
+          FIT SUBTOTAL: 0.155093 sec
+
+        ITER 5
+          initialize weights and residual: 0.015063 sec
+
+          IRLS
+            iteration 0: 0.154093 sec
+            iteration 1: 0.153586 sec
+
+            IRLS SUBTOTAL: 0.307696 sec
+
+          FIT SUBTOTAL: 0.155695 sec
+
+        ITER 6
+          initialize weights and residual: 0.017262 sec
+
+          IRLS
+            iteration 0: 0.168307 sec
+            iteration 1: 0.153233 sec
+
+            IRLS SUBTOTAL: 0.321559 sec
+
+          FIT SUBTOTAL: 0.155362 sec
+
+        ITER 7
+          initialize weights and residual: 0.015010 sec
+
+          IRLS
+            iteration 0: 0.169550 sec
+            iteration 1: 0.152871 sec
+
+            IRLS SUBTOTAL: 0.322439 sec
+
+          FIT SUBTOTAL: 0.154982 sec
+
+        ITER 8
+          initialize weights and residual: 0.018177 sec
+
+          IRLS
+            iteration 0: 0.171501 sec
+            iteration 1: 0.156612 sec
+
+            IRLS SUBTOTAL: 0.328132 sec
+
+          FIT SUBTOTAL: 0.158753 sec
+
+        ITER 9
+          initialize weights and residual: 0.017960 sec
+
+          IRLS
+            iteration 0: 0.184220 sec
+            iteration 1: 0.172157 sec
+
+            IRLS SUBTOTAL: 0.356396 sec
+
+          FIT SUBTOTAL: 0.174284 sec
+
+        ITER 10
+          initialize weights and residual: 0.015020 sec
+
+          IRLS
+            iteration 0: 0.193604 sec
+            iteration 1: 0.166340 sec
+
+            IRLS SUBTOTAL: 0.359963 sec
+
+          FIT SUBTOTAL: 0.168541 sec
+
+      fitting glm NB SUBTOTAL: 25.445286 sec
+		beta for gc content is 0.642608 
+		mu adjusted for state 0
+      mu-adjust: 0.009728 sec
+      phi: 11.013596 sec
+
+      MU,PHI (AR) SUBTOTAL: 37.171667 sec
+
+  fill emission table: 0.600645 sec
+
+  REESTIMATION SUBTOTAL: 72.429954 sec
+
+ROUND TOTAL: 75.842193 sec
+
+
+###################################
+ROUND 2
+###################################
+
+INFERENCE
+  alpha: 1.437998 sec
+  likelihood: 0.000002 sec
+  beta: 2.010044 sec
+  gamma: 0.010448 sec
+
+  INFERENCE SUBTOTAL: 3.458518 sec
+
+REESTIMATION
+  pi: 0.000002 sec
+
+  transition probabilities
+    cjk: 0.422385 sec
+    transition prob NO PARALLEL: 0.000023 sec
+    fill trans: 0.037607 sec
+
+    TRANS PROB SUBTOTAL: 0.460039 sec
+
+  mu,phi
+    calculate mu,phi
+      x,y-init: 0.009217 sec
+      offset-init: 0.025799 sec
+      offset-adjust mapp: 0.007029 sec
+      prior-load: 0.024783 sec
+      prior-update: 0.569178 sec
+
+      GLM NB
+        initial fit
+          initialize weights and residual: 0.012104 sec
+
+          IRLS
+            iteration 0: 0.102986 sec
+            iteration 1: 0.111243 sec
+            iteration 2: 0.109299 sec
+            iteration 3: 0.121996 sec
+            iteration 4: 0.121797 sec
+
+            IRLS SUBTOTAL: 0.567370 sec
+
+        test for overdispersion: 0.004173 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 12.715390 sec
+        log likelihood NB: 0.135969 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015246 sec
+
+          IRLS
+            iteration 0: 0.107857 sec
+            iteration 1: 0.106249 sec
+            iteration 2: 0.120292 sec
+            iteration 3: 0.116790 sec
+            iteration 4: 0.127720 sec
+            iteration 5: 0.106170 sec
+            iteration 6: 0.106510 sec
+
+            IRLS SUBTOTAL: 0.791666 sec
+
+          FIT SUBTOTAL: 0.108675 sec
+
+        ITER 1
+          initialize weights and residual: 0.014981 sec
+
+          IRLS
+            iteration 0: 0.122438 sec
+            iteration 1: 0.106090 sec
+            iteration 2: 0.144625 sec
+            iteration 3: 0.106109 sec
+
+            IRLS SUBTOTAL: 0.479300 sec
+
+          FIT SUBTOTAL: 0.108174 sec
+
+        ITER 2
+          initialize weights and residual: 0.015072 sec
+
+          IRLS
+            iteration 0: 0.116974 sec
+            iteration 1: 0.133005 sec
+
+            IRLS SUBTOTAL: 0.249998 sec
+
+          FIT SUBTOTAL: 0.134621 sec
+
+        ITER 3
+          initialize weights and residual: 0.015203 sec
+
+          IRLS
+            iteration 0: 0.107424 sec
+            iteration 1: 0.110689 sec
+
+            IRLS SUBTOTAL: 0.218132 sec
+
+          FIT SUBTOTAL: 0.112906 sec
+
+        ITER 4
+          initialize weights and residual: 0.014968 sec
+
+          IRLS
+            iteration 0: 0.107344 sec
+            iteration 1: 0.106122 sec
+
+            IRLS SUBTOTAL: 0.213486 sec
+
+          FIT SUBTOTAL: 0.108203 sec
+
+        ITER 5
+          initialize weights and residual: 0.017320 sec
+
+          IRLS
+            iteration 0: 0.122909 sec
+            iteration 1: 0.111015 sec
+
+            IRLS SUBTOTAL: 0.233943 sec
+
+          FIT SUBTOTAL: 0.113197 sec
+
+        ITER 6
+          initialize weights and residual: 0.014968 sec
+
+          IRLS
+            iteration 0: 0.116078 sec
+            iteration 1: 0.124803 sec
+
+            IRLS SUBTOTAL: 0.240900 sec
+
+          FIT SUBTOTAL: 0.126883 sec
+
+        ITER 7
+          initialize weights and residual: 0.015068 sec
+
+          IRLS
+            iteration 0: 0.107531 sec
+            iteration 1: 0.106012 sec
+
+            IRLS SUBTOTAL: 0.213561 sec
+
+          FIT SUBTOTAL: 0.108084 sec
+
+        ITER 8
+          initialize weights and residual: 0.014962 sec
+
+          IRLS
+            iteration 0: 0.107844 sec
+            iteration 1: 0.114850 sec
+
+            IRLS SUBTOTAL: 0.222713 sec
+
+          FIT SUBTOTAL: 0.116945 sec
+
+        ITER 9
+          initialize weights and residual: 0.014955 sec
+
+          IRLS
+            iteration 0: 0.107624 sec
+            iteration 1: 0.106356 sec
+
+            IRLS SUBTOTAL: 0.213999 sec
+
+          FIT SUBTOTAL: 0.108468 sec
+
+        ITER 10
+          initialize weights and residual: 0.015178 sec
+
+          IRLS
+            iteration 0: 0.132586 sec
+            iteration 1: 0.105853 sec
+
+            IRLS SUBTOTAL: 0.238458 sec
+
+          FIT SUBTOTAL: 0.108016 sec
+
+        ITER 11
+          initialize weights and residual: 0.014920 sec
+
+          IRLS
+            iteration 0: 0.151750 sec
+            iteration 1: 0.111211 sec
+
+            IRLS SUBTOTAL: 0.262980 sec
+
+          FIT SUBTOTAL: 0.113339 sec
+
+        ITER 12
+          initialize weights and residual: 0.014942 sec
+
+          IRLS
+            iteration 0: 0.107769 sec
+            iteration 1: 0.106360 sec
+
+            IRLS SUBTOTAL: 0.214147 sec
+
+          FIT SUBTOTAL: 0.108524 sec
+
+        ITER 13
+          initialize weights and residual: 0.016524 sec
+
+          IRLS
+            iteration 0: 0.107439 sec
+            iteration 1: 0.106967 sec
+
+            IRLS SUBTOTAL: 0.214426 sec
+
+          FIT SUBTOTAL: 0.109080 sec
+
+        ITER 14
+          initialize weights and residual: 0.015070 sec
+
+          IRLS
+            iteration 0: 0.107510 sec
+            iteration 1: 0.119332 sec
+
+            IRLS SUBTOTAL: 0.226862 sec
+
+          FIT SUBTOTAL: 0.121467 sec
+
+        ITER 15
+          initialize weights and residual: 0.016981 sec
+
+          IRLS
+            iteration 0: 0.108343 sec
+            iteration 1: 0.107097 sec
+
+            IRLS SUBTOTAL: 0.215459 sec
+
+          FIT SUBTOTAL: 0.109243 sec
+
+        ITER 16
+          initialize weights and residual: 0.016092 sec
+
+          IRLS
+            iteration 0: 0.137286 sec
+            iteration 1: 0.113952 sec
+
+            IRLS SUBTOTAL: 0.251258 sec
+
+          FIT SUBTOTAL: 0.116113 sec
+
+        ITER 17
+          initialize weights and residual: 0.015379 sec
+
+          IRLS
+            iteration 0: 0.107569 sec
+            iteration 1: 0.115881 sec
+
+            IRLS SUBTOTAL: 0.223470 sec
+
+          FIT SUBTOTAL: 0.118005 sec
+
+        ITER 18
+          initialize weights and residual: 0.015230 sec
+
+          IRLS
+            iteration 0: 0.118152 sec
+            iteration 1: 0.116030 sec
+
+            IRLS SUBTOTAL: 0.234202 sec
+
+          FIT SUBTOTAL: 0.118172 sec
+
+        GLM NB SUBTOTAL: 31.694559 sec
+
+			beta for gc content is 0.658026
+      mu-save fitted: 0.007179 sec
+      phi_ml: 12.754807 sec
+
+      MU,PHI SUBTOTAL: 45.108611 sec
+
+    calculate mu,phi (AR)
+      x,y-init: 0.061198 sec
+      offset-init: 0.025715 sec
+      offset-adjust mapp: 0.007004 sec
+      prior-load: 0.019014 sec
+      prior-update: 0.600430 sec
+
+      fitting glm NB
+        initial fit
+          initialize weights and residual: 0.012180 sec
+
+          IRLS
+            iteration 0: 0.146676 sec
+            iteration 1: 0.152025 sec
+            iteration 2: 0.156678 sec
+            iteration 3: 0.171548 sec
+            iteration 4: 0.175890 sec
+
+            IRLS SUBTOTAL: 0.802864 sec
+
+        test for overdispersion: 0.004162 sec
+        log likelihood: 0.000000 sec
+        phi_ml: 12.820702 sec
+        log likelihood NB: 0.136521 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015054 sec
+
+          IRLS
+            iteration 0: 0.154316 sec
+            iteration 1: 0.190613 sec
+            iteration 2: 0.164376 sec
+            iteration 3: 0.153461 sec
+            iteration 4: 0.168759 sec
+            iteration 5: 0.152695 sec
+            iteration 6: 0.153625 sec
+            iteration 7: 0.153654 sec
+
+            IRLS SUBTOTAL: 1.291571 sec
+
+          FIT SUBTOTAL: 0.155727 sec
+
+        ITER 1
+          initialize weights and residual: 0.021215 sec
+
+          IRLS
+            iteration 0: 0.161356 sec
+            iteration 1: 0.153141 sec
+            iteration 2: 0.153375 sec
+            iteration 3: 0.179314 sec
+            iteration 4: 0.170973 sec
+            iteration 5: 0.153326 sec
+
+            IRLS SUBTOTAL: 0.971542 sec
+
+          FIT SUBTOTAL: 0.155420 sec
+
+        ITER 2
+          initialize weights and residual: 0.015071 sec
+
+          IRLS
+            iteration 0: 0.157096 sec
+            iteration 1: 0.193211 sec
+
+            IRLS SUBTOTAL: 0.350326 sec
+
+          FIT SUBTOTAL: 0.195343 sec
+
+      fitting glm NB SUBTOTAL: 20.335217 sec
+		beta for gc content is 0.615181 
+		mu adjusted for state 0
+      mu-adjust: 0.009761 sec
+      phi: 12.888923 sec
+
+      MU,PHI (AR) SUBTOTAL: 33.964588 sec
+
+  fill emission table: 0.595397 sec
+
+  REESTIMATION SUBTOTAL: 80.128723 sec
+
+ROUND TOTAL: 83.587241 sec
+
+
+###################################
+ROUND 3
+###################################
+
+INFERENCE
+  alpha: 1.713382 sec
+  likelihood: 0.000001 sec
+  beta: 1.777063 sec
+  gamma: 0.010438 sec
+
+  INFERENCE SUBTOTAL: 3.500912 sec
+
+REESTIMATION
+  pi: 0.000002 sec
+
+  transition probabilities
+    cjk: 0.436758 sec
+    transition prob NO PARALLEL: 0.000032 sec
+    fill trans: 0.038492 sec
+
+    TRANS PROB SUBTOTAL: 0.475305 sec
+
+  mu,phi
+    calculate mu,phi
+      x,y-init: 0.008418 sec
+      offset-init: 0.025585 sec
+      offset-adjust mapp: 0.007012 sec
+      prior-load: 0.020190 sec
+      prior-update: 0.562519 sec
+
+      GLM NB
+        initial fit
+          initialize weights and residual: 0.012235 sec
+
+          IRLS
+            iteration 0: 0.125877 sec
+            iteration 1: 0.113220 sec
+            iteration 2: 0.104734 sec
+            iteration 3: 0.104748 sec
+            iteration 4: 0.118428 sec
+
+            IRLS SUBTOTAL: 0.567057 sec
+
+        test for overdispersion: 0.004279 sec
+        log likelihood: 0.000000 sec
+        phi_ml: 12.648017 sec
+        log likelihood NB: 0.134983 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015001 sec
+
+          IRLS
+            iteration 0: 0.107312 sec
+            iteration 1: 0.121134 sec
+            iteration 2: 0.105942 sec
+            iteration 3: 0.113745 sec
+            iteration 4: 0.126063 sec
+            iteration 5: 0.107879 sec
+            iteration 6: 0.106040 sec
+
+            IRLS SUBTOTAL: 0.788183 sec
+
+          FIT SUBTOTAL: 0.108132 sec
+
+        ITER 1
+          initialize weights and residual: 0.015123 sec
+
+          IRLS
+            iteration 0: 0.132075 sec
+            iteration 1: 0.130098 sec
+            iteration 2: 0.132891 sec
+
+            IRLS SUBTOTAL: 0.395094 sec
+
+          FIT SUBTOTAL: 0.135089 sec
+
+        ITER 2
+          initialize weights and residual: 0.016549 sec
+
+          IRLS
+            iteration 0: 0.107338 sec
+            iteration 1: 0.111524 sec
+
+            IRLS SUBTOTAL: 0.218882 sec
+
+          FIT SUBTOTAL: 0.113680 sec
+
+        ITER 3
+          initialize weights and residual: 0.014991 sec
+
+          IRLS
+            iteration 0: 0.114329 sec
+            iteration 1: 0.107023 sec
+
+            IRLS SUBTOTAL: 0.221372 sec
+
+          FIT SUBTOTAL: 0.109114 sec
+
+        ITER 4
+          initialize weights and residual: 0.015054 sec
+
+          IRLS
+            iteration 0: 0.107609 sec
+            iteration 1: 0.107080 sec
+
+            IRLS SUBTOTAL: 0.214708 sec
+
+          FIT SUBTOTAL: 0.109214 sec
+
+        ITER 5
+          initialize weights and residual: 0.014969 sec
+
+          IRLS
+            iteration 0: 0.132362 sec
+            iteration 1: 0.112350 sec
+
+            IRLS SUBTOTAL: 0.244730 sec
+
+          FIT SUBTOTAL: 0.114484 sec
+
+        ITER 6
+          initialize weights and residual: 0.014945 sec
+
+          IRLS
+            iteration 0: 0.109799 sec
+            iteration 1: 0.106056 sec
+
+            IRLS SUBTOTAL: 0.215874 sec
+
+          FIT SUBTOTAL: 0.108210 sec
+
+        ITER 7
+          initialize weights and residual: 0.020142 sec
+
+          IRLS
+            iteration 0: 0.127481 sec
+            iteration 1: 0.125549 sec
+
+            IRLS SUBTOTAL: 0.253051 sec
+
+          FIT SUBTOTAL: 0.127661 sec
+
+        ITER 8
+          initialize weights and residual: 0.014927 sec
+
+          IRLS
+            iteration 0: 0.141706 sec
+            iteration 1: 0.105948 sec
+
+            IRLS SUBTOTAL: 0.247674 sec
+
+          FIT SUBTOTAL: 0.108156 sec
+
+        ITER 9
+          initialize weights and residual: 0.015666 sec
+
+          IRLS
+            iteration 0: 0.110154 sec
+            iteration 1: 0.107300 sec
+
+            IRLS SUBTOTAL: 0.217473 sec
+
+          FIT SUBTOTAL: 0.109388 sec
+
+        ITER 10
+          initialize weights and residual: 0.014912 sec
+
+          IRLS
+            iteration 0: 0.147698 sec
+            iteration 1: 0.106366 sec
+
+            IRLS SUBTOTAL: 0.254083 sec
+
+          FIT SUBTOTAL: 0.108496 sec
+
+        ITER 11
+          initialize weights and residual: 0.016380 sec
+
+          IRLS
+            iteration 0: 0.109465 sec
+            iteration 1: 0.106816 sec
+
+            IRLS SUBTOTAL: 0.216456 sec
+
+          FIT SUBTOTAL: 0.109053 sec
+
+        ITER 12
+          initialize weights and residual: 0.014959 sec
+
+          IRLS
+            iteration 0: 0.108648 sec
+            iteration 1: 0.106043 sec
+
+            IRLS SUBTOTAL: 0.214711 sec
+
+          FIT SUBTOTAL: 0.108157 sec
+
+        ITER 13
+          initialize weights and residual: 0.019608 sec
+
+          IRLS
+            iteration 0: 0.113098 sec
+            iteration 1: 0.106983 sec
+
+            IRLS SUBTOTAL: 0.220101 sec
+
+          FIT SUBTOTAL: 0.109145 sec
+
+        ITER 14
+          initialize weights and residual: 0.015224 sec
+
+          IRLS
+            iteration 0: 0.107859 sec
+            iteration 1: 0.113181 sec
+
+            IRLS SUBTOTAL: 0.221061 sec
+
+          FIT SUBTOTAL: 0.114862 sec
+
+        ITER 15
+          initialize weights and residual: 0.015043 sec
+
+          IRLS
+            iteration 0: 0.136867 sec
+            iteration 1: 0.123248 sec
+
+            IRLS SUBTOTAL: 0.260134 sec
+
+          FIT SUBTOTAL: 0.125353 sec
+
+        GLM NB SUBTOTAL: 29.023092 sec
+
+			beta for gc content is 0.615372
+      mu-save fitted: 0.006929 sec
+      phi_ml: 12.691093 sec
+
+      MU,PHI SUBTOTAL: 42.365325 sec
+
+    calculate mu,phi (AR)
+      x,y-init: 0.072124 sec
+      offset-init: 0.025763 sec
+      offset-adjust mapp: 0.007024 sec
+      prior-load: 0.018832 sec
+      prior-update: 0.563385 sec
+
+      fitting glm NB
+        initial fit
+          initialize weights and residual: 0.012009 sec
+
+          IRLS
+            iteration 0: 0.158421 sec
+            iteration 1: 0.179799 sec
+            iteration 2: 0.163434 sec
+            iteration 3: 0.152206 sec
+            iteration 4: 0.152968 sec
+
+            IRLS SUBTOTAL: 0.806875 sec
+
+        test for overdispersion: 0.004188 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 13.529235 sec
+        log likelihood NB: 0.136417 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.014985 sec
+
+          IRLS
+            iteration 0: 0.156030 sec
+            iteration 1: 0.183506 sec
+            iteration 2: 0.154127 sec
+            iteration 3: 0.165941 sec
+            iteration 4: 0.153288 sec
+            iteration 5: 0.152667 sec
+            iteration 6: 0.154621 sec
+            iteration 7: 0.188920 sec
+
+            IRLS SUBTOTAL: 1.309177 sec
+
+          FIT SUBTOTAL: 0.191060 sec
+
+        ITER 1
+          initialize weights and residual: 0.015355 sec
+
+          IRLS
+            iteration 0: 0.154208 sec
+            iteration 1: 0.152910 sec
+            iteration 2: 0.153237 sec
+            iteration 3: 0.193953 sec
+            iteration 4: 0.153157 sec
+
+            IRLS SUBTOTAL: 0.807512 sec
+
+          FIT SUBTOTAL: 0.155279 sec
+
+        ITER 2
+          initialize weights and residual: 0.014982 sec
+
+          IRLS
+            iteration 0: 0.154965 sec
+            iteration 1: 0.168107 sec
+
+            IRLS SUBTOTAL: 0.323091 sec
+
+          FIT SUBTOTAL: 0.170447 sec
+
+        ITER 3
+          initialize weights and residual: 0.015931 sec
+
+          IRLS
+            iteration 0: 0.185122 sec
+            iteration 1: 0.170657 sec
+
+            IRLS SUBTOTAL: 0.355798 sec
+
+          FIT SUBTOTAL: 0.172812 sec
+
+        ITER 4
+          initialize weights and residual: 0.015191 sec
+
+          IRLS
+            iteration 0: 0.154414 sec
+            iteration 1: 0.153467 sec
+
+            IRLS SUBTOTAL: 0.307899 sec
+
+          FIT SUBTOTAL: 0.155613 sec
+
+      fitting glm NB SUBTOTAL: 23.119784 sec
+		beta for gc content is 0.577163 
+		mu adjusted for state 0
+      mu-adjust: 0.009790 sec
+      phi: 13.421483 sec
+
+      MU,PHI (AR) SUBTOTAL: 37.257117 sec
+
+  fill emission table: 0.576184 sec
+
+  REESTIMATION SUBTOTAL: 80.674021 sec
+
+ROUND TOTAL: 84.174933 sec
+
+
+###################################
+ROUND 4
+###################################
+
+INFERENCE
+  alpha: 1.450144 sec
+  likelihood: 0.000001 sec
+  beta: 1.863933 sec
+  gamma: 0.010431 sec
+
+  INFERENCE SUBTOTAL: 3.324537 sec
+
+REESTIMATION
+  pi: 0.000002 sec
+
+  transition probabilities
+    cjk: 0.420252 sec
+    transition prob NO PARALLEL: 0.000033 sec
+    fill trans: 0.039860 sec
+
+    TRANS PROB SUBTOTAL: 0.460169 sec
+
+  mu,phi
+    calculate mu,phi
+      x,y-init: 0.013303 sec
+      offset-init: 0.027200 sec
+      offset-adjust mapp: 0.006970 sec
+      prior-load: 0.018718 sec
+      prior-update: 0.632354 sec
+
+      GLM NB
+        initial fit
+          initialize weights and residual: 0.017841 sec
+
+          IRLS
+            iteration 0: 0.115213 sec
+            iteration 1: 0.124820 sec
+            iteration 2: 0.110694 sec
+            iteration 3: 0.137269 sec
+            iteration 4: 0.105297 sec
+
+            IRLS SUBTOTAL: 0.593345 sec
+
+        test for overdispersion: 0.004176 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 12.648645 sec
+        log likelihood NB: 0.136945 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015090 sec
+
+          IRLS
+            iteration 0: 0.107338 sec
+            iteration 1: 0.105929 sec
+            iteration 2: 0.110094 sec
+            iteration 3: 0.142814 sec
+            iteration 4: 0.106318 sec
+            iteration 5: 0.105836 sec
+            iteration 6: 0.119847 sec
+
+            IRLS SUBTOTAL: 0.798244 sec
+
+          FIT SUBTOTAL: 0.121963 sec
+
+        ITER 1
+          initialize weights and residual: 0.014989 sec
+
+          IRLS
+            iteration 0: 0.107702 sec
+            iteration 1: 0.122635 sec
+            iteration 2: 0.120158 sec
+
+            IRLS SUBTOTAL: 0.350523 sec
+
+          FIT SUBTOTAL: 0.122244 sec
+
+        ITER 2
+          initialize weights and residual: 0.021940 sec
+
+          IRLS
+            iteration 0: 0.115086 sec
+            iteration 1: 0.119987 sec
+
+            IRLS SUBTOTAL: 0.235094 sec
+
+          FIT SUBTOTAL: 0.122115 sec
+
+        GLM NB SUBTOTAL: 18.232364 sec
+
+			beta for gc content is 0.569379
+      mu-save fitted: 0.007010 sec
+      phi_ml: 12.703961 sec
+
+      MU,PHI SUBTOTAL: 31.657266 sec
+
+    calculate mu,phi (AR)
+      x,y-init: 0.061019 sec
+      offset-init: 0.025504 sec
+      offset-adjust mapp: 0.007019 sec
+      prior-load: 0.018912 sec
+      prior-update: 0.591313 sec
+
+      fitting glm NB
+        initial fit
+          initialize weights and residual: 0.012415 sec
+
+          IRLS
+            iteration 0: 0.164572 sec
+            iteration 1: 0.176423 sec
+            iteration 2: 0.169866 sec
+            iteration 3: 0.175005 sec
+            iteration 4: 0.209990 sec
+
+            IRLS SUBTOTAL: 0.895904 sec
+
+        test for overdispersion: 0.004156 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 13.592697 sec
+        log likelihood NB: 0.146041 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.014898 sec
+
+          IRLS
+            iteration 0: 0.154258 sec
+            iteration 1: 0.157281 sec
+            iteration 2: 0.153263 sec
+            iteration 3: 0.188525 sec
+            iteration 4: 0.154166 sec
+            iteration 5: 0.175113 sec
+            iteration 6: 0.153439 sec
+
+            IRLS SUBTOTAL: 1.136110 sec
+
+          FIT SUBTOTAL: 0.155541 sec
+
+        ITER 1
+          initialize weights and residual: 0.014953 sec
+
+          IRLS
+            iteration 0: 0.154406 sec
+            iteration 1: 0.152645 sec
+            iteration 2: 0.153375 sec
+            iteration 3: 0.152870 sec
+
+            IRLS SUBTOTAL: 0.613335 sec
+
+          FIT SUBTOTAL: 0.154997 sec
+
+        ITER 2
+          initialize weights and residual: 0.018251 sec
+
+          IRLS
+            iteration 0: 0.168430 sec
+            iteration 1: 0.169166 sec
+
+            IRLS SUBTOTAL: 0.337615 sec
+
+          FIT SUBTOTAL: 0.171278 sec
+
+        ITER 3
+          initialize weights and residual: 0.015131 sec
+
+          IRLS
+            iteration 0: 0.154861 sec
+            iteration 1: 0.181899 sec
+
+            IRLS SUBTOTAL: 0.336779 sec
+
+          FIT SUBTOTAL: 0.184049 sec
+
+        ITER 4
+          initialize weights and residual: 0.016860 sec
+
+          IRLS
+            iteration 0: 0.167008 sec
+            iteration 1: 0.153014 sec
+
+            IRLS SUBTOTAL: 0.320042 sec
+
+          FIT SUBTOTAL: 0.155180 sec
+
+        ITER 5
+          initialize weights and residual: 0.014955 sec
+
+          IRLS
+            iteration 0: 0.205920 sec
+            iteration 1: 0.155661 sec
+
+            IRLS SUBTOTAL: 0.361600 sec
+
+          FIT SUBTOTAL: 0.157805 sec
+
+        ITER 6
+          initialize weights and residual: 0.014884 sec
+
+          IRLS
+            iteration 0: 0.154892 sec
+            iteration 1: 0.187856 sec
+
+            IRLS SUBTOTAL: 0.342767 sec
+
+          FIT SUBTOTAL: 0.190197 sec
+
+        ITER 7
+          initialize weights and residual: 0.015152 sec
+
+          IRLS
+            iteration 0: 0.154299 sec
+            iteration 1: 0.164133 sec
+
+            IRLS SUBTOTAL: 0.318452 sec
+
+          FIT SUBTOTAL: 0.166373 sec
+
+        ITER 8
+          initialize weights and residual: 0.020427 sec
+
+          IRLS
+            iteration 0: 0.169705 sec
+            iteration 1: 0.168307 sec
+
+            IRLS SUBTOTAL: 0.338033 sec
+
+          FIT SUBTOTAL: 0.170474 sec
+
+        ITER 9
+          initialize weights and residual: 0.014940 sec
+
+          IRLS
+            iteration 0: 0.154399 sec
+            iteration 1: 0.152865 sec
+
+            IRLS SUBTOTAL: 0.307283 sec
+
+          FIT SUBTOTAL: 0.155004 sec
+
+        ITER 10
+          initialize weights and residual: 0.014996 sec
+
+          IRLS
+            iteration 0: 0.154981 sec
+            iteration 1: 0.153287 sec
+
+            IRLS SUBTOTAL: 0.308287 sec
+
+          FIT SUBTOTAL: 0.155432 sec
+
+        ITER 11
+          initialize weights and residual: 0.015244 sec
+
+          IRLS
+            iteration 0: 0.156268 sec
+            iteration 1: 0.153064 sec
+
+            IRLS SUBTOTAL: 0.309352 sec
+
+          FIT SUBTOTAL: 0.155173 sec
+
+        ITER 12
+          initialize weights and residual: 0.017139 sec
+
+          IRLS
+            iteration 0: 0.154557 sec
+            iteration 1: 0.152945 sec
+
+            IRLS SUBTOTAL: 0.307520 sec
+
+          FIT SUBTOTAL: 0.155063 sec
+
+        ITER 13
+          initialize weights and residual: 0.019235 sec
+
+          IRLS
+            iteration 0: 0.156466 sec
+            iteration 1: 0.154189 sec
+
+            IRLS SUBTOTAL: 0.310673 sec
+
+          FIT SUBTOTAL: 0.156317 sec
+
+        ITER 14
+          initialize weights and residual: 0.019949 sec
+
+          IRLS
+            iteration 0: 0.203852 sec
+            iteration 1: 0.154082 sec
+
+            IRLS SUBTOTAL: 0.357952 sec
+
+          FIT SUBTOTAL: 0.156213 sec
+
+        ITER 15
+          initialize weights and residual: 0.014910 sec
+
+          IRLS
+            iteration 0: 0.175714 sec
+            iteration 1: 0.209030 sec
+
+            IRLS SUBTOTAL: 0.384771 sec
+
+          FIT SUBTOTAL: 0.211202 sec
+
+        ITER 16
+          initialize weights and residual: 0.015156 sec
+
+          IRLS
+            iteration 0: 0.180486 sec
+            iteration 1: 0.193626 sec
+
+            IRLS SUBTOTAL: 0.374132 sec
+
+          FIT SUBTOTAL: 0.195813 sec
+
+        ITER 17
+          initialize weights and residual: 0.014916 sec
+
+          IRLS
+            iteration 0: 0.166960 sec
+            iteration 1: 0.154241 sec
+
+            IRLS SUBTOTAL: 0.321220 sec
+
+          FIT SUBTOTAL: 0.156451 sec
+
+        ITER 18
+          initialize weights and residual: 0.015307 sec
+
+          IRLS
+            iteration 0: 0.154140 sec
+            iteration 1: 0.171923 sec
+
+            IRLS SUBTOTAL: 0.326082 sec
+
+          FIT SUBTOTAL: 0.174114 sec
+
+        ITER 19
+          initialize weights and residual: 0.015024 sec
+
+          IRLS
+            iteration 0: 0.157878 sec
+            iteration 1: 0.165202 sec
+
+            IRLS SUBTOTAL: 0.323099 sec
+
+          FIT SUBTOTAL: 0.167652 sec
+
+        ITER 20
+          initialize weights and residual: 0.015058 sec
+
+          IRLS
+            iteration 0: 0.154819 sec
+            iteration 1: 0.152891 sec
+
+            IRLS SUBTOTAL: 0.307730 sec
+
+          FIT SUBTOTAL: 0.155098 sec
+
+        ITER 21
+          initialize weights and residual: 0.015575 sec
+
+          IRLS
+            iteration 0: 0.154382 sec
+            iteration 1: 0.153003 sec
+
+            IRLS SUBTOTAL: 0.307404 sec
+
+          FIT SUBTOTAL: 0.155186 sec
+
+        ITER 22
+          initialize weights and residual: 0.015117 sec
+
+          IRLS
+            iteration 0: 0.162171 sec
+            iteration 1: 0.166870 sec
+
+            IRLS SUBTOTAL: 0.329060 sec
+
+          FIT SUBTOTAL: 0.169021 sec
+
+        ITER 23
+          initialize weights and residual: 0.021899 sec
+
+          IRLS
+            iteration 0: 0.171114 sec
+            iteration 1: 0.153369 sec
+
+            IRLS SUBTOTAL: 0.324502 sec
+
+          FIT SUBTOTAL: 0.155574 sec
+
+      fitting glm NB SUBTOTAL: 40.776987 sec
+		beta for gc content is 0.537018 
+		mu adjusted for state 0
+      mu-adjust: 0.009734 sec
+      phi: 13.476456 sec
+
+      MU,PHI (AR) SUBTOTAL: 54.986939 sec
+
+  fill emission table: 0.599494 sec
+
+  REESTIMATION SUBTOTAL: 87.703966 sec
+
+ROUND TOTAL: 91.028503 sec
+
+
+###################################
+ROUND 5
+###################################
+
+INFERENCE
+  alpha: 1.629693 sec
+  likelihood: 0.000002 sec
+  beta: 1.917103 sec
+  gamma: 0.010446 sec
+
+  INFERENCE SUBTOTAL: 3.557271 sec
+
+REESTIMATION
+  pi: 0.000002 sec
+
+  transition probabilities
+    cjk: 0.472055 sec
+    transition prob NO PARALLEL: 0.000033 sec
+    fill trans: 0.037155 sec
+
+    TRANS PROB SUBTOTAL: 0.509265 sec
+
+  mu,phi
+    calculate mu,phi
+      x,y-init: 0.008456 sec
+      offset-init: 0.025523 sec
+      offset-adjust mapp: 0.007018 sec
+      prior-load: 0.018805 sec
+      prior-update: 0.568792 sec
+
+      GLM NB
+        initial fit
+          initialize weights and residual: 0.012077 sec
+
+          IRLS
+            iteration 0: 0.125659 sec
+            iteration 1: 0.109262 sec
+            iteration 2: 0.106413 sec
+            iteration 3: 0.105539 sec
+            iteration 4: 0.105275 sec
+
+            IRLS SUBTOTAL: 0.552194 sec
+
+        test for overdispersion: 0.004195 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 12.510559 sec
+        log likelihood NB: 0.135243 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.014957 sec
+
+          IRLS
+            iteration 0: 0.107339 sec
+            iteration 1: 0.106041 sec
+            iteration 2: 0.114241 sec
+            iteration 3: 0.144536 sec
+            iteration 4: 0.106925 sec
+            iteration 5: 0.106267 sec
+
+            IRLS SUBTOTAL: 0.685409 sec
+
+          FIT SUBTOTAL: 0.108312 sec
+
+        ITER 1
+          initialize weights and residual: 0.020374 sec
+
+          IRLS
+            iteration 0: 0.118732 sec
+            iteration 1: 0.124991 sec
+            iteration 2: 0.167513 sec
+
+            IRLS SUBTOTAL: 0.411264 sec
+
+          FIT SUBTOTAL: 0.169536 sec
+
+        ITER 2
+          initialize weights and residual: 0.015307 sec
+
+          IRLS
+            iteration 0: 0.133127 sec
+            iteration 1: 0.120350 sec
+
+            IRLS SUBTOTAL: 0.253496 sec
+
+          FIT SUBTOTAL: 0.122437 sec
+
+        ITER 3
+          initialize weights and residual: 0.014983 sec
+
+          IRLS
+            iteration 0: 0.107943 sec
+            iteration 1: 0.108266 sec
+
+            IRLS SUBTOTAL: 0.216228 sec
+
+          FIT SUBTOTAL: 0.110310 sec
+
+        GLM NB SUBTOTAL: 18.797980 sec
+
+			beta for gc content is 0.52762
+      mu-save fitted: 0.006939 sec
+      phi_ml: 12.708486 sec
+
+      MU,PHI SUBTOTAL: 32.162650 sec
+
+    calculate mu,phi (AR)
+      x,y-init: 0.068197 sec
+      offset-init: 0.025467 sec
+      offset-adjust mapp: 0.007031 sec
+      prior-load: 0.018941 sec
+      prior-update: 0.571114 sec
+
+      fitting glm NB
+        initial fit
+          initialize weights and residual: 0.011955 sec
+
+          IRLS
+            iteration 0: 0.146865 sec
+            iteration 1: 0.152102 sec
+            iteration 2: 0.189190 sec
+            iteration 3: 0.165394 sec
+            iteration 4: 0.152650 sec
+
+            IRLS SUBTOTAL: 0.806248 sec
+
+        test for overdispersion: 0.004212 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 13.515135 sec
+        log likelihood NB: 0.147696 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015065 sec
+
+          IRLS
+            iteration 0: 0.154597 sec
+            iteration 1: 0.160583 sec
+            iteration 2: 0.179976 sec
+            iteration 3: 0.152816 sec
+            iteration 4: 0.156631 sec
+            iteration 5: 0.166774 sec
+
+            IRLS SUBTOTAL: 0.971434 sec
+
+          FIT SUBTOTAL: 0.169319 sec
+
+        ITER 1
+          initialize weights and residual: 0.015052 sec
+
+          IRLS
+            iteration 0: 0.169686 sec
+            iteration 1: 0.154070 sec
+            iteration 2: 0.156141 sec
+            iteration 3: 0.192793 sec
+
+            IRLS SUBTOTAL: 0.672730 sec
+
+          FIT SUBTOTAL: 0.195212 sec
+
+        ITER 2
+          initialize weights and residual: 0.015167 sec
+
+          IRLS
+            iteration 0: 0.155639 sec
+            iteration 1: 0.152940 sec
+
+            IRLS SUBTOTAL: 0.308597 sec
+
+          FIT SUBTOTAL: 0.155363 sec
+
+        ITER 3
+          initialize weights and residual: 0.015088 sec
+
+          IRLS
+            iteration 0: 0.156736 sec
+            iteration 1: 0.189683 sec
+
+            IRLS SUBTOTAL: 0.346439 sec
+
+          FIT SUBTOTAL: 0.192180 sec
+
+        ITER 4
+          initialize weights and residual: 0.016431 sec
+
+          IRLS
+            iteration 0: 0.170069 sec
+            iteration 1: 0.197790 sec
+
+            IRLS SUBTOTAL: 0.367879 sec
+
+          FIT SUBTOTAL: 0.200286 sec
+
+      fitting glm NB SUBTOTAL: 23.138821 sec
+		beta for gc content is 0.501974 
+		mu adjusted for state 0
+      mu-adjust: 0.009773 sec
+      phi: 13.593014 sec
+
+      MU,PHI (AR) SUBTOTAL: 37.451338 sec
+
+  fill emission table: 0.554892 sec
+
+  REESTIMATION SUBTOTAL: 70.678252 sec
+
+ROUND TOTAL: 74.235523 sec
+
+
+###################################
+ROUND 6
+###################################
+
+INFERENCE
+  alpha: 1.605087 sec
+  likelihood: 0.000001 sec
+  beta: 1.960437 sec
+  gamma: 0.010413 sec
+
+  INFERENCE SUBTOTAL: 3.575964 sec
+
+REESTIMATION
+  pi: 0.000002 sec
+
+  transition probabilities
+    cjk: 0.454766 sec
+    transition prob NO PARALLEL: 0.000032 sec
+    fill trans: 0.036946 sec
+
+    TRANS PROB SUBTOTAL: 0.491768 sec
+
+  mu,phi
+    calculate mu,phi
+      x,y-init: 0.008456 sec
+      offset-init: 0.025600 sec
+      offset-adjust mapp: 0.007941 sec
+      prior-load: 0.019628 sec
+      prior-update: 0.573822 sec
+
+      GLM NB
+        initial fit
+          initialize weights and residual: 0.012278 sec
+
+          IRLS
+            iteration 0: 0.104756 sec
+            iteration 1: 0.117366 sec
+            iteration 2: 0.105008 sec
+            iteration 3: 0.105059 sec
+            iteration 4: 0.104828 sec
+
+            IRLS SUBTOTAL: 0.537065 sec
+
+        test for overdispersion: 0.004152 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 12.391852 sec
+        log likelihood NB: 0.134608 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015254 sec
+
+          IRLS
+            iteration 0: 0.111913 sec
+            iteration 1: 0.118333 sec
+            iteration 2: 0.126116 sec
+            iteration 3: 0.107004 sec
+            iteration 4: 0.106765 sec
+            iteration 5: 0.107032 sec
+
+            IRLS SUBTOTAL: 0.677223 sec
+
+          FIT SUBTOTAL: 0.109256 sec
+
+        ITER 1
+          initialize weights and residual: 0.015101 sec
+
+          IRLS
+            iteration 0: 0.118767 sec
+            iteration 1: 0.106132 sec
+
+            IRLS SUBTOTAL: 0.224918 sec
+
+          FIT SUBTOTAL: 0.108345 sec
+
+        ITER 2
+          initialize weights and residual: 0.019140 sec
+
+          IRLS
+            iteration 0: 0.129401 sec
+            iteration 1: 0.106217 sec
+
+            IRLS SUBTOTAL: 0.235637 sec
+
+          FIT SUBTOTAL: 0.108303 sec
+
+        ITER 3
+          initialize weights and residual: 0.015015 sec
+
+          IRLS
+            iteration 0: 0.107802 sec
+            iteration 1: 0.106456 sec
+
+            IRLS SUBTOTAL: 0.214278 sec
+
+          FIT SUBTOTAL: 0.108799 sec
+
+        ITER 4
+          initialize weights and residual: 0.015353 sec
+
+          IRLS
+            iteration 0: 0.107779 sec
+            iteration 1: 0.105896 sec
+
+            IRLS SUBTOTAL: 0.213710 sec
+
+          FIT SUBTOTAL: 0.108110 sec
+
+        ITER 5
+          initialize weights and residual: 0.014962 sec
+
+          IRLS
+            iteration 0: 0.107833 sec
+            iteration 1: 0.136540 sec
+
+            IRLS SUBTOTAL: 0.244394 sec
+
+          FIT SUBTOTAL: 0.138766 sec
+
+        GLM NB SUBTOTAL: 20.169280 sec
+
+			beta for gc content is 0.495153
+      mu-save fitted: 0.006928 sec
+      phi_ml: 12.377982 sec
+
+      MU,PHI SUBTOTAL: 33.205604 sec
+
+    calculate mu,phi (AR)
+      x,y-init: 0.062010 sec
+      offset-init: 0.025511 sec
+      offset-adjust mapp: 0.007018 sec
+      prior-load: 0.018923 sec
+      prior-update: 0.594426 sec
+
+      fitting glm NB
+        initial fit
+          initialize weights and residual: 0.012058 sec
+
+          IRLS
+            iteration 0: 0.146334 sec
+            iteration 1: 0.152061 sec
+            iteration 2: 0.152719 sec
+            iteration 3: 0.151802 sec
+            iteration 4: 0.157146 sec
+
+            IRLS SUBTOTAL: 0.760109 sec
+
+        test for overdispersion: 0.006862 sec
+        log likelihood: 0.000000 sec
+        phi_ml: 13.516769 sec
+        log likelihood NB: 0.166267 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015097 sec
+
+          IRLS
+            iteration 0: 0.154464 sec
+            iteration 1: 0.153056 sec
+            iteration 2: 0.157201 sec
+            iteration 3: 0.164849 sec
+            iteration 4: 0.152892 sec
+            iteration 5: 0.170098 sec
+
+            IRLS SUBTOTAL: 0.952615 sec
+
+          FIT SUBTOTAL: 0.172314 sec
+
+        ITER 1
+          initialize weights and residual: 0.015121 sec
+
+          IRLS
+            iteration 0: 0.178455 sec
+            iteration 1: 0.156844 sec
+            iteration 2: 0.159442 sec
+            iteration 3: 0.173339 sec
+
+            IRLS SUBTOTAL: 0.668119 sec
+
+          FIT SUBTOTAL: 0.175578 sec
+
+        ITER 2
+          initialize weights and residual: 0.015734 sec
+
+          IRLS
+            iteration 0: 0.191143 sec
+            iteration 1: 0.154985 sec
+
+            IRLS SUBTOTAL: 0.346146 sec
+
+          FIT SUBTOTAL: 0.157125 sec
+
+        ITER 3
+          initialize weights and residual: 0.015393 sec
+
+          IRLS
+            iteration 0: 0.158070 sec
+            iteration 1: 0.159888 sec
+
+            IRLS SUBTOTAL: 0.317978 sec
+
+          FIT SUBTOTAL: 0.162004 sec
+
+        ITER 4
+          initialize weights and residual: 0.015223 sec
+
+          IRLS
+            iteration 0: 0.162718 sec
+            iteration 1: 0.185372 sec
+
+            IRLS SUBTOTAL: 0.348110 sec
+
+          FIT SUBTOTAL: 0.187800 sec
+
+        ITER 5
+          initialize weights and residual: 0.014905 sec
+
+          IRLS
+            iteration 0: 0.155063 sec
+            iteration 1: 0.152940 sec
+
+            IRLS SUBTOTAL: 0.308021 sec
+
+          FIT SUBTOTAL: 0.155124 sec
+
+        ITER 6
+          initialize weights and residual: 0.015244 sec
+
+          IRLS
+            iteration 0: 0.156779 sec
+            iteration 1: 0.156566 sec
+
+            IRLS SUBTOTAL: 0.313365 sec
+
+          FIT SUBTOTAL: 0.158713 sec
+
+        ITER 7
+          initialize weights and residual: 0.015209 sec
+
+          IRLS
+            iteration 0: 0.168979 sec
+            iteration 1: 0.158987 sec
+
+            IRLS SUBTOTAL: 0.327986 sec
+
+          FIT SUBTOTAL: 0.161139 sec
+
+        ITER 8
+          initialize weights and residual: 0.014972 sec
+
+          IRLS
+            iteration 0: 0.174579 sec
+            iteration 1: 0.152712 sec
+
+            IRLS SUBTOTAL: 0.327310 sec
+
+          FIT SUBTOTAL: 0.154867 sec
+
+        ITER 9
+          initialize weights and residual: 0.018857 sec
+
+          IRLS
+            iteration 0: 0.181237 sec
+            iteration 1: 0.161601 sec
+
+            IRLS SUBTOTAL: 0.342857 sec
+
+          FIT SUBTOTAL: 0.163791 sec
+
+      fitting glm NB SUBTOTAL: 27.621506 sec
+		beta for gc content is 0.475003 
+		mu adjusted for state 0
+      mu-adjust: 0.009759 sec
+      phi: 13.416043 sec
+
+      MU,PHI (AR) SUBTOTAL: 41.777701 sec
+
+  fill emission table: 0.588042 sec
+
+  REESTIMATION SUBTOTAL: 76.063221 sec
+
+ROUND TOTAL: 79.639185 sec
+
+
+###################################
+ROUND 7
+###################################
+
+INFERENCE
+  alpha: 1.446866 sec
+  likelihood: 0.000001 sec
+  beta: 1.910155 sec
+  gamma: 0.010430 sec
+
+  INFERENCE SUBTOTAL: 3.367479 sec
+
+REESTIMATION
+  pi: 0.000002 sec
+
+  transition probabilities
+    cjk: 0.449547 sec
+    transition prob NO PARALLEL: 0.000030 sec
+    fill trans: 0.038646 sec
+
+    TRANS PROB SUBTOTAL: 0.488248 sec
+
+  mu,phi
+    calculate mu,phi
+      x,y-init: 0.008448 sec
+      offset-init: 0.025783 sec
+      offset-adjust mapp: 0.007033 sec
+      prior-load: 0.018898 sec
+      prior-update: 0.565345 sec
+
+      GLM NB
+        initial fit
+          initialize weights and residual: 0.012673 sec
+
+          IRLS
+            iteration 0: 0.103144 sec
+            iteration 1: 0.104896 sec
+            iteration 2: 0.143288 sec
+            iteration 3: 0.105103 sec
+            iteration 4: 0.130874 sec
+
+            IRLS SUBTOTAL: 0.587354 sec
+
+        test for overdispersion: 0.004230 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 12.312322 sec
+        log likelihood NB: 0.141625 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015166 sec
+
+          IRLS
+            iteration 0: 0.107588 sec
+            iteration 1: 0.106147 sec
+            iteration 2: 0.106593 sec
+            iteration 3: 0.106612 sec
+            iteration 4: 0.157657 sec
+            iteration 5: 0.106172 sec
+
+            IRLS SUBTOTAL: 0.690825 sec
+
+          FIT SUBTOTAL: 0.108410 sec
+
+        ITER 1
+          initialize weights and residual: 0.014992 sec
+
+          IRLS
+            iteration 0: 0.107278 sec
+            iteration 1: 0.106058 sec
+
+            IRLS SUBTOTAL: 0.213355 sec
+
+          FIT SUBTOTAL: 0.108257 sec
+
+        ITER 2
+          initialize weights and residual: 0.014991 sec
+
+          IRLS
+            iteration 0: 0.111274 sec
+            iteration 1: 0.133410 sec
+
+            IRLS SUBTOTAL: 0.244704 sec
+
+          FIT SUBTOTAL: 0.135617 sec
+
+        ITER 3
+          initialize weights and residual: 0.015125 sec
+
+          IRLS
+            iteration 0: 0.107707 sec
+            iteration 1: 0.106186 sec
+
+            IRLS SUBTOTAL: 0.213913 sec
+
+          FIT SUBTOTAL: 0.108348 sec
+
+        ITER 4
+          initialize weights and residual: 0.015077 sec
+
+          IRLS
+            iteration 0: 0.123287 sec
+            iteration 1: 0.119375 sec
+
+            IRLS SUBTOTAL: 0.242683 sec
+
+          FIT SUBTOTAL: 0.121529 sec
+
+        ITER 5
+          initialize weights and residual: 0.015095 sec
+
+          IRLS
+            iteration 0: 0.107971 sec
+            iteration 1: 0.106124 sec
+
+            IRLS SUBTOTAL: 0.214115 sec
+
+          FIT SUBTOTAL: 0.108199 sec
+
+        ITER 6
+          initialize weights and residual: 0.014947 sec
+
+          IRLS
+            iteration 0: 0.137664 sec
+            iteration 1: 0.112818 sec
+
+            IRLS SUBTOTAL: 0.250502 sec
+
+          FIT SUBTOTAL: 0.114921 sec
+
+        GLM NB SUBTOTAL: 20.558813 sec
+
+			beta for gc content is 0.471003
+      mu-save fitted: 0.006963 sec
+      phi_ml: 12.253070 sec
+
+      MU,PHI SUBTOTAL: 33.461916 sec
+
+    calculate mu,phi (AR)
+      x,y-init: 0.067597 sec
+      offset-init: 0.025557 sec
+      offset-adjust mapp: 0.007011 sec
+      prior-load: 0.018976 sec
+      prior-update: 0.562664 sec
+
+      fitting glm NB
+        initial fit
+          initialize weights and residual: 0.017800 sec
+
+          IRLS
+            iteration 0: 0.180790 sec
+            iteration 1: 0.151652 sec
+            iteration 2: 0.153158 sec
+            iteration 3: 0.151580 sec
+            iteration 4: 0.151861 sec
+
+            IRLS SUBTOTAL: 0.789085 sec
+
+        test for overdispersion: 0.004153 sec
+        log likelihood: 0.000000 sec
+        phi_ml: 13.338438 sec
+        log likelihood NB: 0.136462 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.014962 sec
+
+          IRLS
+            iteration 0: 0.190601 sec
+            iteration 1: 0.156213 sec
+            iteration 2: 0.152996 sec
+            iteration 3: 0.153027 sec
+            iteration 4: 0.155271 sec
+
+            IRLS SUBTOTAL: 0.808154 sec
+
+          FIT SUBTOTAL: 0.157421 sec
+
+        ITER 1
+          initialize weights and residual: 0.014945 sec
+
+          IRLS
+            iteration 0: 0.170007 sec
+            iteration 1: 0.163364 sec
+            iteration 2: 0.168414 sec
+
+            IRLS SUBTOTAL: 0.501816 sec
+
+          FIT SUBTOTAL: 0.170491 sec
+
+        ITER 2
+          initialize weights and residual: 0.014947 sec
+
+          IRLS
+            iteration 0: 0.175724 sec
+            iteration 1: 0.152982 sec
+
+            IRLS SUBTOTAL: 0.328724 sec
+
+          FIT SUBTOTAL: 0.155099 sec
+
+        ITER 3
+          initialize weights and residual: 0.016309 sec
+
+          IRLS
+            iteration 0: 0.154851 sec
+            iteration 1: 0.153287 sec
+
+            IRLS SUBTOTAL: 0.308156 sec
+
+          FIT SUBTOTAL: 0.155573 sec
+
+        ITER 4
+          initialize weights and residual: 0.015565 sec
+
+          IRLS
+            iteration 0: 0.180202 sec
+            iteration 1: 0.161601 sec
+
+            IRLS SUBTOTAL: 0.341823 sec
+
+          FIT SUBTOTAL: 0.163674 sec
+
+        ITER 5
+          initialize weights and residual: 0.014885 sec
+
+          IRLS
+            iteration 0: 0.155132 sec
+            iteration 1: 0.192358 sec
+
+            IRLS SUBTOTAL: 0.347510 sec
+
+          FIT SUBTOTAL: 0.194523 sec
+
+        ITER 6
+          initialize weights and residual: 0.014882 sec
+
+          IRLS
+            iteration 0: 0.154634 sec
+            iteration 1: 0.153052 sec
+
+            IRLS SUBTOTAL: 0.307705 sec
+
+          FIT SUBTOTAL: 0.155222 sec
+
+        ITER 7
+          initialize weights and residual: 0.014991 sec
+
+          IRLS
+            iteration 0: 0.175606 sec
+            iteration 1: 0.168704 sec
+
+            IRLS SUBTOTAL: 0.344329 sec
+
+          FIT SUBTOTAL: 0.170797 sec
+
+        ITER 8
+          initialize weights and residual: 0.017188 sec
+
+          IRLS
+            iteration 0: 0.154693 sec
+            iteration 1: 0.152977 sec
+
+            IRLS SUBTOTAL: 0.307689 sec
+
+          FIT SUBTOTAL: 0.155357 sec
+
+        ITER 9
+          initialize weights and residual: 0.022113 sec
+
+          IRLS
+            iteration 0: 0.162722 sec
+            iteration 1: 0.157845 sec
+
+            IRLS SUBTOTAL: 0.320587 sec
+
+          FIT SUBTOTAL: 0.159981 sec
+
+        ITER 10
+          initialize weights and residual: 0.015175 sec
+
+          IRLS
+            iteration 0: 0.174970 sec
+            iteration 1: 0.153627 sec
+
+            IRLS SUBTOTAL: 0.328615 sec
+
+          FIT SUBTOTAL: 0.155780 sec
+
+        ITER 11
+          initialize weights and residual: 0.015122 sec
+
+          IRLS
+            iteration 0: 0.168676 sec
+            iteration 1: 0.152923 sec
+
+            IRLS SUBTOTAL: 0.321618 sec
+
+          FIT SUBTOTAL: 0.155036 sec
+
+        ITER 12
+          initialize weights and residual: 0.015157 sec
+
+          IRLS
+            iteration 0: 0.190647 sec
+            iteration 1: 0.165804 sec
+
+            IRLS SUBTOTAL: 0.356469 sec
+
+          FIT SUBTOTAL: 0.167966 sec
+
+        ITER 13
+          initialize weights and residual: 0.015022 sec
+
+          IRLS
+            iteration 0: 0.154863 sec
+            iteration 1: 0.181073 sec
+
+            IRLS SUBTOTAL: 0.335955 sec
+
+          FIT SUBTOTAL: 0.183248 sec
+
+        ITER 14
+          initialize weights and residual: 0.015846 sec
+
+          IRLS
+            iteration 0: 0.172597 sec
+            iteration 1: 0.204384 sec
+
+            IRLS SUBTOTAL: 0.377010 sec
+
+          FIT SUBTOTAL: 0.206510 sec
+
+        ITER 15
+          initialize weights and residual: 0.014976 sec
+
+          IRLS
+            iteration 0: 0.162457 sec
+            iteration 1: 0.153715 sec
+
+            IRLS SUBTOTAL: 0.316190 sec
+
+          FIT SUBTOTAL: 0.155818 sec
+
+        ITER 16
+          initialize weights and residual: 0.014863 sec
+
+          IRLS
+            iteration 0: 0.164025 sec
+            iteration 1: 0.152904 sec
+
+            IRLS SUBTOTAL: 0.316948 sec
+
+          FIT SUBTOTAL: 0.155026 sec
+
+        ITER 17
+          initialize weights and residual: 0.016775 sec
+
+          IRLS
+            iteration 0: 0.154751 sec
+            iteration 1: 0.159039 sec
+
+            IRLS SUBTOTAL: 0.313809 sec
+
+          FIT SUBTOTAL: 0.161113 sec
+
+      fitting glm NB SUBTOTAL: 34.199207 sec
+		beta for gc content is 0.454842 
+		mu adjusted for state 0
+      mu-adjust: 0.009722 sec
+      phi: 13.297686 sec
+
+      MU,PHI (AR) SUBTOTAL: 48.209730 sec
+
+  fill emission table: 0.556645 sec
+
+  REESTIMATION SUBTOTAL: 82.716661 sec
+
+ROUND TOTAL: 86.084140 sec
+
+
+###################################
+ROUND 8
+###################################
+
+INFERENCE
+  alpha: 1.496350 sec
+  likelihood: 0.000001 sec
+  beta: 1.769433 sec
+  gamma: 0.010442 sec
+
+  INFERENCE SUBTOTAL: 3.276252 sec
+
+REESTIMATION
+  pi: 0.000002 sec
+
+  transition probabilities
+    cjk: 0.449417 sec
+    transition prob NO PARALLEL: 0.000033 sec
+    fill trans: 0.038353 sec
+
+    TRANS PROB SUBTOTAL: 0.487826 sec
+
+  mu,phi
+    calculate mu,phi
+      x,y-init: 0.008393 sec
+      offset-init: 0.025626 sec
+      offset-adjust mapp: 0.006975 sec
+      prior-load: 0.018855 sec
+      prior-update: 0.554549 sec
+
+      GLM NB
+        initial fit
+          initialize weights and residual: 0.012068 sec
+
+          IRLS
+            iteration 0: 0.110053 sec
+            iteration 1: 0.126328 sec
+            iteration 2: 0.110121 sec
+            iteration 3: 0.124756 sec
+            iteration 4: 0.120985 sec
+
+            IRLS SUBTOTAL: 0.592289 sec
+
+        test for overdispersion: 0.004177 sec
+        log likelihood: 0.000000 sec
+        phi_ml: 12.143338 sec
+        log likelihood NB: 0.136733 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015115 sec
+
+          IRLS
+            iteration 0: 0.107323 sec
+            iteration 1: 0.106316 sec
+            iteration 2: 0.106155 sec
+            iteration 3: 0.122897 sec
+            iteration 4: 0.106058 sec
+            iteration 5: 0.133226 sec
+
+            IRLS SUBTOTAL: 0.682036 sec
+
+          FIT SUBTOTAL: 0.135262 sec
+
+        ITER 1
+          initialize weights and residual: 0.014975 sec
+
+          IRLS
+            iteration 0: 0.107683 sec
+            iteration 1: 0.122082 sec
+
+            IRLS SUBTOTAL: 0.229784 sec
+
+          FIT SUBTOTAL: 0.124105 sec
+
+        ITER 2
+          initialize weights and residual: 0.015239 sec
+
+          IRLS
+            iteration 0: 0.109143 sec
+            iteration 1: 0.106162 sec
+
+            IRLS SUBTOTAL: 0.215324 sec
+
+          FIT SUBTOTAL: 0.108205 sec
+
+        ITER 3
+          initialize weights and residual: 0.015498 sec
+
+          IRLS
+            iteration 0: 0.107774 sec
+            iteration 1: 0.118383 sec
+
+            IRLS SUBTOTAL: 0.226177 sec
+
+          FIT SUBTOTAL: 0.120452 sec
+
+        ITER 4
+          initialize weights and residual: 0.015231 sec
+
+          IRLS
+            iteration 0: 0.107717 sec
+            iteration 1: 0.106474 sec
+
+            IRLS SUBTOTAL: 0.214212 sec
+
+          FIT SUBTOTAL: 0.108538 sec
+
+        ITER 5
+          initialize weights and residual: 0.014896 sec
+
+          IRLS
+            iteration 0: 0.107713 sec
+            iteration 1: 0.106028 sec
+
+            IRLS SUBTOTAL: 0.213759 sec
+
+          FIT SUBTOTAL: 0.108144 sec
+
+        ITER 6
+          initialize weights and residual: 0.015252 sec
+
+          IRLS
+            iteration 0: 0.121360 sec
+            iteration 1: 0.127275 sec
+
+            IRLS SUBTOTAL: 0.248655 sec
+
+          FIT SUBTOTAL: 0.129331 sec
+
+        ITER 7
+          initialize weights and residual: 0.014987 sec
+
+          IRLS
+            iteration 0: 0.128365 sec
+            iteration 1: 0.122534 sec
+
+            IRLS SUBTOTAL: 0.250919 sec
+
+          FIT SUBTOTAL: 0.124742 sec
+
+        ITER 8
+          initialize weights and residual: 0.017874 sec
+
+          IRLS
+            iteration 0: 0.116906 sec
+            iteration 1: 0.105985 sec
+
+            IRLS SUBTOTAL: 0.222910 sec
+
+          FIT SUBTOTAL: 0.108093 sec
+
+        ITER 9
+          initialize weights and residual: 0.014985 sec
+
+          IRLS
+            iteration 0: 0.108636 sec
+            iteration 1: 0.123975 sec
+
+            IRLS SUBTOTAL: 0.232631 sec
+
+          FIT SUBTOTAL: 0.126068 sec
+
+        ITER 10
+          initialize weights and residual: 0.015240 sec
+
+          IRLS
+            iteration 0: 0.107243 sec
+            iteration 1: 0.105800 sec
+
+            IRLS SUBTOTAL: 0.213062 sec
+
+          FIT SUBTOTAL: 0.107938 sec
+
+        ITER 11
+          initialize weights and residual: 0.015009 sec
+
+          IRLS
+            iteration 0: 0.144691 sec
+            iteration 1: 0.105806 sec
+
+            IRLS SUBTOTAL: 0.250517 sec
+
+          FIT SUBTOTAL: 0.107898 sec
+
+        ITER 12
+          initialize weights and residual: 0.015153 sec
+
+          IRLS
+            iteration 0: 0.108175 sec
+            iteration 1: 0.106494 sec
+
+            IRLS SUBTOTAL: 0.214689 sec
+
+          FIT SUBTOTAL: 0.108588 sec
+
+        GLM NB SUBTOTAL: 25.373707 sec
+
+			beta for gc content is 0.452863
+      mu-save fitted: 0.006939 sec
+      phi_ml: 12.114148 sec
+
+      MU,PHI SUBTOTAL: 38.127042 sec
+
+    calculate mu,phi (AR)
+      x,y-init: 0.061029 sec
+      offset-init: 0.025762 sec
+      offset-adjust mapp: 0.007031 sec
+      prior-load: 0.018882 sec
+      prior-update: 0.573435 sec
+
+      fitting glm NB
+        initial fit
+          initialize weights and residual: 0.015420 sec
+
+          IRLS
+            iteration 0: 0.154776 sec
+            iteration 1: 0.156122 sec
+            iteration 2: 0.152058 sec
+            iteration 3: 0.151893 sec
+            iteration 4: 0.151684 sec
+
+            IRLS SUBTOTAL: 0.766578 sec
+
+        test for overdispersion: 0.004163 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 13.152695 sec
+        log likelihood NB: 0.137784 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.019267 sec
+
+          IRLS
+            iteration 0: 0.165232 sec
+            iteration 1: 0.207305 sec
+            iteration 2: 0.168367 sec
+            iteration 3: 0.174219 sec
+            iteration 4: 0.187897 sec
+
+            IRLS SUBTOTAL: 0.903069 sec
+
+          FIT SUBTOTAL: 0.189975 sec
+
+        ITER 1
+          initialize weights and residual: 0.015180 sec
+
+          IRLS
+            iteration 0: 0.154508 sec
+            iteration 1: 0.168431 sec
+            iteration 2: 0.154844 sec
+
+            IRLS SUBTOTAL: 0.477810 sec
+
+          FIT SUBTOTAL: 0.156971 sec
+
+        ITER 2
+          initialize weights and residual: 0.015064 sec
+
+          IRLS
+            iteration 0: 0.164600 sec
+            iteration 1: 0.153076 sec
+
+            IRLS SUBTOTAL: 0.317694 sec
+
+          FIT SUBTOTAL: 0.155227 sec
+
+        ITER 3
+          initialize weights and residual: 0.015013 sec
+
+          IRLS
+            iteration 0: 0.173111 sec
+            iteration 1: 0.155142 sec
+
+            IRLS SUBTOTAL: 0.328272 sec
+
+          FIT SUBTOTAL: 0.157288 sec
+
+        ITER 4
+          initialize weights and residual: 0.015633 sec
+
+          IRLS
+            iteration 0: 0.191738 sec
+            iteration 1: 0.165452 sec
+
+            IRLS SUBTOTAL: 0.357208 sec
+
+          FIT SUBTOTAL: 0.167519 sec
+
+        ITER 5
+          initialize weights and residual: 0.017097 sec
+
+          IRLS
+            iteration 0: 0.155101 sec
+            iteration 1: 0.186852 sec
+
+            IRLS SUBTOTAL: 0.341973 sec
+
+          FIT SUBTOTAL: 0.189108 sec
+
+      fitting glm NB SUBTOTAL: 23.219457 sec
+		beta for gc content is 0.43966 
+		mu adjusted for state 0
+      mu-adjust: 0.009755 sec
+      phi: 13.117263 sec
+
+      MU,PHI (AR) SUBTOTAL: 37.054924 sec
+
+  fill emission table: 0.552311 sec
+
+  REESTIMATION SUBTOTAL: 76.222207 sec
+
+ROUND TOTAL: 79.498459 sec
+
+
+###################################
+ROUND 9
+###################################
+
+INFERENCE
+  alpha: 1.698618 sec
+  likelihood: 0.000001 sec
+  beta: 1.816936 sec
+  gamma: 0.010426 sec
+
+  INFERENCE SUBTOTAL: 3.526007 sec
+
+REESTIMATION
+  pi: 0.000002 sec
+
+  transition probabilities
+    cjk: 0.430288 sec
+    transition prob NO PARALLEL: 0.000032 sec
+    fill trans: 0.041907 sec
+
+    TRANS PROB SUBTOTAL: 0.472251 sec
+
+  mu,phi
+    calculate mu,phi
+      x,y-init: 0.012207 sec
+      offset-init: 0.025516 sec
+      offset-adjust mapp: 0.006985 sec
+      prior-load: 0.019039 sec
+      prior-update: 0.594997 sec
+
+      GLM NB
+        initial fit
+          initialize weights and residual: 0.012382 sec
+
+          IRLS
+            iteration 0: 0.103064 sec
+            iteration 1: 0.105328 sec
+            iteration 2: 0.111928 sec
+            iteration 3: 0.114201 sec
+            iteration 4: 0.104941 sec
+
+            IRLS SUBTOTAL: 0.539511 sec
+
+        test for overdispersion: 0.004200 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 12.134151 sec
+        log likelihood NB: 0.134951 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.014991 sec
+
+          IRLS
+            iteration 0: 0.107802 sec
+            iteration 1: 0.116466 sec
+            iteration 2: 0.125486 sec
+            iteration 3: 0.116143 sec
+            iteration 4: 0.111836 sec
+            iteration 5: 0.109715 sec
+
+            IRLS SUBTOTAL: 0.687509 sec
+
+          FIT SUBTOTAL: 0.111722 sec
+
+        ITER 1
+          initialize weights and residual: 0.015327 sec
+
+          IRLS
+            iteration 0: 0.107703 sec
+            iteration 1: 0.155265 sec
+
+            IRLS SUBTOTAL: 0.262989 sec
+
+          FIT SUBTOTAL: 0.157394 sec
+
+        ITER 2
+          initialize weights and residual: 0.018009 sec
+
+          IRLS
+            iteration 0: 0.125529 sec
+            iteration 1: 0.106230 sec
+
+            IRLS SUBTOTAL: 0.231777 sec
+
+          FIT SUBTOTAL: 0.108335 sec
+
+        ITER 3
+          initialize weights and residual: 0.015134 sec
+
+          IRLS
+            iteration 0: 0.141083 sec
+            iteration 1: 0.124909 sec
+
+            IRLS SUBTOTAL: 0.266012 sec
+
+          FIT SUBTOTAL: 0.127063 sec
+
+        ITER 4
+          initialize weights and residual: 0.014957 sec
+
+          IRLS
+            iteration 0: 0.107312 sec
+            iteration 1: 0.106080 sec
+
+            IRLS SUBTOTAL: 0.213411 sec
+
+          FIT SUBTOTAL: 0.108137 sec
+
+        GLM NB SUBTOTAL: 18.740028 sec
+
+			beta for gc content is 0.439044
+      mu-save fitted: 0.006935 sec
+      phi_ml: 12.184864 sec
+
+      MU,PHI SUBTOTAL: 31.606247 sec
+
+    calculate mu,phi (AR)
+      x,y-init: 0.061015 sec
+      offset-init: 0.025519 sec
+      offset-adjust mapp: 0.007033 sec
+      prior-load: 0.019048 sec
+      prior-update: 0.608842 sec
+
+      fitting glm NB
+        initial fit
+          initialize weights and residual: 0.012851 sec
+
+          IRLS
+            iteration 0: 0.147196 sec
+            iteration 1: 0.151558 sec
+            iteration 2: 0.154612 sec
+            iteration 3: 0.157224 sec
+            iteration 4: 0.160069 sec
+
+            IRLS SUBTOTAL: 0.770709 sec
+
+        test for overdispersion: 0.004225 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 13.292472 sec
+        log likelihood NB: 0.136163 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.014880 sec
+
+          IRLS
+            iteration 0: 0.168280 sec
+            iteration 1: 0.174652 sec
+            iteration 2: 0.171473 sec
+            iteration 3: 0.152987 sec
+            iteration 4: 0.152940 sec
+
+            IRLS SUBTOTAL: 0.820378 sec
+
+          FIT SUBTOTAL: 0.155045 sec
+
+        ITER 1
+          initialize weights and residual: 0.017127 sec
+
+          IRLS
+            iteration 0: 0.174089 sec
+            iteration 1: 0.167782 sec
+            iteration 2: 0.179571 sec
+
+            IRLS SUBTOTAL: 0.521474 sec
+
+          FIT SUBTOTAL: 0.181819 sec
+
+        ITER 2
+          initialize weights and residual: 0.017193 sec
+
+          IRLS
+            iteration 0: 0.166309 sec
+            iteration 1: 0.175157 sec
+
+            IRLS SUBTOTAL: 0.341486 sec
+
+          FIT SUBTOTAL: 0.177301 sec
+
+        ITER 3
+          initialize weights and residual: 0.016012 sec
+
+          IRLS
+            iteration 0: 0.169121 sec
+            iteration 1: 0.214972 sec
+
+            IRLS SUBTOTAL: 0.384114 sec
+
+          FIT SUBTOTAL: 0.217043 sec
+
+        ITER 4
+          initialize weights and residual: 0.016681 sec
+
+          IRLS
+            iteration 0: 0.175836 sec
+            iteration 1: 0.167831 sec
+
+            IRLS SUBTOTAL: 0.343688 sec
+
+          FIT SUBTOTAL: 0.169933 sec
+
+        ITER 5
+          initialize weights and residual: 0.018042 sec
+
+          IRLS
+            iteration 0: 0.182440 sec
+            iteration 1: 0.197371 sec
+
+            IRLS SUBTOTAL: 0.379833 sec
+
+          FIT SUBTOTAL: 0.199579 sec
+
+        ITER 6
+          initialize weights and residual: 0.020203 sec
+
+          IRLS
+            iteration 0: 0.177384 sec
+            iteration 1: 0.166534 sec
+
+            IRLS SUBTOTAL: 0.343938 sec
+
+          FIT SUBTOTAL: 0.168779 sec
+
+        ITER 7
+          initialize weights and residual: 0.018274 sec
+
+          IRLS
+            iteration 0: 0.195220 sec
+            iteration 1: 0.170193 sec
+
+            IRLS SUBTOTAL: 0.365433 sec
+
+          FIT SUBTOTAL: 0.172355 sec
+
+        ITER 8
+          initialize weights and residual: 0.021575 sec
+
+          IRLS
+            iteration 0: 0.209849 sec
+            iteration 1: 0.154694 sec
+
+            IRLS SUBTOTAL: 0.364562 sec
+
+          FIT SUBTOTAL: 0.156856 sec
+
+        ITER 9
+          initialize weights and residual: 0.017046 sec
+
+          IRLS
+            iteration 0: 0.178382 sec
+            iteration 1: 0.179436 sec
+
+            IRLS SUBTOTAL: 0.357838 sec
+
+          FIT SUBTOTAL: 0.181552 sec
+
+        ITER 10
+          initialize weights and residual: 0.015078 sec
+
+          IRLS
+            iteration 0: 0.167681 sec
+            iteration 1: 0.165347 sec
+
+            IRLS SUBTOTAL: 0.333048 sec
+
+          FIT SUBTOTAL: 0.167692 sec
+
+        ITER 11
+          initialize weights and residual: 0.014973 sec
+
+          IRLS
+            iteration 0: 0.154453 sec
+            iteration 1: 0.168893 sec
+
+            IRLS SUBTOTAL: 0.323367 sec
+
+          FIT SUBTOTAL: 0.171035 sec
+
+        ITER 12
+          initialize weights and residual: 0.015011 sec
+
+          IRLS
+            iteration 0: 0.170540 sec
+            iteration 1: 0.177989 sec
+
+            IRLS SUBTOTAL: 0.348549 sec
+
+          FIT SUBTOTAL: 0.180071 sec
+
+        ITER 13
+          initialize weights and residual: 0.015022 sec
+
+          IRLS
+            iteration 0: 0.155055 sec
+            iteration 1: 0.153122 sec
+
+            IRLS SUBTOTAL: 0.308196 sec
+
+          FIT SUBTOTAL: 0.155344 sec
+
+        ITER 14
+          initialize weights and residual: 0.014943 sec
+
+          IRLS
+            iteration 0: 0.169365 sec
+            iteration 1: 0.153150 sec
+
+            IRLS SUBTOTAL: 0.322534 sec
+
+          FIT SUBTOTAL: 0.155387 sec
+
+        ITER 15
+          initialize weights and residual: 0.015113 sec
+
+          IRLS
+            iteration 0: 0.154638 sec
+            iteration 1: 0.153293 sec
+
+            IRLS SUBTOTAL: 0.307951 sec
+
+          FIT SUBTOTAL: 0.155444 sec
+
+        ITER 16
+          initialize weights and residual: 0.019884 sec
+
+          IRLS
+            iteration 0: 0.173994 sec
+            iteration 1: 0.153965 sec
+
+            IRLS SUBTOTAL: 0.327979 sec
+
+          FIT SUBTOTAL: 0.156110 sec
+
+        ITER 17
+          initialize weights and residual: 0.014908 sec
+
+          IRLS
+            iteration 0: 0.191237 sec
+            iteration 1: 0.158571 sec
+
+            IRLS SUBTOTAL: 0.349828 sec
+
+          FIT SUBTOTAL: 0.160724 sec
+
+        ITER 18
+          initialize weights and residual: 0.014983 sec
+
+          IRLS
+            iteration 0: 0.170728 sec
+            iteration 1: 0.166655 sec
+
+            IRLS SUBTOTAL: 0.337403 sec
+
+          FIT SUBTOTAL: 0.168878 sec
+
+        ITER 19
+          initialize weights and residual: 0.015702 sec
+
+          IRLS
+            iteration 0: 0.169980 sec
+            iteration 1: 0.213807 sec
+
+            IRLS SUBTOTAL: 0.383807 sec
+
+          FIT SUBTOTAL: 0.216302 sec
+
+        ITER 20
+          initialize weights and residual: 0.015012 sec
+
+          IRLS
+            iteration 0: 0.154512 sec
+            iteration 1: 0.153061 sec
+
+            IRLS SUBTOTAL: 0.307593 sec
+
+          FIT SUBTOTAL: 0.155320 sec
+
+        ITER 21
+          initialize weights and residual: 0.018657 sec
+
+          IRLS
+            iteration 0: 0.165288 sec
+            iteration 1: 0.152949 sec
+
+            IRLS SUBTOTAL: 0.318256 sec
+
+          FIT SUBTOTAL: 0.155204 sec
+
+        ITER 22
+          initialize weights and residual: 0.014935 sec
+
+          IRLS
+            iteration 0: 0.169599 sec
+            iteration 1: 0.152742 sec
+
+            IRLS SUBTOTAL: 0.322360 sec
+
+          FIT SUBTOTAL: 0.154979 sec
+
+        ITER 23
+          initialize weights and residual: 0.014871 sec
+
+          IRLS
+            iteration 0: 0.154529 sec
+            iteration 1: 0.170311 sec
+
+            IRLS SUBTOTAL: 0.324859 sec
+
+          FIT SUBTOTAL: 0.172584 sec
+
+        ITER 24
+          initialize weights and residual: 0.015059 sec
+
+          IRLS
+            iteration 0: 0.154475 sec
+            iteration 1: 0.165855 sec
+
+            IRLS SUBTOTAL: 0.320349 sec
+
+          FIT SUBTOTAL: 0.168137 sec
+
+      fitting glm NB SUBTOTAL: 41.208925 sec
+		beta for gc content is 0.428088 
+		mu adjusted for state 0
+      mu-adjust: 0.009833 sec
+      phi: 13.189492 sec
+
+      MU,PHI (AR) SUBTOTAL: 55.146472 sec
+
+  fill emission table: 0.585998 sec
+
+  REESTIMATION SUBTOTAL: 87.811055 sec
+
+ROUND TOTAL: 91.337062 sec
+
+
+###################################
+ROUND 10
+###################################
+
+INFERENCE
+  alpha: 1.471578 sec
+  likelihood: 0.000001 sec
+  beta: 1.983676 sec
+  gamma: 0.010425 sec
+
+  INFERENCE SUBTOTAL: 3.465706 sec
+
+REESTIMATION
+  pi: 0.000002 sec
+
+  transition probabilities
+    cjk: 0.445110 sec
+    transition prob NO PARALLEL: 0.000031 sec
+    fill trans: 0.039650 sec
+
+    TRANS PROB SUBTOTAL: 0.484817 sec
+
+  mu,phi
+    calculate mu,phi
+      x,y-init: 0.014780 sec
+      offset-init: 0.025583 sec
+      offset-adjust mapp: 0.007012 sec
+      prior-load: 0.019043 sec
+      prior-update: 0.563035 sec
+
+      GLM NB
+        initial fit
+          initialize weights and residual: 0.017698 sec
+
+          IRLS
+            iteration 0: 0.104510 sec
+            iteration 1: 0.118523 sec
+            iteration 2: 0.120787 sec
+            iteration 3: 0.106186 sec
+            iteration 4: 0.130333 sec
+
+            IRLS SUBTOTAL: 0.580389 sec
+
+        test for overdispersion: 0.004181 sec
+        log likelihood: 0.000001 sec
+        phi_ml: 12.117276 sec
+        log likelihood NB: 0.134828 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.015038 sec
+
+          IRLS
+            iteration 0: 0.107614 sec
+            iteration 1: 0.107279 sec
+            iteration 2: 0.105914 sec
+            iteration 3: 0.110619 sec
+            iteration 4: 0.106245 sec
+            iteration 5: 0.115392 sec
+
+            IRLS SUBTOTAL: 0.653121 sec
+
+          FIT SUBTOTAL: 0.117498 sec
+
+        ITER 1
+          initialize weights and residual: 0.015077 sec
+
+          IRLS
+            iteration 0: 0.108305 sec
+            iteration 1: 0.106410 sec
+
+            IRLS SUBTOTAL: 0.214734 sec
+
+          FIT SUBTOTAL: 0.108456 sec
+
+        ITER 2
+          initialize weights and residual: 0.015283 sec
+
+          IRLS
+            iteration 0: 0.118618 sec
+            iteration 1: 0.107244 sec
+
+            IRLS SUBTOTAL: 0.225882 sec
+
+          FIT SUBTOTAL: 0.109283 sec
+
+        ITER 3
+          initialize weights and residual: 0.015073 sec
+
+          IRLS
+            iteration 0: 0.107801 sec
+            iteration 1: 0.106528 sec
+
+            IRLS SUBTOTAL: 0.214348 sec
+
+          FIT SUBTOTAL: 0.108563 sec
+
+        ITER 4
+          initialize weights and residual: 0.015130 sec
+
+          IRLS
+            iteration 0: 0.114924 sec
+            iteration 1: 0.120947 sec
+
+            IRLS SUBTOTAL: 0.235891 sec
+
+          FIT SUBTOTAL: 0.123034 sec
+
+        ITER 5
+          initialize weights and residual: 0.021659 sec
+
+          IRLS
+            iteration 0: 0.126455 sec
+            iteration 1: 0.105901 sec
+
+            IRLS SUBTOTAL: 0.232375 sec
+
+          FIT SUBTOTAL: 0.107941 sec
+
+        ITER 6
+          initialize weights and residual: 0.014938 sec
+
+          IRLS
+            iteration 0: 0.121286 sec
+            iteration 1: 0.130878 sec
+
+            IRLS SUBTOTAL: 0.252186 sec
+
+          FIT SUBTOTAL: 0.132499 sec
+
+        GLM NB SUBTOTAL: 20.301698 sec
+
+			beta for gc content is 0.428213
+      mu-save fitted: 0.006954 sec
+      phi_ml: 12.189480 sec
+
+      MU,PHI SUBTOTAL: 33.143042 sec
+
+    calculate mu,phi (AR)
+      x,y-init: 0.073797 sec
+      offset-init: 0.025567 sec
+      offset-adjust mapp: 0.007113 sec
+      prior-load: 0.019027 sec
+      prior-update: 0.560220 sec
+
+      fitting glm NB
+        initial fit
+          initialize weights and residual: 0.011881 sec
+
+          IRLS
+            iteration 0: 0.185444 sec
+            iteration 1: 0.167420 sec
+            iteration 2: 0.151775 sec
+            iteration 3: 0.151605 sec
+            iteration 4: 0.153957 sec
+
+            IRLS SUBTOTAL: 0.810252 sec
+
+        test for overdispersion: 0.004181 sec
+        log likelihood: 0.000000 sec
+        phi_ml: 13.092515 sec
+        log likelihood NB: 0.140019 sec
+
+        iterative fits
+        ITER 0
+          initialize weights and residual: 0.014950 sec
+
+          IRLS
+            iteration 0: 0.154219 sec
+            iteration 1: 0.170161 sec
+            iteration 2: 0.161009 sec
+            iteration 3: 0.175926 sec
+            iteration 4: 0.153967 sec
+
+            IRLS SUBTOTAL: 0.815331 sec
+
+          FIT SUBTOTAL: 0.156073 sec
+
+        ITER 1
+          initialize weights and residual: 0.016593 sec
+
+          IRLS
+            iteration 0: 0.155318 sec
+            iteration 1: 0.152960 sec
+            iteration 2: 0.152993 sec
+
+            IRLS SUBTOTAL: 0.461298 sec
+
+          FIT SUBTOTAL: 0.155104 sec
+
+        ITER 2
+          initialize weights and residual: 0.015071 sec
+
+          IRLS
+            iteration 0: 0.195689 sec
+            iteration 1: 0.154018 sec
+
+            IRLS SUBTOTAL: 0.349727 sec
+
+          FIT SUBTOTAL: 0.156144 sec
+
+        ITER 3
+          initialize weights and residual: 0.015068 sec
+
+          IRLS
+            iteration 0: 0.154326 sec
+            iteration 1: 0.153322 sec
+
+            IRLS SUBTOTAL: 0.307668 sec
+
+          FIT SUBTOTAL: 0.155481 sec
+
+      fitting glm NB SUBTOTAL: 21.230805 sec
+		beta for gc content is 0.419072 
+		mu adjusted for state 0
+      mu-adjust: 0.009724 sec
+      phi: 13.024819 sec
+
+      MU,PHI (AR) SUBTOTAL: 34.967800 sec
+
+  fill emission table: 0.576125 sec
+
+  REESTIMATION SUBTOTAL: 69.171900 sec
+
+ROUND TOTAL: 72.637606 sec
+
+
+VITERBI......
+DONE
+
+The log likelihood value for the 1 round inference is -4.72325e+06
+The log likelihood value for the 2 round inference is -3.51881e+06
+The log likelihood value for the 3 round inference is -3.50776e+06
+The log likelihood value for the 4 round inference is -3.49251e+06
+The log likelihood value for the 5 round inference is -3.48097e+06
+The log likelihood value for the 6 round inference is -3.47499e+06
+The log likelihood value for the 7 round inference is -3.47175e+06
+The log likelihood value for the 8 round inference is -3.4699e+06
+The log likelihood value for the 9 round inference is -3.46875e+06
+The log likelihood value for the 10 round inference is -3.46798e+06
+
+INFER AND ESTIMATION TOTAL TIME: 1048.111273 sec
+
+post processing
+No extra filtering step
+
