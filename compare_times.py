@@ -237,6 +237,9 @@ reestimation_subtotal: 359.7290445
 round_total: 364.8194615
 total: 3883.677177'''
 
+print '#'*58
+print '%25s %10s %10s %10s' % ('Code Section', 'no OMP', 'OMP', 'Speedup')
+print '#'*58
 for line1,line2 in izip(omp.split('\n'), no_omp.split('\n')):
   if not line1:
     continue
