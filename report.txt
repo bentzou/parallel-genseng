@@ -2,9 +2,7 @@ OUTLINE
 
 Introduction
 Rationale
-	While the accuracy of GENSENG outperforms competing algorithms, such as CNVnator, the sequential implementation of GENSENG requires hours to complete an analysis of the human genome. For single samples, the large time requirement may be acceptable since a sample generally needs to be run only once. For many samples, however, the time required is prohibitive and deters large scale implementation.
-
-	The sequential implementation of GENSENG requires nearly hours to complete when analyzing the entire genome.
+	While GENSENG outperforms competing algorithms such as CNVnator in accuracy, the current, sequential implementation requires hours to complete an analysis of the human genome. For single samples, the large time requirement may be acceptable since a sample generally needs to be run only once. For many samples, however, the time required is prohibitive and deters large scale implementation. This project explores the use of parallelization to decrease the run-time of GENSENG.
 Approach
 
 Implementation
