@@ -1,3 +1,5 @@
+Stats for Chromosome 1 (10 training rounds)
+
 ##########################################################
              Code Section     no OMP        OMP    Speedup
 ##########################################################
@@ -38,4 +40,3 @@
 total for 10 rounds (sec)    3883.68    1048.11      3.705
                     (min)      64.73      17.47      3.705
 
-Chromosome 1
