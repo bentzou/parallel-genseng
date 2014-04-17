@@ -9,7 +9,7 @@ Finish Reading Files
 0.995 0.95
 start with coefficient
 7 2
-0.5 0.5 
+0.5 0.5
 4.78332
 
 ###################################
@@ -45,88 +45,15 @@ REESTIMATION
       GLM NB
         initial fit
           initialize weights and residual: 0.044330 sec
-
-          IRLS
-            iteration 0: 0.312225 sec
-            iteration 1: 0.319461 sec
-            iteration 2: 0.323836 sec
-            iteration 3: 0.320264 sec
-            iteration 4: 0.320684 sec
-
-            IRLS SUBTOTAL: 1.596512 sec
+          iteration 2: 0.323836 sec
 
         test for overdispersion: 0.013179 sec
         log likelihood: 0.000000 sec
         phi_ml: 51.967489 sec
         log likelihood NB: 0.664782 sec
 
-        iterative fits
-        ITER 0
-          initialize weights and residual: 0.039506 sec
-
-          IRLS
-            iteration 0: 0.333616 sec
-            iteration 1: 0.323681 sec
-            iteration 2: 0.322009 sec
-            iteration 3: 0.324136 sec
-            iteration 4: 0.322769 sec
-            iteration 5: 0.321838 sec
-            iteration 6: 0.321438 sec
-            iteration 7: 0.325362 sec
-
-            IRLS SUBTOTAL: 2.594920 sec
-
-          FIT SUBTOTAL: 0.327100 sec
-
-        ITER 1
-          initialize weights and residual: 0.039745 sec
-
-          IRLS
-            iteration 0: 0.334798 sec
-            iteration 1: 0.321918 sec
-            iteration 2: 0.321899 sec
-            iteration 3: 0.330860 sec
-
-            IRLS SUBTOTAL: 1.309509 sec
-
-          FIT SUBTOTAL: 0.332589 sec
-
-        ITER 2
-          initialize weights and residual: 0.039961 sec
-
-          IRLS
-            iteration 0: 0.338137 sec
-            iteration 1: 0.321761 sec
-
-            IRLS SUBTOTAL: 0.659915 sec
-
-          FIT SUBTOTAL: 0.323447 sec
-
-        ITER 3
-          initialize weights and residual: 0.039457 sec
-
-          IRLS
-            iteration 0: 0.331191 sec
-            iteration 1: 0.324903 sec
-
-            IRLS SUBTOTAL: 0.656110 sec
-
-          FIT SUBTOTAL: 0.326597 sec
-
-        ITER 4
-          initialize weights and residual: 0.039742 sec
-
-          IRLS
-            iteration 0: 0.332014 sec
-            iteration 1: 0.325532 sec
-
-            IRLS SUBTOTAL: 0.657564 sec
-
-          FIT SUBTOTAL: 0.327218 sec
-
         GLM NB SUBTOTAL: 81.737353 sec
 
-			beta for gc content is 0.695429
       mu-save fitted: 0.007068 sec
       phi_ml: 51.709128 sec
 
@@ -157,176 +84,13 @@ REESTIMATION
         phi_ml: 53.467159 sec
         log likelihood NB: 0.674185 sec
 
-        iterative fits
-        ITER 0
-          initialize weights and residual: 0.039708 sec
-
-          IRLS
-            iteration 0: 0.402753 sec
-            iteration 1: 0.397440 sec
-            iteration 2: 0.394504 sec
-            iteration 3: 0.400879 sec
-            iteration 4: 0.393507 sec
-            iteration 5: 0.393595 sec
-            iteration 6: 0.397679 sec
-
-            IRLS SUBTOTAL: 2.780420 sec
-
-          FIT SUBTOTAL: 0.399291 sec
-
-        ITER 1
-          initialize weights and residual: 0.039608 sec
-
-          IRLS
-            iteration 0: 0.406070 sec
-            iteration 1: 0.394017 sec
-            iteration 2: 0.393821 sec
-            iteration 3: 0.397858 sec
-            iteration 4: 0.393544 sec
-
-            IRLS SUBTOTAL: 1.985354 sec
-
-          FIT SUBTOTAL: 0.395015 sec
-
-        ITER 2
-          initialize weights and residual: 0.039872 sec
-
-          IRLS
-            iteration 0: 0.402961 sec
-            iteration 1: 0.397363 sec
-
-            IRLS SUBTOTAL: 0.800341 sec
-
-          FIT SUBTOTAL: 0.398928 sec
-
-        ITER 3
-          initialize weights and residual: 0.039858 sec
-
-          IRLS
-            iteration 0: 0.406385 sec
-            iteration 1: 0.403320 sec
-
-            IRLS SUBTOTAL: 0.809723 sec
-
-          FIT SUBTOTAL: 0.404811 sec
-
-        ITER 4
-          initialize weights and residual: 0.040045 sec
-
-          IRLS
-            iteration 0: 0.411553 sec
-            iteration 1: 0.395175 sec
-
-            IRLS SUBTOTAL: 0.806744 sec
-
-          FIT SUBTOTAL: 0.396731 sec
-
-        ITER 5
-          initialize weights and residual: 0.040863 sec
-
-          IRLS
-            iteration 0: 0.402308 sec
-            iteration 1: 0.395917 sec
-
-            IRLS SUBTOTAL: 0.798242 sec
-
-          FIT SUBTOTAL: 0.397406 sec
-
-        ITER 6
-          initialize weights and residual: 0.039839 sec
-
-          IRLS
-            iteration 0: 0.404741 sec
-            iteration 1: 0.401727 sec
-
-            IRLS SUBTOTAL: 0.806486 sec
-
-          FIT SUBTOTAL: 0.403204 sec
-
-        ITER 7
-          initialize weights and residual: 0.039743 sec
-
-          IRLS
-            iteration 0: 0.410653 sec
-            iteration 1: 0.396174 sec
-
-            IRLS SUBTOTAL: 0.806845 sec
-
-          FIT SUBTOTAL: 0.397773 sec
-
-        ITER 8
-          initialize weights and residual: 0.039513 sec
-
-          IRLS
-            iteration 0: 0.404631 sec
-            iteration 1: 0.394917 sec
-
-            IRLS SUBTOTAL: 0.799565 sec
-
-          FIT SUBTOTAL: 0.396500 sec
-
-        ITER 9
-          initialize weights and residual: 0.039687 sec
-
-          IRLS
-            iteration 0: 0.403179 sec
-            iteration 1: 0.396716 sec
-
-            IRLS SUBTOTAL: 0.799913 sec
-
-          FIT SUBTOTAL: 0.398205 sec
-
-        ITER 10
-          initialize weights and residual: 0.039666 sec
-
-          IRLS
-            iteration 0: 0.406178 sec
-            iteration 1: 0.397078 sec
-
-            IRLS SUBTOTAL: 0.803275 sec
-
-          FIT SUBTOTAL: 0.398553 sec
-
-        ITER 11
-          initialize weights and residual: 0.040438 sec
-
-          IRLS
-            iteration 0: 0.403697 sec
-            iteration 1: 0.396122 sec
-
-            IRLS SUBTOTAL: 0.799836 sec
-
-          FIT SUBTOTAL: 0.397616 sec
-
-        ITER 12
-          initialize weights and residual: 0.039638 sec
-
-          IRLS
-            iteration 0: 0.408113 sec
-            iteration 1: 0.397111 sec
-
-            IRLS SUBTOTAL: 0.805241 sec
-
-          FIT SUBTOTAL: 0.398671 sec
-
-        ITER 13
-          initialize weights and residual: 0.040212 sec
-
-          IRLS
-            iteration 0: 0.404359 sec
-            iteration 1: 0.394850 sec
-
-            IRLS SUBTOTAL: 0.799227 sec
-
-          FIT SUBTOTAL: 0.396382 sec
 
       fitting glm NB SUBTOTAL: 117.044817 sec
-		beta for gc content is 0.642608 
-		mu adjusted for state 0
       mu-adjust: 0.010086 sec
       phi: 53.671380 sec
 
       MU,PHI (AR) SUBTOTAL: 172.414511 sec
+
 
   fill emission table: 1.142898 sec
 
@@ -590,7 +354,7 @@ REESTIMATION
           FIT SUBTOTAL: 0.412895 sec
 
       fitting glm NB SUBTOTAL: 108.833244 sec
-		beta for gc content is 0.615181 
+		beta for gc content is 0.615181
 		mu adjusted for state 0
       mu-adjust: 0.010040 sec
       phi: 62.902884 sec
@@ -1000,7 +764,7 @@ REESTIMATION
           FIT SUBTOTAL: 0.400464 sec
 
       fitting glm NB SUBTOTAL: 149.669949 sec
-		beta for gc content is 0.577163 
+		beta for gc content is 0.577163
 		mu adjusted for state 0
       mu-adjust: 0.010878 sec
       phi: 65.749982 sec
@@ -1496,7 +1260,7 @@ REESTIMATION
           FIT SUBTOTAL: 0.398330 sec
 
       fitting glm NB SUBTOTAL: 161.512439 sec
-		beta for gc content is 0.537018 
+		beta for gc content is 0.537018
 		mu adjusted for state 0
       mu-adjust: 0.010051 sec
       phi: 66.325285 sec
@@ -1704,7 +1468,7 @@ REESTIMATION
           FIT SUBTOTAL: 0.396771 sec
 
       fitting glm NB SUBTOTAL: 102.015214 sec
-		beta for gc content is 0.501974 
+		beta for gc content is 0.501974
 		mu adjusted for state 0
       mu-adjust: 0.010339 sec
       phi: 66.434362 sec
@@ -2076,7 +1840,7 @@ REESTIMATION
           FIT SUBTOTAL: 0.404305 sec
 
       fitting glm NB SUBTOTAL: 105.319484 sec
-		beta for gc content is 0.475003 
+		beta for gc content is 0.475003
 		mu adjusted for state 0
       mu-adjust: 0.010069 sec
       phi: 65.694954 sec
@@ -2479,7 +2243,7 @@ REESTIMATION
           FIT SUBTOTAL: 0.397152 sec
 
       fitting glm NB SUBTOTAL: 150.068135 sec
-		beta for gc content is 0.454842 
+		beta for gc content is 0.454842
 		mu adjusted for state 0
       mu-adjust: 0.010061 sec
       phi: 64.323868 sec
@@ -2684,7 +2448,7 @@ REESTIMATION
           FIT SUBTOTAL: 0.396929 sec
 
       fitting glm NB SUBTOTAL: 105.465780 sec
-		beta for gc content is 0.43966 
+		beta for gc content is 0.43966
 		mu adjusted for state 0
       mu-adjust: 0.010206 sec
       phi: 64.245771 sec
@@ -3153,7 +2917,7 @@ REESTIMATION
           FIT SUBTOTAL: 0.397939 sec
 
       fitting glm NB SUBTOTAL: 166.513418 sec
-		beta for gc content is 0.428088 
+		beta for gc content is 0.428088
 		mu adjusted for state 0
       mu-adjust: 0.010795 sec
       phi: 64.179565 sec
@@ -3600,7 +3364,7 @@ REESTIMATION
           FIT SUBTOTAL: 0.396198 sec
 
       fitting glm NB SUBTOTAL: 162.691140 sec
-		beta for gc content is 0.419072 
+		beta for gc content is 0.419072
 		mu adjusted for state 0
       mu-adjust: 0.010013 sec
       phi: 63.801937 sec
