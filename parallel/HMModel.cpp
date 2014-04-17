@@ -471,12 +471,13 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
     int trace = 0;
     double beta = 0;
 
-    cout << "\n      fitting glm NB" << endl;
+    cout << "\n      GLM NB" << endl;
     start();
     int conv = MathTools::glmNB(dim, &nIter,y,prior, &linkR, offset, x, &convR, &rank,
         Xb, fitted, resid, weights, &PHI, &scale, &de_resid, &family,
         &twologlik, &scoreTestP, &trace, &beta);
-    stop("        SUBTOTAL");
+    stop("        GLM NB SUBTOTAL");
+    cout << endl;
 
     if (beta>=0){
         cout << "\t\t\tbeta for gc content is " << beta << endl;
@@ -518,7 +519,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
                 mu[i][j] = fitted[start];
             }
         }
-        stop("      mu -- save fitted");
+        stop("      mu-save fitted");
     }
     else{
         cout << "beta becomes negative value, error will occur, just don't store the fitting value" << endl;
@@ -591,7 +592,7 @@ void HMModel::calculateMuAndPhiAllStatesCombined(bool init)
     {
         phi[j] = phi[0];
     }
-    stop("      phi");
+    stop("      phi_ml");
 
 
     delete []y; y=NULL;
@@ -868,11 +869,12 @@ void HMModel::calculateMuAndPhiWithAutoRegressionAllStatesCombined()
     int trace = 0;
     double beta = 0;
 
+    cout << "\n      fitting glm NB" << endl;
     start();
     int conv = MathTools::glmNB(dim, &nIter,y,prior, &linkR, offset, x, &convR, &rank,
         Xb, fitted, resid, weights, &PHI, &scale, &de_resid, &family,
         &twologlik, &scoreTestP, &trace, &beta);
-    stop("      fitting glm NB");
+    stop("      fitting glm NB SUBTOTAL");
 
     if (beta >=0){
         cout << "\t\tbeta for gc content is " << beta << " " << endl;
@@ -1473,14 +1475,14 @@ void HMModel::inferAndEstimation(int rounds)
         gettimeofday(&tim1, NULL);
         doOneRoundInference();
         gettimeofday(&tim2, NULL);
-        printf("\n  TOTAL: %.6lf sec\n",
+        printf("\n  INFERENCE SUBTOTAL: %.6lf sec\n",
             (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
         printf("\n");
 
         printf("REESTIMATION\n");
         reEstimation(REESTIMATETRANSITION, REESTIMATEINIT);
         gettimeofday(&tim3, NULL);
-        printf("\n  TOTAL: %.6lf sec\n",
+        printf("\n  REESTIMATION SUBTOTAL: %.6lf sec\n",
             (tim3.tv_sec+(tim3.tv_usec/1000000.0))-(tim2.tv_sec+(tim2.tv_usec/1000000.0)));  
 
         printf("\nROUND TOTAL: %.6lf sec\n\n",
@@ -2101,7 +2103,7 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
         c = NULL;
     }
     gettimeofday(&tim2, NULL);
-    printf("\n    SUBTOTAL: %.6lf sec\n",
+    printf("\n    TRANS PROB SUBTOTAL: %.6lf sec\n",
         (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
 
 
@@ -2114,7 +2116,7 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
     gettimeofday(&tim1, NULL);
     calculateMuAndPhiAllStatesCombined();
     gettimeofday(&tim2, NULL);
-    printf("\n      SUBTOTAL: %.6lf sec\n",
+    printf("\n      MU,PHI SUBTOTAL: %.6lf sec\n",
         (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
 
     if (USINGAUTOREGRESSION) {
@@ -2122,7 +2124,7 @@ void HMModel::reEstimation(bool transitionReestimate, bool initReestimation)
         gettimeofday(&tim1, NULL);
         calculateMuAndPhiWithAutoRegressionAllStatesCombined();
         gettimeofday(&tim2, NULL);
-        printf("\n      SUBTOTAL: %.6lf sec\n",
+        printf("\n      MU,PHI (AR) SUBTOTAL: %.6lf sec\n",
             (tim2.tv_sec+(tim2.tv_usec/1000000.0))-(tim1.tv_sec+(tim1.tv_usec/1000000.0)));
     }
 

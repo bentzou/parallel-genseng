@@ -1,7 +1,7 @@
 #parse data
 from itertools import izip
 
-directory = '/Users/bentzou/Code/parallel-genseng/data_orig/'
+directory = '/home/bentzou/Code/parallel-genseng/data_orig/'
 file_no_omp = 'output-no-omp'
 file_omp = 'output-omp'
 
@@ -160,15 +160,15 @@ class Times:
       num = len(newlist)
       avg = total / num
 
-      print variable + ':', avg
+      print len(eval(variable)), variable + ':', avg
 
     print 'total time:',total_time
 
 
 
-# mydata = Times()
-# mydata.parse(directory + file_omp)
-# mydata.parse(directory + file_no_omp)
+mydata = Times()
+mydata.parse(directory + file_omp)
+mydata.parse(directory + file_no_omp)
 
 
 
@@ -237,19 +237,19 @@ reestimation_subtotal: 359.7290445
 round_total: 364.8194615
 total time: 3883.677177'''
 
-print '#'*58
-print '%25s %10s %10s %10s' % ('Parallelized Section', 'no OMP', 'OMP', 'Speedup')
-print '#'*58
-for line1,line2 in izip(omp.split('\n'), no_omp.split('\n')):
-  if not line1:
-    continue
-  name = line1.split(':')[0]
-  omp = float(line1.split(':')[1])
-  noomp = float(line2.split(':')[1])
+# print '#'*58
+# print '%25s %10s %10s %10s' % ('Parallelized Section', 'no OMP', 'OMP', 'Speedup')
+# print '#'*58
+# for line1,line2 in izip(omp.split('\n'), no_omp.split('\n')):
+#   if not line1:
+#     continue
+#   name = line1.split(':')[0]
+#   omp = float(line1.split(':')[1])
+#   noomp = float(line2.split(':')[1])
 
-  if noomp < 0.001 or omp < 0.0001:
-    improvement = '--'
-  else:
-    improvement = str(noomp/omp)[:5]
+#   if noomp < 0.001 or omp < 0.0001:
+#     improvement = '--'
+#   else:
+#     improvement = str(noomp/omp)[:5]
 
-  print '%25s %10.2f %10.2f %10s' % (name, noomp, omp, improvement)
+#   print '%25s %10.2f %10.2f %10s' % (name, noomp, omp, improvement)

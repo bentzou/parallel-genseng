@@ -26,6 +26,7 @@
 #include <omp.h>
 
 // timing
+#include <sstream>
 #include <iostream>
 #include <string>
 #include <sys/time.h>
@@ -48,7 +49,6 @@ void stop2(string message) {
             (tim4.tv_sec+(tim4.tv_usec/1000000.0))-(tim3.tv_sec+(tim3.tv_usec/1000000.0)));
     }
 }
-
 
 /**********************************************************************
  *
@@ -622,7 +622,7 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
     
     wsum += weights[i];
   }
-  stop2("        initialize weights and residual");
+  stop2("          initialize weights and residual");
   
   /* ----------------------------------------------------------------*
    * If summation of all weights is too small, stop 
@@ -826,10 +826,13 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
       wss_last = wssq(resid, N, weights);
       
     }else{
-      start2();
+      cout << "\n          IRLS" << endl;
+      struct timeval timer1, timer2;
+      gettimeofday(&timer1, NULL);
+
       /* IRLS algorithm */
       while(iter<maxit && !convg) {
-        printf("        iteration %d\n", iter); 
+        start2();
         if (*trace > 5) {
           printf("    glmFit: iteration %d: ", iter);
         }
@@ -957,11 +960,18 @@ int MathTools::glmFit(int* familyR, int* linkR, int* dims, int* nIter,
           printf(" wss=%.3f\n", iter, wss);
         }
         
+        ostringstream oss;
+        oss << "            iteration " << iter; 
+        stop2(oss.str());
+
         convg = (Nu<=0) || (iter && (fabs(wss-wss_last)/(wss_last + 0.1) < conv));
         wss_last = wss;
         iter ++;
       }
-      stop2("        IRLS");
+
+      gettimeofday(&timer2, NULL);
+      printf("\n            IRLS SUBTOTAL: %.6lf sec\n\n",
+          (timer2.tv_sec+(timer2.tv_usec/1000000.0))-(timer1.tv_sec+(timer1.tv_usec/1000000.0)));
     }
     
     /* assume there is an intercept */
@@ -1326,7 +1336,8 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
    */
   if(!init){
     /* Initial fit */
-    
+    cout << "        initial fit" << endl;
+
     fam0 = POISSON;
     
     cv = glmFit(&fam0, linkR, dims, nIter, y, prior, offset, 
@@ -1363,7 +1374,7 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
       scoreNum += (yi - mui)*(yi - mui) - yi;
       scoreDen += mui*mui;
     }
-    stop2("      test for overdispersion");
+    stop2("        test for overdispersion");
 
     score = scoreNum/sqrt(2.0*scoreDen);
     
@@ -1386,14 +1397,14 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
       fam0    = NB;
       *family = NB;
     }
-    stop2("      log likelihood");
+    stop2("        log likelihood");
 
     /**
      * calculate phi by MLE, without initial values of phi
      */
     start2();
     cvPhi = phi_ml(y, fitted, N, prior, maxit, conv, phi, 0, *trace);
-    stop2("      phi_ml");
+    stop2("        phi_ml");
     
     if(cvPhi==0){
       if(*trace > 3) 
@@ -1456,7 +1467,7 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
     
     start2();
     cvPhi = phi_ml(y, fitted, N, prior, maxit, conv, phi, 0, *trace);
-    stop2("      phi_ml");
+    stop2("        phi_ml");
     if(cvPhi==0){
       if(*trace > 3) 
         printf("\n  glmNB: given inital mu, initial value for phi: %e\n", *phi);
@@ -1471,10 +1482,12 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
   del  = 1.0;
   start2();
   Lm   = loglik_NB(N, *phi, fitted, y, prior);
-  stop2("      log likelihood NB");
+  stop2("        log likelihood NB");
   Lm0  = Lm + 1.0;
 
+  cout << "\n        iterative fits" << endl;
   while (iter < maxit && fabs(Lm0 - Lm) + fabs(del) > conv) {
+    cout << "        ITER " << iter << endl;
     
     dims[3] = 1; /* use initial values */
     
@@ -1482,7 +1495,8 @@ int MathTools::glmNB(int *dims, int *nIter, double *y, double *prior,
     cv = glmFit(&fam0, linkR, dims, nIter, y, prior, offset, 
                 X, &nTotal_binom, convR, rank, Xb, fitted, resid, 
                 weights, phi, trace, scale, df_resid, beta);
-    stop2("      glmFit");
+    stop2("          FIT SUBTOTAL");
+    cout << endl;
     
     if (cv==0) { 
       if(*trace > 1) 

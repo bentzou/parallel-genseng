@@ -12,10 +12,10 @@
 # human: the input data is human (1), or mouse (0). If the value for this field is larger than 2, it will be the given largest state (by default, the largest state will be 6).
 # postprocessing: whether the postprocessing step will be executed (1) , or not (0).
 
-ROUND=2
+ROUND=10
 TRANS=1
 INIT=1
-FILE='s_reviseddata4hmm_300bpSlides_chr1.txt'
+FILE='reviseddata4hmm_300bpSlides_chr1.txt'
 
 cd test
 echo 'REMOVING OLD FILES...'
@@ -38,6 +38,6 @@ echo
 
 echo 'STARTING'
 cd test
-/usr/bin/time -o timestats.log ./GENSENG $FILE $ROUND 0.01 0.01 1 1 1 $TRANS $INIT 1 1
+/usr/bin/time -o output-omp.stats ./GENSENG $FILE $ROUND 0.01 0.01 1 1 1 $TRANS $INIT 1 1
 cd ..
 echo
