@@ -13,12 +13,15 @@ Stats for Chromosome 1 (10 training rounds)
                       pis       0.00       0.00         --
                      cjks       1.84       0.44      4.146
                fill_trans       0.04       0.04      1.164
+
        trans_probs_totals       1.88       0.48      3.906
+
                 mu_phi_xy       0.16       0.04      4.212
        mu_phi_offset_init       0.14       0.03      5.564  2
      mu_phi_offset_adjust       0.01       0.01      1.001  2
         mu_phi_prior_load       0.09       0.02      4.627  2
       mu_phi_prior_update       1.13       0.57      1.973  2
+
              init_weights       0.04       0.02      2.567  20
                 iteration       0.37       0.14      2.606  ~60
   test_for_overdispersion       0.01       0.00      3.107  2
@@ -26,11 +29,14 @@ Stats for Chromosome 1 (10 training rounds)
                    phi_ml      62.12      12.68      4.899  4
         log_likelihood_nb       0.67       0.14      4.868  2
           glm_nb_subtotal      95.88      21.99      4.359
+
            mu_save_fitted       0.01       0.01      1.017
           mu_phi_subtotal     157.53      34.79      4.528
+
   fitting_glm_nb_subtotal     132.58      27.34      4.848
                 mu_adjust       0.01       0.01      1.046
        mu_phi_ar_subtotal     197.61      41.11      4.806
+
       fill_emission_table       1.14       0.58      1.975
 ----------------------------------------------------------
     reestimation subtotal     359.73      78.33      4.592
